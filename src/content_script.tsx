@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
+import HeadingsContainer from './components/headings';
+import { Headings as HeadingsType } from './types';
 import waitFor from './utils/waitFor';
 
 // clicked browserAction
-chrome.runtime.onMessage.addListener((msg, sender: chrome.runtime.MessageSender, sendRes: (res: any) => void) => {
-  console.log(JSON.stringify(msg));
+chrome.runtime.onMessage.addListener(() => {
 });
-
-type HeadingsType = { rank: number; text: string, blockId: string }[];
 
 const extractHeadings = (parent: HTMLElement): HeadingsType => {
   let headings = [];
@@ -25,66 +24,6 @@ const extractHeadings = (parent: HTMLElement): HeadingsType => {
     }));
   }
   return headings;
-};
-
-const Headings = ({ headings }: { headings: HeadingsType }) => {
-  const handleClick = (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>, blockId: string) => {
-    const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
-    if (!target) { return; }
-
-    document.querySelector('.notion-frame .notion-scroller')?.scroll({
-      top: target.offsetTop,
-    });
-    event.preventDefault();
-  };
-  return <>
-    {
-      headings.map(
-        heading => (
-          <p className={`h${heading.rank}`} key={heading.blockId} onClick={(event) => handleClick(event, heading.blockId)}>
-            <a href="#">
-              {heading.rank}: {heading.text}
-            </a>
-          </p>
-        )
-      )
-    }
-  </>
-};
-
-const HeadingsContainer = ({ headings }: { headings: HeadingsType }) => {
-  const [visible, setVisible] = useState(true);
-  const [isFolding, setFolding] = useState(false);
-  const handleClose = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    setVisible(false);
-    return event.preventDefault();
-  };
-  const toggleFolding = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    setFolding(prev => !prev);
-    return event.preventDefault();
-  };
-
-  if (!visible) {
-    return null
-  }
-
-  if (isFolding) {
-    return (
-      <p><a href="#" onClick={toggleFolding}>[Expand]</a></p>
-
-    );
-  }
-
-  // TODO: p はもう少しまともなマークアップにした方が ...
-  return (
-    <>
-      <p>
-        <a href="#" onClick={toggleFolding}>[Fold]</a>
-        <a href="#" onClick={handleClose}>[Close]</a>
-      </p>
-      <Headings headings={headings} />
-    </>
-  );
 };
 
 ((async () => {
