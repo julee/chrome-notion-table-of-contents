@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import waitFor from './utils/waitFor';
 
@@ -7,9 +7,9 @@ chrome.runtime.onMessage.addListener((msg, sender: chrome.runtime.MessageSender,
   console.log(JSON.stringify(msg));
 });
 
-type Headings = { rank: number; text: string, blockId: string }[];
+type HeadingsType = { rank: number; text: string, blockId: string }[];
 
-const extractHeadings = (parent: HTMLElement): Headings => {
+const extractHeadings = (parent: HTMLElement): HeadingsType => {
   let headings = [];
   for (const heading of parent.querySelectorAll('[placeholder="Heading 1"],[placeholder="Heading 2"],[placeholder="Heading 3"]')) {
     headings.push({
@@ -27,8 +27,7 @@ const extractHeadings = (parent: HTMLElement): Headings => {
   return headings;
 };
 
-
-const Toc = ({ headings }: { headings: Headings }) => {
+const Headings = ({ headings }: { headings: HeadingsType }) => {
   const handleClick = (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>, blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
@@ -42,7 +41,7 @@ const Toc = ({ headings }: { headings: Headings }) => {
     {
       headings.map(
         heading => (
-          <p key={heading.blockId} onClick={(event) => handleClick(event, heading.blockId)}>
+          <p className={`h${heading.rank}`} key={heading.blockId} onClick={(event) => handleClick(event, heading.blockId)}>
             <a href="#">
               {heading.rank}: {heading.text}
             </a>
@@ -51,6 +50,41 @@ const Toc = ({ headings }: { headings: Headings }) => {
       )
     }
   </>
+};
+
+const HeadingsContainer = ({ headings }: { headings: HeadingsType }) => {
+  const [visible, setVisible] = useState(true);
+  const [isFolding, setFolding] = useState(false);
+  const handleClose = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    setVisible(false);
+    return event.preventDefault();
+  };
+  const toggleFolding = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    setFolding(prev => !prev);
+    return event.preventDefault();
+  };
+
+  if (!visible) {
+    return null
+  }
+
+  if (isFolding) {
+    return (
+      <p><a href="#" onClick={toggleFolding}>[Expand]</a></p>
+
+    );
+  }
+
+  // TODO: p はもう少しまともなマークアップにした方が ...
+  return (
+    <>
+      <p>
+        <a href="#" onClick={toggleFolding}>[Fold]</a>
+        <a href="#" onClick={handleClose}>[Close]</a>
+      </p>
+      <Headings headings={headings} />
+    </>
+  );
 };
 
 ((async () => {
@@ -64,7 +98,7 @@ const Toc = ({ headings }: { headings: Headings }) => {
   const headings = extractHeadings(pageContent);
 
   ReactDOM.render(
-    <Toc headings={headings} />,
+    <HeadingsContainer headings={headings} />,
     container,
   );
 }))();
