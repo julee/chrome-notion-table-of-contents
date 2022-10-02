@@ -1,10 +1,10 @@
-export default (selector: string): Promise<Element> => {
+export default (selector: string): Promise<NodeListOf<HTMLElement>> => {
   return new Promise(resolve => {
     const id = setInterval(() => {
-      const elem = document.querySelector(selector);
-      if (elem) {
+      const elems = document.querySelectorAll<HTMLElement>(selector);
+      if (elems.length > 0) {
         clearInterval(id);
-        resolve(elem);
+        resolve(elems);
       }
     }, 300);
   });

@@ -9,6 +9,7 @@ module.exports = {
       content_script: path.join(srcDir, 'content_script.tsx'),
     },
     output: {
+        publicPath: '',
         path: path.join(__dirname, "../dist/js"),
         filename: "[name].js",
     },
