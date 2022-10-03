@@ -9,7 +9,7 @@ export default () => {
     text: string;
     rank: number;
   }[]>([]);
-  console.log('# render heading');
+  console.debug('# render heading');
 
   const handleClick = (blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
@@ -22,7 +22,7 @@ export default () => {
 
   let pageContent: HTMLElement;
   const refreshAllHeadings = async () => {
-    console.log('# fetch heading');
+    console.debug('# fetch heading');
 
     if (!pageContent) {
       const elem = document.querySelector(pageContentSelector);
@@ -80,10 +80,7 @@ export default () => {
         characterData: true,
       });
     })();
-    return () => {
-      console.log('# unmount && disconnect observer');
-      observer.disconnect();
-    };
+    return () => { observer.disconnect(); };
   }, []);
 
   return <>
@@ -91,13 +88,11 @@ export default () => {
       headings.map(
         heading => (
           <p
-            className={`h${heading.rank} heading`}
+            className={`h${heading.rank} heading clickable`}
             key={heading.blockId}
             onClick={() => handleClick(heading.blockId)}
           >
-            <span className="clickable">
-              {heading.rank}: {heading.text}
-            </span>
+            {heading.text}
           </p>
         )
       )
