@@ -6,7 +6,7 @@
   "version": "1.0",
 
   "action": {
-    "default_icon": { "16":"icon.png" }
+    "default_icon": { "19":"icon.png" }
   },
 
   "content_scripts": [
