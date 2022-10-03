@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Headings as HeadingsType } from '../types';
 import Headings from './headings';
 
-export default ({ headings }: { headings: HeadingsType }) => {
+export default () => {
   const [visible, setVisible] = useState(true);
   const [isFolding, setFolding] = useState(false);
   const handleClose = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -32,7 +31,7 @@ export default ({ headings }: { headings: HeadingsType }) => {
         <a href="#" onClick={toggleFolding}>[Fold]</a>
         <a href="#" onClick={handleClose}>[Close]</a>
       </p>
-      <Headings headings={headings} />
+      <Headings />
     </>
   );
 };

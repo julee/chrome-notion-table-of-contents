@@ -1,4 +1,4 @@
-export default (selector: string): Promise<NodeListOf<HTMLElement>> => {
+export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
   return new Promise(resolve => {
     const id = setInterval(() => {
       const elems = document.querySelectorAll<HTMLElement>(selector);
