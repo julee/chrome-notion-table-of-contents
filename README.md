@@ -2,5 +2,5 @@
 
 ```sh
 yarn install
-build
+yarn run build
 ```
