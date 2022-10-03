@@ -1,25 +1,25 @@
-import React from "react";
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import HeadingsContainer from './components/headings';
+import HeadingsContainer from './components/headingsContainer';
+import { waitFor } from './utils';
 
 ((async () => {
   let isMounted = false;
 
   // browserAction is clicked
-  chrome.runtime.onMessage.addListener(() => {
+  chrome.runtime.onMessage.addListener(async (arg) => {
     if (!isMounted) {
+      const root = document.createElement('div');
+      document.body.appendChild(root);
 
-      const container = document.createElement('div');
-      container.id = "toc-container"
-      document.body.appendChild(container);
-
-      const root = createRoot(container);
-      root.render(<HeadingsContainer />,);
+      createRoot(root).render(<HeadingsContainer />);
       isMounted = true;
       return;
     }
+    const eventReceiver = (await waitFor('#toc-event-receiver'))[0];
     // toggle viisbility
-    console.log('twice');
+    const event = new CustomEvent('actionClicked');
+    eventReceiver.dispatchEvent(event);
   });
 
 }))();

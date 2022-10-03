@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { waitFor } from "../utils";
+import React, { useEffect, useState } from 'react';
+import { waitFor } from '../utils';
 
 export default () => {
   const [headings, setHeadings] = useState<{
@@ -7,6 +7,7 @@ export default () => {
     text: string;
     rank: number;
   }[]>([]);
+  console.log('# render heading');
 
   const handleClick = (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>, blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
@@ -20,6 +21,7 @@ export default () => {
 
   useEffect(() => {
     (async () => {
+      console.log('# fetch heading');
       let newHeadings = [...headings];
       const pageContent = (await waitFor('.notion-frame .notion-scroller'))[0];
       for (const heading of pageContent.querySelectorAll('[placeholder="Heading 1"],[placeholder="Heading 2"],[placeholder="Heading 3"]')) {
@@ -30,10 +32,10 @@ export default () => {
         });
       }
       if (headings.length !== 0 && Math.min.apply(null, headings.map(h => h.rank)) !== 1) {
-        newHeadings = headings.map(heading => ({
-          ...heading,
-          rank: heading.rank - 1,
-        }));
+        newHeadings = headings.map(heading => {
+          heading.rank--;
+          return heading;
+        });
       }
       setHeadings(newHeadings);
     })();
@@ -44,7 +46,7 @@ export default () => {
       headings.map(
         heading => (
           <p
-            className={`h${heading.rank}`}
+            className={`h${heading.rank} heading`}
             key={heading.blockId}
             onClick={(event) => handleClick(event, heading.blockId)}
           >
@@ -55,5 +57,5 @@ export default () => {
         )
       )
     }
-  </>
+  </>;
 };
