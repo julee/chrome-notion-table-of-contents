@@ -1,0 +1,36 @@
+#toc-container {
+    /* position */
+    position: absolute;
+    width: 350px;
+    top: 10px;
+    left: 10px;
+    min-height: 50px;
+    z-index: 10000;
+
+    /* margn, padding */
+    padding: 20px;
+ 
+    /* appearance */
+    color: #656380;
+    background-color: white;
+    border: gray solid 1px; /* debug */
+    font-size: 14px;
+}
+#toc-container .clickable {
+    cursor: pointer;
+}
+#toc-container .clickable:hover {
+    text-decoration: underline;
+}
+#toc-container .heading {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+#toc-container .h2 { margin-left: 24px; }
+#toc-container .h3 { margin-left: 48px; }
+
+#toc-toolbar {
+    position: fixed;
+    margin-top: -10px;
+    margin-left: 280px;
+}

@@ -9,11 +9,15 @@ export default (
   const toggleFolding = () => { setFolding(prev => !prev); };
 
   return isFolding
-    ? (<p><span className="clickable" onClick={toggleFolding}>＋</span></p>)
-    : (<>
-      <p>
+    ? (
+      <div id="toc-toolbar">
+        <span className="clickable" onClick={toggleFolding}>＋</span>
+      </div>
+    )
+    : (
+      <div id="toc-toolbar">
         <span className="clickable" onClick={toggleFolding}>ー</span>&nbsp;
         <span className="clickable" onClick={() => setVisible(false)}>✕</span>
-      </p>
-    </>);
+      </div>
+    );
 };

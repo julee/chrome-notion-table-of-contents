@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Headings from './headings';
-import Toolbar from './Toolbar';
+import Toolbar from './toolbar';
 
 export default () => {
   const [isVisible, setVisible] = useState(true);

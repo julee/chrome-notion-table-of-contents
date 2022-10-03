@@ -76,6 +76,7 @@ export default () => {
         refreshAllHeadings();
       });
       observer.observe(toc as Node, {
+        childList: true,
         subtree: true,
         characterData: true,
       });
