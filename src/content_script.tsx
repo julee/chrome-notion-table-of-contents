@@ -21,5 +21,4 @@ import { waitFor } from './utils';
     const event = new CustomEvent('actionClicked');
     eventReceiver.dispatchEvent(event);
   });
-
 }))();

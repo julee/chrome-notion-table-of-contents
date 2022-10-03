@@ -5,15 +5,6 @@ export default () => {
   const [isVisible, setVisible] = useState(true);
   const [isFolding, setFolding] = useState(false);
 
-  const handleClose = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    setVisible(false);
-    return event.preventDefault();
-  };
-  const toggleFolding = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    setFolding(prev => !prev);
-    return event.preventDefault();
-  };
-
   useEffect(() => {
     const eventReceiver = document.getElementById('toc-event-receiver');
     if (!eventReceiver) { return; }
@@ -23,18 +14,19 @@ export default () => {
     });
   }, []);
 
+  const toggleFolding = () => { setFolding(prev => !prev); };
+
   return (
     <div id="toc-container" style={isVisible ? {} : { display: 'none' }}>
       {
         isFolding
-          ? (<p><a href="#" onClick={toggleFolding}>[Expand]</a></p>)
+          ? (<p><span className="clickable" onClick={toggleFolding}>[Expand]</span></p>)
           : (<>
             <p>
-              <a href="#" onClick={toggleFolding}>[Fold]</a>
-              <a href="#" onClick={handleClose}>[Close]</a>
+              <span className="clickable" onClick={toggleFolding}>[Fold]</span>
+              <span className="clickable" onClick={() => setVisible(false)}>[Close]</span>
             </p>
-          </>
-          )
+          </>)
       }
       <div style={isFolding ? { display: 'none' } : {}}>
         <Headings />

@@ -9,19 +9,19 @@ export default () => {
   }[]>([]);
   console.log('# render heading');
 
-  const handleClick = (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>, blockId: string) => {
+  const handleClick = (blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
 
     document.querySelector('.notion-frame .notion-scroller')?.scroll({
       top: target.offsetTop,
     });
-    event.preventDefault();
   };
 
   useEffect(() => {
     (async () => {
       console.log('# fetch heading');
+
       let newHeadings = [...headings];
       const pageContent = (await waitFor('.notion-frame .notion-scroller'))[0];
       for (const heading of pageContent.querySelectorAll('[placeholder="Heading 1"],[placeholder="Heading 2"],[placeholder="Heading 3"]')) {
@@ -48,11 +48,11 @@ export default () => {
           <p
             className={`h${heading.rank} heading`}
             key={heading.blockId}
-            onClick={(event) => handleClick(event, heading.blockId)}
+            onClick={() => handleClick(heading.blockId)}
           >
-            <a href="#">
+            <span className="clickable">
               {heading.rank}: {heading.text}
-            </a>
+            </span>
           </p>
         )
       )
