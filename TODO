@@ -1,3 +1,4 @@
 - draggable
 - dynamic import (maybe impossible)
 - ページが変わったときに目次をre-generateできるように（いまだと最初に生成したページのToCをずっと保持している）
+- ページ遷移したら destroy する
