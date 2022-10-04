@@ -24,6 +24,8 @@ export default () => {
   const refreshAllHeadings = async () => {
     console.debug('# fetch heading');
 
+    // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
+    //       あとテスト書きたい
     if (!pageContent) {
       const elem = document.querySelector(pageContentSelector);
       if (!elem) {
