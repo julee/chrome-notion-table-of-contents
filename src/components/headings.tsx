@@ -10,7 +10,7 @@ export default () => {
     text: string;
     rank: number;
   }[]>([]);
-  console.debug('# render heading');
+  console.info('# render heading');
 
   const handleClick = (blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
@@ -23,7 +23,7 @@ export default () => {
 
   let pageContent: HTMLElement;
   const refreshAllHeadings = async () => {
-    console.debug('# fetch heading');
+    console.info('# fetch heading');
 
     // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
     //       あとテスト書きたい
