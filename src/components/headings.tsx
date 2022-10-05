@@ -3,6 +3,7 @@ import { waitFor } from '../utils';
 
 const pageContentSelector = '.notion-frame .notion-scroller';
 
+// TODO: 明らかに分割すべき...
 export default () => {
   const [headings, setHeadings] = useState<{
     blockId: string;
@@ -68,7 +69,10 @@ export default () => {
       await refreshAllHeadings();
 
       const toc = document.querySelector('.notion-table_of_contents-block');
-      if (toc === null) { console.debug('ToC is not found. cannot observe.'); }
+      if (toc === null) {
+        console.debug('ToC is not found. cannot observe.');
+        return;
+      }
       observer = new MutationObserver((mutationList: MutationRecord[]) => {
         // 部分更新は行わない
         // - 親の a まで遡って 、URL を blockId 化して ... とやることは多い

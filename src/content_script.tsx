@@ -3,10 +3,9 @@ import { createRoot } from 'react-dom/client';
 import HeadingsContainer from './components/headingsContainer';
 import { waitFor } from './utils';
 
-
 let isMounted = false;
-// browserAction is clicked
-chrome.runtime.onMessage.addListener(async () => {
+const customEvent = new CustomEvent('toggleVisibility');
+const toggleVisibility = async () => {
   if (!isMounted) {
     const root = document.createElement('div');
     document.body.appendChild(root);
@@ -16,7 +15,14 @@ chrome.runtime.onMessage.addListener(async () => {
     return;
   }
   const eventReceiver = (await waitFor('#toc-event-receiver'))[0];
-  // toggle viisbility
-  const event = new CustomEvent('actionClicked');
-  eventReceiver.dispatchEvent(event);
+  eventReceiver.dispatchEvent(customEvent);
+};
+
+// browserAction is clicked
+chrome.runtime.onMessage.addListener(toggleVisibility);
+
+// Ctrl + n
+document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
+  if (event.ctrlKey && event.code === 'KeyN')
+    toggleVisibility();
 });

@@ -10,7 +10,7 @@ export default () => {
     const eventReceiver = document.getElementById('toc-event-receiver');
     if (!eventReceiver) { return; }
 
-    eventReceiver.addEventListener('actionClicked', () => setVisible(visible => !visible));
+    eventReceiver.addEventListener('toggleVisibility', () => setVisible(visible => !visible));
   }, []);
 
   return (
