@@ -3,19 +3,20 @@ import { createRoot } from 'react-dom/client';
 import HeadingsContainer from './components/headingsContainer';
 import { waitFor } from './utils';
 
-let isMounted = false;
-const customEvent = new CustomEvent('toggleVisibility');
+let IS_MOUNTED = false;
+const EVENT = new CustomEvent('toggleVisibility');
+
 const toggleVisibility = async () => {
-  if (!isMounted) {
+  if (!IS_MOUNTED) {
     const root = document.createElement('div');
     document.body.appendChild(root);
 
     createRoot(root).render(<HeadingsContainer />);
-    isMounted = true;
+    IS_MOUNTED = true;
     return;
   }
   const eventReceiver = (await waitFor('#toc-event-receiver'))[0];
-  eventReceiver.dispatchEvent(customEvent);
+  eventReceiver.dispatchEvent(EVENT);
 };
 
 // browserAction is clicked

@@ -1,7 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { waitFor } from '../utils';
 
-const pageContentSelector = '.notion-frame .notion-scroller';
+let PAGE_CONTENT: HTMLElement;
+
+const extractHeadings = () => {
+  console.info('# fetch heading');
+
+  // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
+  //       あとテスト書きたい
+  let headings = [];
+  const elems = PAGE_CONTENT.querySelectorAll(
+    '[placeholder="Heading 1"],' +
+    '[placeholder="Heading 2"],' +
+    '[placeholder="Heading 3"]'
+  );
+  for (const heading of elems) {
+    const parentElem = heading.closest('[data-block-id]');
+    if (!parentElem) {
+      console.error(parentElem);
+      throw new Error('parent element is not found');
+    }
+    headings.push({
+      text: heading.textContent || '',
+      rank: Number((heading.getAttribute('placeholder') || '').replace(/^Heading /, '')),
+      blockId: parentElem.getAttribute('data-block-id') || '',
+    });
+  }
+  if (headings.length !== 0 && Math.min.apply(null, headings.map(h => h.rank)) !== 1) {
+    headings = headings.map(heading => {
+      heading.rank--;
+      return heading;
+    });
+  }
+  return headings;
+};
+
+const watchMutation = (cb: () => void) => {
+
+};
+
 
 // TODO: 明らかに分割すべき...
 export default () => {
@@ -16,56 +53,20 @@ export default () => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
 
-    document.querySelector(pageContentSelector)?.scroll({
+    PAGE_CONTENT.scroll({
       top: target.offsetTop,
     });
   };
 
-  let pageContent: HTMLElement;
-  const refreshAllHeadings = async () => {
-    console.info('# fetch heading');
-
-    // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
-    //       あとテスト書きたい
-    if (!pageContent) {
-      const elem = document.querySelector(pageContentSelector);
-      if (!elem) {
-        throw new Error(`element '${pageContentSelector}' is not found`);
-      }
-      pageContent = elem as HTMLElement;
-
-    }
-    let newHeadings = [...headings];
-    const elems = pageContent.querySelectorAll(
-      '[placeholder="Heading 1"],' +
-      '[placeholder="Heading 2"],' +
-      '[placeholder="Heading 3"]'
-    );
-    for (const heading of elems) {
-      const parentElem = heading.closest('[data-block-id]');
-      if (!parentElem) {
-        console.error(parentElem);
-        throw new Error('parent element is not found');
-      }
-      newHeadings.push({
-        text: heading.textContent || '',
-        rank: Number((heading.getAttribute('placeholder') || '').replace(/^Heading /, '')),
-        blockId: parentElem.getAttribute('data-block-id') || '',
-      });
-    }
-    if (headings.length !== 0 && Math.min.apply(null, headings.map(h => h.rank)) !== 1) {
-      newHeadings = headings.map(heading => {
-        heading.rank--;
-        return heading;
-      });
-    }
+  const refreshAllHeadings = () => {
+    const newHeadings = extractHeadings();
     setHeadings(newHeadings);
   };
 
   useEffect(() => {
     let observer: MutationObserver;
     (async () => {
-      pageContent = (await waitFor(pageContentSelector))[0];
+      PAGE_CONTENT = (await waitFor('.notion-frame .notion-scroller'))[0];
       await refreshAllHeadings();
 
       const toc = document.querySelector('.notion-table_of_contents-block');
