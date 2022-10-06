@@ -1,4 +1,4 @@
-const sendToCurrentTab = async (req: { type: string }) => {
+const sendToActiveTab = async (req: { type: string }) => {
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   try {
     await chrome.tabs.sendMessage(tabs[0]?.id ?? 0, req);
@@ -11,12 +11,10 @@ const sendToCurrentTab = async (req: { type: string }) => {
   }
 };
 chrome.action.onClicked.addListener(() => {
-  sendToCurrentTab({ type: 'CLICK_ACTION' });
+  sendToActiveTab({ type: 'CLICK_ACTION' });
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
-  (details: chrome.webNavigation.WebNavigationTransitionCallbackDetails) => {
-    sendToCurrentTab({ type: 'UPDATE_HISTORY' });
-  },
-  { url: [{ hostEquals: 'www.notion.so' }] }
+  () => { sendToActiveTab({ type: 'UPDATE_HISTORY' }); },
+  { url: [{ hostEquals: 'www.notion.so' }] },
 );
