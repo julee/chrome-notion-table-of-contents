@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Draggable from 'react-draggable';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
@@ -47,11 +48,14 @@ export default () => {
   if (!isMounted) { return null; }
 
   return (
-    <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
-      <Toolbar isFolded={isFolded} setFolded={setFolded} setHidden={setHidden} />
-      <div style={isFolded ? { display: 'none' } : {}}>
-        <Headings />
+    <Draggable handle="#toc-draggable-handle" >
+      <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
+        <div id="toc-draggable-handle"></div>
+        <Toolbar isFolded={isFolded} setFolded={setFolded} setHidden={setHidden} />
+        <div id="toc-headings" style={isFolded ? { display: 'none' } : {}}>
+          <Headings />
+        </div>
       </div>
-    </div>
+    </Draggable>
   );
 };

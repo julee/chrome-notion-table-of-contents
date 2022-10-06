@@ -1,3 +1,4 @@
+
 #toc-container {
     /* position */
     position: absolute;
@@ -7,9 +8,6 @@
     min-height: 50px;
     z-index: 10000;
 
-    /* margn, padding */
-    padding: 20px;
- 
     /* appearance */
     color: #656380;
     background-color: white;
@@ -22,15 +20,25 @@
 #toc-container .clickable:hover {
     text-decoration: underline;
 }
-#toc-container .heading {
-    margin-top: 4px;
-    margin-bottom: 4px;
+
+#toc-draggable-handle {
+    cursor: grab;
+    min-height: 25px;
 }
-#toc-container .h2 { margin-left: 24px; }
-#toc-container .h3 { margin-left: 48px; }
 
 #toc-toolbar {
     position: fixed;
-    margin-top: -10px;
-    margin-left: 280px;
+    margin-top: -15px;
+    margin-left: 300px;
 }
+
+#toc-headings {
+    margin: 0 10px 25px 25px;
+}
+
+#toc-headings .heading {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+#toc-headings .h2 { margin-left: 24px; }
+#toc-headings .h3 { margin-left: 48px; }
