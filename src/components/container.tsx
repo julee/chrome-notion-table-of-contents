@@ -3,20 +3,20 @@ import Headings from './headings';
 import Toolbar from './toolbar';
 
 export default () => {
-  const [isVisible, setVisible] = useState(true);
-  const [isFolding, setFolding] = useState(false);
+  const [isHidden, setHidden] = useState(false);
+  const [isFolded, setFolded] = useState(false);
 
   useEffect(() => {
     const eventReceiver = document.getElementById('toc-event-receiver');
     if (!eventReceiver) { return; }
 
-    eventReceiver.addEventListener('toggleVisibility', () => setVisible(visible => !visible));
+    eventReceiver.addEventListener('toggleVisibility', () => setHidden(visible => !visible));
   }, []);
 
   return (
-    <div id="toc-container" style={isVisible ? {} : { display: 'none' }}>
-      <Toolbar isFolding={isFolding} setFolding={setFolding} setVisible={setVisible} />
-      <div style={isFolding ? { display: 'none' } : {}}>
+    <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
+      <Toolbar isFolded={isFolded} setFolded={setFolded} setHidden={setHidden} />
+      <div style={isFolded ? { display: 'none' } : {}}>
         <Headings />
       </div>
       <div id="toc-event-receiver"></div>

@@ -1,23 +1,23 @@
 import React from 'react';
 
 export default (
-  { isFolding, setFolding, setVisible }: {
-    isFolding: boolean;
-    setFolding: React.Dispatch<React.SetStateAction<boolean>>;
-    setVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  { isFolded, setFolded, setHidden }: {
+    isFolded: boolean;
+    setFolded: React.Dispatch<React.SetStateAction<boolean>>;
+    setHidden: React.Dispatch<React.SetStateAction<boolean>>;
   }) => {
-  const toggleFolding = () => { setFolding(prev => !prev); };
+  const toggleFolded = () => { setFolded(prev => !prev); };
 
-  return isFolding
+  return isFolded
     ? (
       <div id="toc-toolbar">
-        <span className="clickable" onClick={toggleFolding}>＋</span>
+        <span className="clickable" onClick={toggleFolded}>＋</span>
       </div>
     )
     : (
       <div id="toc-toolbar">
-        <span className="clickable" onClick={toggleFolding}>ー</span>&nbsp;
-        <span className="clickable" onClick={() => setVisible(false)}>✕</span>
+        <span className="clickable" onClick={toggleFolded}>ー</span>&nbsp;
+        <span className="clickable" onClick={() => setHidden(true)}>✕</span>
       </div>
     );
 };
