@@ -3,15 +3,34 @@ import Headings from './headings';
 import Toolbar from './toolbar';
 
 export default () => {
-  const [isHidden, setHidden] = useState(false);
-  const [isFolded, setFolded] = useState(false);
+  console.info('# render container');
+
+  const [isHidden, setHidden] = useState(false);  // TODO: destroy のとき false にする
+  const [isFolded, setFolded] = useState(false);  // TODO: destroy のとき false にする
+  const [isMounted, setMounted] = useState(false);
+
+  const toggleVisibility = () => {
+    setMounted(isMounted => {
+      if (!isMounted) {
+        return true;
+      }
+      setHidden(isHidden => !isHidden);
+      return true;
+    });
+  };
 
   useEffect(() => {
-    const eventReceiver = document.getElementById('toc-event-receiver');
-    if (!eventReceiver) { return; }
+    // browserAction is clicked
+    chrome.runtime.onMessage.addListener(toggleVisibility);
 
-    eventReceiver.addEventListener('toggleVisibility', () => setHidden(visible => !visible));
+    // Ctrl + n
+    document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
+      if (event.ctrlKey && event.code === 'KeyN')
+        toggleVisibility();
+    });
   }, []);
+
+  if (!isMounted) { return null; }
 
   return (
     <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
@@ -19,7 +38,6 @@ export default () => {
       <div style={isFolded ? { display: 'none' } : {}}>
         <Headings />
       </div>
-      <div id="toc-event-receiver"></div>
     </div>
   );
 };
