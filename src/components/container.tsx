@@ -5,8 +5,8 @@ import Toolbar from './toolbar';
 export default () => {
   console.info('# render container');
 
-  const [isHidden, setHidden] = useState(false);  // TODO: destroy のとき false にする
-  const [isFolded, setFolded] = useState(false);  // TODO: destroy のとき false にする
+  const [isHidden, setHidden] = useState(false);
+  const [isFolded, setFolded] = useState(false);
   const [isMounted, setMounted] = useState(false);
 
   const toggleVisibility = () => {
@@ -20,8 +20,22 @@ export default () => {
   };
 
   useEffect(() => {
-    // browserAction is clicked
-    chrome.runtime.onMessage.addListener(toggleVisibility);
+    chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
+      switch (type) {
+        case 'CLICK_ACTION':
+          toggleVisibility();
+          break;
+
+        case 'UPDATE_HISTORY':
+          setHidden(false);
+          setFolded(false);
+          setMounted(false);
+          break;
+
+        default:
+          throw new Error(`unknown type: ${type}`);
+      }
+    });
 
     // Ctrl + n
     document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {

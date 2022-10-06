@@ -1,7 +1,7 @@
-chrome.action.onClicked.addListener(async () => {
-  const tabs = await chrome.tabs.query({active: true, currentWindow: true});
+const sendToCurrentTab = async (req: { type: string }) => {
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   try {
-    await chrome.tabs.sendMessage(tabs[0]?.id ?? 0, {});
+    await chrome.tabs.sendMessage(tabs[0]?.id ?? 0, req);
   } catch (error) {
     if (error)
       console.error({
@@ -9,20 +9,14 @@ chrome.action.onClicked.addListener(async () => {
         error,
       });
   }
+};
+chrome.action.onClicked.addListener(() => {
+  sendToCurrentTab({ type: 'CLICK_ACTION' });
 });
 
-// ページ内遷移では発火しない
-// let origin: string|null;
-let HAS_UPDATED_ONCE = false;
-chrome.webNavigation.onHistoryStateUpdated.addListener((details: chrome.webNavigation.WebNavigationTransitionCallbackDetails)=> {
-  console.log(details.url);
-
-  if (!HAS_UPDATED_ONCE) { // 1 回目はここで蹴られる
-    console.log('1');
-    HAS_UPDATED_ONCE = true;
-    return;
-  }
-  console.log('3');
-
-  // console.log(details);
-}, {url: [{hostEquals: 'www.notion.so'}]});
+chrome.webNavigation.onHistoryStateUpdated.addListener(
+  (details: chrome.webNavigation.WebNavigationTransitionCallbackDetails) => {
+    sendToCurrentTab({ type: 'UPDATE_HISTORY' });
+  },
+  { url: [{ hostEquals: 'www.notion.so' }] }
+);
