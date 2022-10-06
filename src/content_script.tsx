@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import HeadingsContainer from './components/headingsContainer';
+import Container from './components/container';
 import { waitFor } from './utils';
 
 let IS_MOUNTED = false;
@@ -11,7 +11,7 @@ const toggleVisibility = async () => {
     const root = document.createElement('div');
     document.body.appendChild(root);
 
-    createRoot(root).render(<HeadingsContainer />);
+    createRoot(root).render(<Container />);
     IS_MOUNTED = true;
     return;
   }
