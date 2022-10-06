@@ -11,13 +11,19 @@ export default (
   return isFolded
     ? (
       <div id="toc-toolbar">
-        <span className="clickable" onClick={toggleFolded}>＋</span>
+        <span className="clickable toc-icon-container" onClick={toggleFolded}>
+          <img src={chrome.runtime.getURL('images/plus.png')} className="toc-icon" />
+        </span>
       </div>
     )
     : (
       <div id="toc-toolbar">
-        <span className="clickable" onClick={toggleFolded}>ー</span>&nbsp;
-        <span className="clickable" onClick={() => setHidden(true)}>✕</span>
+        <span className="clickable toc-icon-container" onClick={toggleFolded}>
+          <img src={chrome.runtime.getURL('images/minus.png')} className="toc-icon" />
+        </span>
+        <span className="clickable toc-icon-container" onClick={() => setHidden(true)}>
+          <img src={chrome.runtime.getURL('images/cross.png')} className="toc-icon" />
+        </span>
       </div>
     );
 };

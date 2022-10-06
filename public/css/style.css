@@ -1,4 +1,3 @@
-
 #toc-container {
     /* position */
     position: absolute;
@@ -9,7 +8,6 @@
     z-index: 10000;
 
     /* appearance */
-    color: #656380;
     background-color: white;
     border: gray solid 1px; /* debug */
     font-size: 14px;
@@ -32,11 +30,19 @@
     margin-left: 300px;
 }
 
+.toc-icon-container {
+    padding: 5px;
+}
+.toc-icon {
+    width: 10px;
+}
+
 #toc-headings {
     margin: 0 10px 25px 25px;
 }
 
 #toc-headings .heading {
+    color: #656380;
     margin-top: 4px;
     margin-bottom: 4px;
 }

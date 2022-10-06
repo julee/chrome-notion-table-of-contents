@@ -1,3 +1,3 @@
 - dynamic import (多分無理)
 - 人によってはC-c予約済みなので、C-c は optional にしたほうが良いのでは
-- ✕と-を画像化、、
+- css modules

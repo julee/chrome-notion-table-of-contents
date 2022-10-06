@@ -1,28 +1,29 @@
 {
   "manifest_version": 3,
-
   "name": "Notion Table of Contents",
   "description": "Notion Table of Contents",
   "version": "1.0",
-
   "action": {
-    "default_icon": { "19":"icon.png" }
+    "default_icon": { "19":"images/icon.png" }
   },
-
   "content_scripts": [
     {
-      "matches": ["https://www.notion.so/*/*"],
+      "matches": ["https://www.notion.so/*"],
       "js": ["js/content_script.js"],
       "css": ["css/style.css"]
     }
   ],
-
   "background": {
     "service_worker": "js/background.js"
   },
-
   "permissions": [
     "tabs",
     "webNavigation"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [ "images/*.png" ],
+      "matches": [ "https://www.notion.so/*" ]
+    }
   ]
 }
