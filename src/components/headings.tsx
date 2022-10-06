@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { waitFor } from '../utils';
+import { debounce, waitFor } from '../utils';
 
 let PAGE_CONTENT: HTMLElement;
+let SCROLLABLE_ELEM: HTMLElement | null = null;
 
 const extractHeadings = () => {
   console.info('# fetch heading');
@@ -35,10 +36,6 @@ const extractHeadings = () => {
   return headings;
 };
 
-const watchMutation = (cb: () => void) => {
-
-};
-
 
 // TODO: 明らかに分割すべき...
 export default () => {
@@ -53,7 +50,8 @@ export default () => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
 
-    PAGE_CONTENT.scroll({
+    SCROLLABLE_ELEM ??= document.querySelector('.notion-frame .notion-scroller');
+    SCROLLABLE_ELEM?.scroll({
       top: target.offsetTop,
     });
   };
@@ -66,23 +64,17 @@ export default () => {
   useEffect(() => {
     let observer: MutationObserver;
     (async () => {
-      PAGE_CONTENT = (await waitFor('.notion-frame .notion-scroller'))[0];
+      PAGE_CONTENT = (await waitFor('.notion-page-content'))[0];
       await refreshAllHeadings();
 
-      const toc = document.querySelector('.notion-table_of_contents-block');
-      if (toc === null) {
-        console.debug('ToC is not found. cannot observe.');
-        return;
-      }
-      observer = new MutationObserver((mutationList: MutationRecord[]) => {
-        // 部分更新は行わない
-        // - 親の a まで遡って 、URL を blockId 化して ... とやることは多い
-        //   - 該当の blockId を state の配列を 1 つずつ探索するので、計算量もそこまで変わらない
-        //     - 多くてたかだが O(10) である
-        // - 致命的なことに、新規追加ノードの場合は挿入位置を特定できないので、その際はどのみち全探索になる
-        refreshAllHeadings();
-      });
-      observer.observe(toc as Node, {
+      // 部分更新は行わない
+      // - 親の a まで遡って 、URL を blockId 化して ... とやることは多い
+      //   - 該当の blockId を state の配列を 1 つずつ探索するので、計算量もそこまで変わらない
+      //     - 多くてたかだが O(10) である
+      // - 致命的なことに、新規追加ノードの場合は挿入位置を特定できないので、その際はどのみち全探索になる
+      const fn = debounce(() => refreshAllHeadings(), 1000);
+      observer = new MutationObserver((mutationList: MutationRecord[]) => fn());
+      observer.observe(PAGE_CONTENT as Node, {
         childList: true,
         subtree: true,
         characterData: true,
