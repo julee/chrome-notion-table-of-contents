@@ -56,7 +56,7 @@ const extractHeadings = (): HeadingsType => {
 };
 
 
-// TODO: 明らかに分割すべき...
+// 明らかに分割すべき...
 export default () => {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
@@ -72,6 +72,8 @@ export default () => {
 
   // destructive
   const setHighlight = (headings: HeadingsType): void => {
+    if (headings.length === 0) { return; }
+
     const container = getScrollableContainer();
     const currentOffset = container.scrollTop + container.offsetTop;
 
@@ -119,23 +121,29 @@ export default () => {
       }),
       300,
     );
-    getScrollableContainer().addEventListener('scroll', fn);
+    const container = getScrollableContainer();
+    container.addEventListener('scroll', fn);
     fn();
+    return () => { container.removeEventListener('scroll', fn); };
   }, []);
 
   return <>
     {
-      headings.map(
-        heading => (
-          <p
-            className={`toc-h${heading.rank} toc-heading toc-clickable ${heading.isFocused ? 'toc-focused' : ''}`}
-            key={heading.blockId}
-            onClick={() => handleClick(heading.blockId)}
-          >
-            {heading.text}
-          </p>
+      headings.length === 0
+        ? (<p>No headings</p>)
+        : (
+          headings.map(
+            heading => (
+              <p
+                className={`toc-h${heading.rank} toc-heading toc-clickable ${heading.isFocused ? 'toc-focused' : ''}`}
+                key={heading.blockId}
+                onClick={() => handleClick(heading.blockId)}
+              >
+                {heading.text}
+              </p>
+            )
+          )
         )
-      )
     }
   </>;
 };
