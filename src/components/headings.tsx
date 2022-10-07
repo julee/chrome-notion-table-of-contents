@@ -70,9 +70,25 @@ export default () => {
     });
   };
 
+  // destructive
+  const setHighlight = (headings: HeadingsType): void => {
+    const container = getScrollableContainer();
+    const currentOffset = container.scrollTop + container.offsetTop;
+
+    let current: HeadingType | null = null;
+    for (const heading of headings) {
+      heading.isFocused = false;
+      if (currentOffset < Number(heading.offset))
+        continue;
+      current = heading;
+    }
+    (current ??= headings[0]).isFocused = true;
+  };
+
   const refreshAllHeadings = () => {
-    const newHeadings = extractHeadings();
-    setHeadings(newHeadings);
+    const headings = extractHeadings();
+    setHighlight(headings);
+    setHeadings(headings);
   };
 
   // watch headings' change
@@ -82,10 +98,11 @@ export default () => {
       PAGE_CONTENT = (await waitFor('.notion-page-content'))[0];
       await refreshAllHeadings();
 
-      const fn = debounce(() => refreshAllHeadings(), 1000);
+      const fn = debounce(refreshAllHeadings, 1000);
       observer = new MutationObserver(fn);
       observer.observe(PAGE_CONTENT as Node, {
         childList: true,
+        subtree: true,
         characterData: true,
       });
     })();
@@ -94,29 +111,16 @@ export default () => {
 
   // highlight current
   useEffect(() => {
-    const container = getScrollableContainer();
-    const fn = debounce(() => {
-      setHeadings(headings => {
-        const currentOffset = container.scrollTop + container.offsetTop;
-        const newHeadings: HeadingsType = structuredClone(
-          headings.map(heading => {
-            heading.isFocused = false;
-            return heading;
-          }),
-        );
-
-        let current: HeadingType | null = null;
-        for (const heading of newHeadings) {
-          if (currentOffset < Number(heading.offset))
-            break;
-          current = heading;
-        }
-        (current ??= newHeadings[0]).isFocused = true;
-
-        return newHeadings;
-      });
-    }, 300);
-    container.addEventListener('scroll', fn);
+    const fn = debounce(
+      () => setHeadings(headings => {
+        const cloned = structuredClone(headings);
+        setHighlight(cloned);
+        return cloned;
+      }),
+      300,
+    );
+    getScrollableContainer().addEventListener('scroll', fn);
+    fn();
   }, []);
 
   return <>
