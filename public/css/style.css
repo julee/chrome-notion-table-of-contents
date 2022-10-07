@@ -35,22 +35,24 @@
 }
 
 #toc-headings {
-    margin: 0 10px 25px 25px;
+    margin: 0 10px 25px 15px;
 }
 
 .toc-heading {
     color: #656380;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin: 4px 0;
+    padding-left: 10px;
+    border-left: 3px transparent solid;
 }
 .toc-heading:hover {
     text-decoration: underline;
-    border-left: 2px gray solid;
+    border-left: 3px gray solid;
+}
+.toc-focused {
+    color: black;
+    border-left: 3px black solid;
+    font-weight: bold;
 }
 
 .toc-h2 { margin-left: 24px; }
 .toc-h3 { margin-left: 48px; }
-
-.toc-focused {
-    border-left: 2px blue solid;
-}
