@@ -15,6 +15,6 @@ chrome.action.onClicked.addListener(() => {
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
-  () => { sendToActiveTab({ type: 'UPDATE_HISTORY' }); },
+  () => { sendToActiveTab({ type: 'MOVE_PAGE' }); },
   { url: [{ hostEquals: 'www.notion.so' }] },
 );

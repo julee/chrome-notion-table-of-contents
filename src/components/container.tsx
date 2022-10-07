@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
+import { waitFor } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
@@ -10,14 +11,21 @@ export default () => {
   const [isFolded, setFolded] = useState(false);
   const [isMounted, setMounted] = useState(false);
 
+  const buildComponent = async () => {
+    await waitFor('main');
+    setMounted(true);
+  };
   const toggleVisibility = () => {
-    setMounted(isMounted => {
-      if (!isMounted) {
+    (async () => {
+      setMounted((isMounted) => {
+        if (!isMounted) {
+          buildComponent();
+          return false;
+        }
+        setHidden(isHidden => !isHidden);
         return true;
-      }
-      setHidden(isHidden => !isHidden);
-      return true;
-    });
+      });
+    })();
   };
 
   useEffect(() => {
@@ -27,7 +35,7 @@ export default () => {
           toggleVisibility();
           break;
 
-        case 'UPDATE_HISTORY':
+        case 'MOVE_PAGE':
           setHidden(false);
           setFolded(false);
           setMounted(false);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { debounce, waitFor } from '../utils';
+import { debounce } from '../utils';
 
 type HeadingType = {
   blockId: string;
@@ -10,11 +10,14 @@ type HeadingType = {
 };
 type HeadingsType = HeadingType[];
 
-// 関数経由で取得したい（初期化の順番を考えなくて済むので）が
-// async になるので
-// その関数を呼ぶ箇所全部 async で囲わないといけなくなるのがだるい（ので現状やらない）
-// TODO: そもそも main が render されるまでこのコンポーネントを render しなければいいのでは
-let MAIN_CONTENT: HTMLElement | null = null;
+let MAIN_CONTAINER: HTMLElement | null = null;
+const getMainContainer = (): HTMLElement => {
+  MAIN_CONTAINER ??= document.querySelector('.notion-frame .notion-scroller');
+  if (!MAIN_CONTAINER) {
+    throw new Error('"main" is not found');
+  }
+  return MAIN_CONTAINER;
+};
 
 let SCROLLABLE_CONTAINER: HTMLElement | null = null;
 const getScrollableContainer = (): HTMLElement => {
@@ -31,10 +34,7 @@ const extractHeadings = (): HeadingsType => {
   // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
   //       あとテスト書きたい
   let headings: HeadingsType = [];
-  if (MAIN_CONTENT === null) {
-    throw new Error('main element === null');
-  }
-  const elems = MAIN_CONTENT.querySelectorAll<HTMLElement>(
+  const elems = getMainContainer().querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
     '[placeholder="Heading 2"],' +
     '[placeholder="Heading 3"]'
@@ -104,13 +104,12 @@ export default () => {
     let observer: MutationObserver;
     (async () => {
       // initialize
-      MAIN_CONTENT = (await waitFor('main'))[0];
       refreshAllHeadings();
 
       // watch headings' change
       const fn = debounce(refreshAllHeadings, 1000);
       observer = new MutationObserver(fn);
-      observer.observe(MAIN_CONTENT as Node, {
+      observer.observe(getMainContainer() as Node, {
         childList: true,
         subtree: true,
         characterData: true,
@@ -140,7 +139,7 @@ export default () => {
   // cleanup
   useEffect(() => {
     return () => {
-      MAIN_CONTENT = null;
+      MAIN_CONTAINER = null;
       SCROLLABLE_CONTAINER = null;
     };
   }, []);
