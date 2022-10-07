@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { debounce, waitFor } from '../utils';
 
-let PAGE_CONTENT: HTMLElement;
-
 type HeadingType = {
   blockId: string;
   text: string;
@@ -12,13 +10,19 @@ type HeadingType = {
 };
 type HeadingsType = HeadingType[];
 
-let _scrollableContainer: HTMLElement | null = null;
+// 関数経由で取得したい（初期化の順番を考えなくて済むので）が
+// async になるので
+// その関数を呼ぶ箇所全部 async で囲わないといけなくなるのがだるい（ので現状やらない）
+// TODO: そもそも main が render されるまでこのコンポーネントを render しなければいいのでは
+let MAIN_CONTENT: HTMLElement | null = null;
+
+let SCROLLABLE_CONTAINER: HTMLElement | null = null;
 const getScrollableContainer = (): HTMLElement => {
-  _scrollableContainer ??= document.querySelector('.notion-frame .notion-scroller');
-  if (!_scrollableContainer) {
+  SCROLLABLE_CONTAINER ??= document.querySelector('.notion-frame .notion-scroller');
+  if (!SCROLLABLE_CONTAINER) {
     throw new Error('".notion-frame .notion-scroller" is not found');
   }
-  return _scrollableContainer;
+  return SCROLLABLE_CONTAINER;
 };
 
 const extractHeadings = (): HeadingsType => {
@@ -27,7 +31,10 @@ const extractHeadings = (): HeadingsType => {
   // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
   //       あとテスト書きたい
   let headings: HeadingsType = [];
-  const elems = PAGE_CONTENT.querySelectorAll<HTMLElement>(
+  if (MAIN_CONTENT === null) {
+    throw new Error('main element === null');
+  }
+  const elems = MAIN_CONTENT.querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
     '[placeholder="Heading 2"],' +
     '[placeholder="Heading 3"]'
@@ -93,22 +100,25 @@ export default () => {
     setHeadings(headings);
   };
 
-  // watch headings' change
   useEffect(() => {
     let observer: MutationObserver;
     (async () => {
-      PAGE_CONTENT = (await waitFor('.notion-page-content'))[0];
-      await refreshAllHeadings();
+      // initialize
+      MAIN_CONTENT = (await waitFor('main'))[0];
+      refreshAllHeadings();
 
+      // watch headings' change
       const fn = debounce(refreshAllHeadings, 1000);
       observer = new MutationObserver(fn);
-      observer.observe(PAGE_CONTENT as Node, {
+      observer.observe(MAIN_CONTENT as Node, {
         childList: true,
         subtree: true,
         characterData: true,
       });
     })();
-    return () => { observer.disconnect(); };
+    return () => {
+      if (observer) { observer.disconnect(); }
+    };
   }, []);
 
   // highlight current
@@ -124,7 +134,15 @@ export default () => {
     const container = getScrollableContainer();
     container.addEventListener('scroll', fn);
     fn();
-    return () => { container.removeEventListener('scroll', fn); };
+    return () => container.removeEventListener('scroll', fn);
+  }, []);
+
+  // cleanup
+  useEffect(() => {
+    return () => {
+      MAIN_CONTENT = null;
+      SCROLLABLE_CONTAINER = null;
+    };
   }, []);
 
   return <>
