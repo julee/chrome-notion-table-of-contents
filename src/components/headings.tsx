@@ -2,15 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { debounce, waitFor } from '../utils';
 
 let PAGE_CONTENT: HTMLElement;
-let SCROLLABLE_ELEM: HTMLElement | null = null;
 
-const extractHeadings = () => {
+type HeadingType = {
+  blockId: string;
+  text: string;
+  rank: number;
+  offset: number;
+  isFocused: boolean;
+};
+type HeadingsType = HeadingType[];
+
+let _scrollableContainer: HTMLElement | null = null;
+const getScrollableContainer = (): HTMLElement => {
+  _scrollableContainer ??= document.querySelector('.notion-frame .notion-scroller');
+  if (!_scrollableContainer) {
+    throw new Error('".notion-frame .notion-scroller" is not found');
+  }
+  return _scrollableContainer;
+};
+
+const extractHeadings = (): HeadingsType => {
   console.info('# fetch heading');
 
   // TODO: 流石にどこかに切り出したい気がするが、どういう粒度で、どういうディレクトリに切り出すのが適切なのだろう...
   //       あとテスト書きたい
-  let headings = [];
-  const elems = PAGE_CONTENT.querySelectorAll(
+  let headings: HeadingsType = [];
+  const elems = PAGE_CONTENT.querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
     '[placeholder="Heading 2"],' +
     '[placeholder="Heading 3"]'
@@ -25,6 +42,8 @@ const extractHeadings = () => {
       text: heading.textContent || '',
       rank: Number((heading.getAttribute('placeholder') || '').replace(/^Heading /, '')),
       blockId: parentElem.getAttribute('data-block-id') || '',
+      offset: heading.offsetTop,
+      isFocused: false,
     });
   }
   if (headings.length !== 0 && Math.min.apply(null, headings.map(h => h.rank)) !== 1) {
@@ -39,19 +58,14 @@ const extractHeadings = () => {
 
 // TODO: 明らかに分割すべき...
 export default () => {
-  const [headings, setHeadings] = useState<{
-    blockId: string;
-    text: string;
-    rank: number;
-  }[]>([]);
+  const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
 
   const handleClick = (blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
 
-    SCROLLABLE_ELEM ??= document.querySelector('.notion-frame .notion-scroller');
-    SCROLLABLE_ELEM?.scroll({
+    getScrollableContainer().scroll({
       top: target.offsetTop,
     });
   };
@@ -61,26 +75,48 @@ export default () => {
     setHeadings(newHeadings);
   };
 
+  // watch headings' change
   useEffect(() => {
     let observer: MutationObserver;
     (async () => {
       PAGE_CONTENT = (await waitFor('.notion-page-content'))[0];
       await refreshAllHeadings();
 
-      // 部分更新は行わない
-      // - 親の a まで遡って 、URL を blockId 化して ... とやることは多い
-      //   - 該当の blockId を state の配列を 1 つずつ探索するので、計算量もそこまで変わらない
-      //     - 多くてたかだが O(10) である
-      // - 致命的なことに、新規追加ノードの場合は挿入位置を特定できないので、その際はどのみち全探索になる
       const fn = debounce(() => refreshAllHeadings(), 1000);
-      observer = new MutationObserver((mutationList: MutationRecord[]) => fn());
+      observer = new MutationObserver(fn);
       observer.observe(PAGE_CONTENT as Node, {
         childList: true,
-        subtree: true,
         characterData: true,
       });
     })();
     return () => { observer.disconnect(); };
+  }, []);
+
+  // highlight current
+  useEffect(() => {
+    const container = getScrollableContainer();
+    const fn = debounce(() => {
+      setHeadings(headings => {
+        const currentOffset = container.scrollTop + container.offsetTop;
+        const newHeadings: HeadingsType = structuredClone(
+          headings.map(heading => {
+            heading.isFocused = false;
+            return heading;
+          }),
+        );
+
+        let current: HeadingType | null = null;
+        for (const heading of newHeadings) {
+          if (currentOffset < Number(heading.offset))
+            break;
+          current = heading;
+        }
+        (current ??= newHeadings[0]).isFocused = true;
+
+        return newHeadings;
+      });
+    }, 300);
+    container.addEventListener('scroll', fn);
   }, []);
 
   return <>
@@ -88,7 +124,7 @@ export default () => {
       headings.map(
         heading => (
           <p
-            className={`h${heading.rank} heading clickable`}
+            className={`toc-h${heading.rank} toc-heading toc-clickable ${heading.isFocused ? 'toc-focused' : ''}`}
             key={heading.blockId}
             onClick={() => handleClick(heading.blockId)}
           >

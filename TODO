@@ -1,3 +1,4 @@
 - dynamic import (多分無理)
 - 人によってはC-n予約済みなので、C-c は optional にしたほうが良いのでは
 - css modules
+- ちょっとでかくない？

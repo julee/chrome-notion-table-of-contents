@@ -12,11 +12,8 @@
     border: gray solid 1px; /* debug */
     font-size: 14px;
 }
-#toc-container .clickable {
+.toc-clickable {
     cursor: pointer;
-}
-#toc-container .clickable:hover {
-    text-decoration: underline;
 }
 
 #toc-draggable-handle {
@@ -41,10 +38,19 @@
     margin: 0 10px 25px 25px;
 }
 
-#toc-headings .heading {
+.toc-heading {
     color: #656380;
     margin-top: 4px;
     margin-bottom: 4px;
 }
-#toc-headings .h2 { margin-left: 24px; }
-#toc-headings .h3 { margin-left: 48px; }
+.toc-heading:hover {
+    text-decoration: underline;
+    border-left: 2px gray solid;
+}
+
+.toc-h2 { margin-left: 24px; }
+.toc-h3 { margin-left: 48px; }
+
+.toc-focused {
+    border-left: 2px blue solid;
+}
