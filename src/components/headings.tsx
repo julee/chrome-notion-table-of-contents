@@ -62,36 +62,35 @@ const extractHeadings = (): HeadingsType => {
   return headings;
 };
 
+// destructive
+const setHighlight = (headings: HeadingsType): void => {
+  if (headings.length === 0) { return; }
+
+  const container = getScrollableContainer();
+  const currentOffset = container.scrollTop + container.offsetTop;
+
+  let current: HeadingType | null = null;
+  for (const heading of headings) {
+    heading.isFocused = false;
+    if (currentOffset < Number(heading.offset))
+      continue;
+    current = heading;
+  }
+  (current ??= headings[0]).isFocused = true;
+};
 
 // 明らかに分割すべき...
 export default () => {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
 
-  const handleClick = (blockId: string) => {
+  const scrollToHeading = (blockId: string) => {
     const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
     if (!target) { return; }
 
     getScrollableContainer().scroll({
       top: target.offsetTop,
     });
-  };
-
-  // destructive
-  const setHighlight = (headings: HeadingsType): void => {
-    if (headings.length === 0) { return; }
-
-    const container = getScrollableContainer();
-    const currentOffset = container.scrollTop + container.offsetTop;
-
-    let current: HeadingType | null = null;
-    for (const heading of headings) {
-      heading.isFocused = false;
-      if (currentOffset < Number(heading.offset))
-        continue;
-      current = heading;
-    }
-    (current ??= headings[0]).isFocused = true;
   };
 
   const refreshAllHeadings = () => {
@@ -154,7 +153,7 @@ export default () => {
               <p
                 className={`toc-h${heading.rank} toc-heading toc-clickable ${heading.isFocused ? 'toc-focused' : ''}`}
                 key={heading.blockId}
-                onClick={() => handleClick(heading.blockId)}
+                onClick={() => scrollToHeading(heading.blockId)}
               >
                 {heading.text}
               </p>
