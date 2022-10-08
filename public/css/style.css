@@ -1,6 +1,6 @@
 #toc-container {
     /* position */
-    position: absolute;
+    position: fixed;
     width: 350px;
     top: 10px;
     left: 10px;
@@ -9,9 +9,13 @@
 
     /* appearance */
     background-color: white;
-    border: gray solid 1px; /* debug */
+    border: gray solid 1px;
     font-size: 14px;
 }
+#toc-cointainer * {
+    outline: dotted pink !important;
+} /* debug -------------------------------*/
+
 .toc-clickable {
     cursor: pointer;
 }
@@ -22,9 +26,9 @@
 }
 
 #toc-toolbar {
-    position: fixed;
-    margin-top: -15px;
-    margin-left: 300px;
+    position: absolute;
+    top: 7px;
+    right: 7px;
 }
 
 .toc-icon-container {
