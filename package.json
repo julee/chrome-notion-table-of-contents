@@ -1,15 +1,10 @@
 {
   "name": "chrome-extension-typescript-starter",
-  "version": "1.0.0",
-  "description": "chrome-extension-typescript-starter",
-  "main": "index.js",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
     "eslint": "eslint --fix src/**/*.ts"
   },
-  "author": "",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/chibat/chrome-extension-typescript-starter.git"
