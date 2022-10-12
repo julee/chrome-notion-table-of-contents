@@ -1,9 +1,10 @@
 export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
   return new Promise(resolve => {
-    const getElements = (cb = () => { }) => {
+    const getElements = (fn?: () => void) => {
       const elems = document.querySelectorAll<HTMLElement>(selector);
       if (elems.length > 0) {
-        cb();
+        if (fn)
+          fn();
         resolve(elems);
       }
     };

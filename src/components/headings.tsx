@@ -80,7 +80,7 @@ const setHighlight = (headings: HeadingsType): void => {
 };
 
 // 明らかに分割すべき...
-export default () => {
+const Headings = () => {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
 
@@ -163,3 +163,5 @@ export default () => {
     }
   </>;
 };
+
+export default Headings;

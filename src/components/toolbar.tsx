@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default (
+const Toolbar = (
   { isFolded, setFolded, setHidden }: {
     isFolded: boolean;
     setFolded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,3 +27,5 @@ export default (
       </div>
     );
 };
+
+export default Toolbar;

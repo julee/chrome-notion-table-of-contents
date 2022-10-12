@@ -4,7 +4,7 @@ import { waitFor } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
-export default () => {
+const Container = () => {
   console.info('# render container');
 
   const [isHidden, setHidden] = useState(false);
@@ -67,3 +67,5 @@ export default () => {
     </Draggable>
   );
 };
+
+export default Container;
