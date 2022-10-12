@@ -22,7 +22,7 @@ const Container = () => {
           buildComponent();
           return false;
         }
-        setHidden(isHidden => !isHidden);
+        setHidden((isHidden) => !isHidden);
         return true;
       });
     })();
@@ -48,18 +48,23 @@ const Container = () => {
 
     // Ctrl + n
     document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
-      if (event.ctrlKey && event.code === 'KeyN')
-        toggleVisibility();
+      if (event.ctrlKey && event.code === 'KeyN') toggleVisibility();
     });
   }, []);
 
-  if (!isMounted) { return null; }
+  if (!isMounted) {
+    return null;
+  }
 
   return (
-    <Draggable handle="#toc-draggable-handle" >
+    <Draggable handle="#toc-draggable-handle">
       <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
         <div id="toc-draggable-handle"></div>
-        <Toolbar isFolded={isFolded} setFolded={setFolded} setHidden={setHidden} />
+        <Toolbar
+          isFolded={isFolded}
+          setFolded={setFolded}
+          setHidden={setHidden}
+        />
         <div id="toc-headings" style={isFolded ? { display: 'none' } : {}}>
           <Headings />
         </div>

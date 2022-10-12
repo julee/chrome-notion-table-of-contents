@@ -58,5 +58,9 @@
     font-weight: bold;
 }
 
-.toc-h2 { margin-left: 24px; }
-.toc-h3 { margin-left: 48px; }
+.toc-h2 {
+    margin-left: 24px;
+}
+.toc-h3 {
+    margin-left: 48px;
+}

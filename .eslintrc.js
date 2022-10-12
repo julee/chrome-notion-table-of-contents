@@ -12,16 +12,14 @@ module.exports = {
     'plugin:react/recommended',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint'
-  ],
+  plugins: ['@typescript-eslint'],
   settings: {
     react: {
-      version: 'detect'
-    }
+      version: 'detect',
+    },
   },
   rules: {
-    indent: ['error', 2, { 'SwitchCase': 1 }],
+    indent: ['error', 2, { SwitchCase: 1 }],
     semi: ['error', 'always'],
     quotes: ['warn', 'single'],
   },

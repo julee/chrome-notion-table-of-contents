@@ -21,7 +21,9 @@ const getMainContainer = (): HTMLElement => {
 
 let SCROLLABLE_CONTAINER: HTMLElement | null = null;
 const getScrollableContainer = (): HTMLElement => {
-  SCROLLABLE_CONTAINER ??= document.querySelector('.notion-frame .notion-scroller');
+  SCROLLABLE_CONTAINER ??= document.querySelector(
+    '.notion-frame .notion-scroller'
+  );
   if (!SCROLLABLE_CONTAINER) {
     throw new Error('".notion-frame .notion-scroller" is not found');
   }
@@ -36,8 +38,8 @@ const extractHeadings = (): HeadingsType => {
   let headings: HeadingsType = [];
   const elems = getMainContainer().querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
-    '[placeholder="Heading 2"],' +
-    '[placeholder="Heading 3"]'
+      '[placeholder="Heading 2"],' +
+      '[placeholder="Heading 3"]'
   );
   for (const heading of elems) {
     const parentElem = heading.closest('[data-block-id]');
@@ -47,14 +49,22 @@ const extractHeadings = (): HeadingsType => {
     }
     headings.push({
       text: heading.textContent || '',
-      rank: Number((heading.getAttribute('placeholder') || '').replace(/^Heading /, '')),
+      rank: Number(
+        (heading.getAttribute('placeholder') || '').replace(/^Heading /, '')
+      ),
       blockId: parentElem.getAttribute('data-block-id') || '',
       offset: heading.offsetTop,
       isFocused: false,
     });
   }
-  if (headings.length !== 0 && Math.min.apply(null, headings.map(h => h.rank)) !== 1) {
-    headings = headings.map(heading => {
+  if (
+    headings.length !== 0 &&
+    Math.min.apply(
+      null,
+      headings.map((h) => h.rank)
+    ) !== 1
+  ) {
+    headings = headings.map((heading) => {
       heading.rank--;
       return heading;
     });
@@ -64,7 +74,9 @@ const extractHeadings = (): HeadingsType => {
 
 // destructive
 const setHighlight = (headings: HeadingsType): void => {
-  if (headings.length === 0) { return; }
+  if (headings.length === 0) {
+    return;
+  }
 
   const container = getScrollableContainer();
   const currentOffset = container.scrollTop + container.offsetTop;
@@ -72,8 +84,7 @@ const setHighlight = (headings: HeadingsType): void => {
   let current: HeadingType | null = null;
   for (const heading of headings) {
     heading.isFocused = false;
-    if (currentOffset < Number(heading.offset))
-      continue;
+    if (currentOffset < Number(heading.offset)) continue;
     current = heading;
   }
   (current ??= headings[0]).isFocused = true;
@@ -85,8 +96,12 @@ const Headings = () => {
   console.info('# render heading');
 
   const scrollToHeading = (blockId: string) => {
-    const target = document.querySelector<HTMLElement>(`[data-block-id="${blockId}"]`);
-    if (!target) { return; }
+    const target = document.querySelector<HTMLElement>(
+      `[data-block-id="${blockId}"]`
+    );
+    if (!target) {
+      return;
+    }
 
     getScrollableContainer().scroll({
       top: target.offsetTop,
@@ -115,19 +130,22 @@ const Headings = () => {
       });
     })();
     return () => {
-      if (observer) { observer.disconnect(); }
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, []);
 
   // highlight current
   useEffect(() => {
     const fn = debounce(
-      () => setHeadings(headings => {
-        const cloned = structuredClone(headings);
-        setHighlight(cloned);
-        return cloned;
-      }),
-      300,
+      () =>
+        setHeadings((headings) => {
+          const cloned = structuredClone(headings);
+          setHighlight(cloned);
+          return cloned;
+        }),
+      300
     );
     const container = getScrollableContainer();
     container.addEventListener('scroll', fn);
@@ -143,25 +161,25 @@ const Headings = () => {
     };
   }, []);
 
-  return <>
-    {
-      headings.length === 0
-        ? (<p>No headings</p>)
-        : (
-          headings.map(
-            heading => (
-              <p
-                className={`toc-h${heading.rank} toc-heading toc-clickable ${heading.isFocused ? 'toc-focused' : ''}`}
-                key={heading.blockId}
-                onClick={() => scrollToHeading(heading.blockId)}
-              >
-                {heading.text}
-              </p>
-            )
-          )
-        )
-    }
-  </>;
+  return (
+    <>
+      {headings.length === 0 ? (
+        <p>No headings</p>
+      ) : (
+        headings.map((heading) => (
+          <p
+            className={`toc-h${heading.rank} toc-heading toc-clickable ${
+              heading.isFocused ? 'toc-focused' : ''
+            }`}
+            key={heading.blockId}
+            onClick={() => scrollToHeading(heading.blockId)}
+          >
+            {heading.text}
+          </p>
+        ))
+      )}
+    </>
+  );
 };
 
 export default Headings;

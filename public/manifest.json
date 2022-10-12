@@ -4,7 +4,7 @@
   "description": "Notion Table of Contents",
   "version": "1.0",
   "action": {
-    "default_icon": { "19":"images/icon.png" }
+    "default_icon": { "19": "images/icon.png" }
   },
   "content_scripts": [
     {
@@ -16,14 +16,11 @@
   "background": {
     "service_worker": "js/background.js"
   },
-  "permissions": [
-    "tabs",
-    "webNavigation"
-  ],
+  "permissions": ["tabs", "webNavigation"],
   "web_accessible_resources": [
     {
-      "resources": [ "images/*.png" ],
-      "matches": [ "https://www.notion.so/*" ]
+      "resources": ["images/*.png"],
+      "matches": ["https://www.notion.so/*"]
     }
   ]
 }

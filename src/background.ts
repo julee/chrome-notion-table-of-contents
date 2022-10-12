@@ -5,7 +5,8 @@ const sendToActiveTab = async (req: { type: string }) => {
   } catch (error) {
     if (error)
       console.error({
-        message: 'tabs.sendMessage failed. Maybe content script is not loaded yet',
+        message:
+          'tabs.sendMessage failed. Maybe content script is not loaded yet',
         error,
       });
   }
@@ -15,6 +16,8 @@ chrome.action.onClicked.addListener(() => {
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
-  () => { sendToActiveTab({ type: 'MOVE_PAGE' }); },
-  { url: [{ hostEquals: 'www.notion.so' }] },
+  () => {
+    sendToActiveTab({ type: 'MOVE_PAGE' });
+  },
+  { url: [{ hostEquals: 'www.notion.so' }] }
 );

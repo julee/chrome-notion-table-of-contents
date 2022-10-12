@@ -1,10 +1,9 @@
 export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const getElements = (fn?: () => void) => {
       const elems = document.querySelectorAll<HTMLElement>(selector);
       if (elems.length > 0) {
-        if (fn)
-          fn();
+        if (fn) fn();
         resolve(elems);
       }
     };
@@ -18,7 +17,7 @@ export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
   });
 };
 
-export const debounce = (fn: () => void, delay: number): () => void => {
+export const debounce = (fn: () => void, delay: number): (() => void) => {
   let timeoutID: number | null = null;
   return () => {
     if (timeoutID) {
