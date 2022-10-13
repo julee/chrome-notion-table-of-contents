@@ -10,6 +10,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
@@ -18,9 +19,5 @@ module.exports = {
       version: 'detect',
     },
   },
-  rules: {
-    indent: ['error', 2, { SwitchCase: 1 }],
-    semi: ['error', 'always'],
-    quotes: ['warn', 'single'],
-  },
+  rules: {},
 };

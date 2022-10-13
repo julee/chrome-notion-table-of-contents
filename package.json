@@ -4,7 +4,7 @@
     "watch": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
     "eslint": "eslint src/**/*.{ts,tsx}",
-    "eslint:fix": "eslint --fix src/**/*.{js,ts,tsx}",
+    "eslint:fix": "eslint --fix src/**/*.{ts,tsx}",
     "prettier": "prettier --write . '!dist/**/*'"
   },
   "repository": {
@@ -24,6 +24,7 @@
     "@typescript-eslint/parser": "^5.40.0",
     "copy-webpack-plugin": "^11.0.0",
     "eslint": "^8",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.31.10",
     "prettier": "^2.7.1",
     "ts-loader": "^9.4.1",
