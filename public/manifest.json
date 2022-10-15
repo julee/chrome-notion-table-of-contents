@@ -16,7 +16,7 @@
   "background": {
     "service_worker": "js/background.js"
   },
-  "permissions": ["tabs", "webNavigation"],
+  "permissions": ["webNavigation"],
   "web_accessible_resources": [
     {
       "resources": ["images/*.png"],
