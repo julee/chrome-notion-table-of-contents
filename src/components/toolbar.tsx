@@ -13,23 +13,29 @@ const Toolbar = ({
     setFolded((prev) => !prev);
   };
 
-  return isFolded ? (
+  return (
     <div id="toc-toolbar">
-      <span className="toc-clickable toc-icon-container" onClick={toggleFolded}>
-        <img
-          src={chrome.runtime.getURL('images/plus.png')}
-          className="toc-icon"
-        />
-      </span>
-    </div>
-  ) : (
-    <div id="toc-toolbar">
-      <span className="toc-clickable toc-icon-container" onClick={toggleFolded}>
-        <img
-          src={chrome.runtime.getURL('images/minus.png')}
-          className="toc-icon"
-        />
-      </span>
+      {isFolded ? (
+        <span
+          className="toc-clickable toc-icon-container"
+          onClick={toggleFolded}
+        >
+          <img
+            src={chrome.runtime.getURL('images/plus.png')}
+            className="toc-icon"
+          />
+        </span>
+      ) : (
+        <span
+          className="toc-clickable toc-icon-container"
+          onClick={toggleFolded}
+        >
+          <img
+            src={chrome.runtime.getURL('images/minus.png')}
+            className="toc-icon"
+          />
+        </span>
+      )}
       <span
         className="toc-clickable toc-icon-container"
         onClick={() => setHidden(true)}
