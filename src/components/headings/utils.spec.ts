@@ -89,3 +89,10 @@ describe('extractHeadings', () => {
     ]);
   });
 });
+
+describe('setHighlight', () => {
+  // const spy = jest
+  //   .spyOn(HTMLElement.prototype, 'offsetTop', 'get')
+  //   .mockReturnValue(10);
+  expect(1).toBe(1);
+});
