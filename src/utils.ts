@@ -1,4 +1,4 @@
-export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
+export function waitFor(selector: string): Promise<NodeListOf<HTMLElement>> {
   return new Promise((resolve) => {
     const getElements = (fn?: () => void) => {
       const elems = document.querySelectorAll<HTMLElement>(selector);
@@ -15,9 +15,9 @@ export const waitFor = (selector: string): Promise<NodeListOf<HTMLElement>> => {
       });
     }, 300);
   });
-};
+}
 
-export const debounce = (fn: () => void, delay: number): (() => void) => {
+export function debounce(fn: () => void, delay: number): () => void {
   let timeoutID: number | null = null;
   return () => {
     if (timeoutID) {
@@ -27,4 +27,12 @@ export const debounce = (fn: () => void, delay: number): (() => void) => {
       fn();
     }, delay);
   };
-};
+}
+
+export function getContainer() {
+  const container = document.querySelector('.notion-frame .notion-scroller');
+  if (!container) {
+    throw new Error('".notion-frame .notion-scroller" is not found');
+  }
+  return container;
+}

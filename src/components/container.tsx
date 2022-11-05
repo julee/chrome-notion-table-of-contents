@@ -4,7 +4,7 @@ import { waitFor } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
-const Container = () => {
+export default function Container() {
   console.info('# render container');
 
   const [isHidden, setHidden] = useState(false);
@@ -65,12 +65,8 @@ const Container = () => {
           setFolded={setFolded}
           setHidden={setHidden}
         />
-        <div id="toc-headings" style={isFolded ? { display: 'none' } : {}}>
-          <Headings />
-        </div>
+        <Headings isFolded={isFolded} />
       </div>
     </Draggable>
   );
-};
-
-export default Container;
+}

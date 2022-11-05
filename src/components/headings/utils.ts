@@ -1,14 +1,19 @@
-export const extractHeadings = (): HeadingsType => {
+export function getContainer() {
+  const container = document.querySelector<HTMLElement>(
+    '.notion-frame .notion-scroller',
+  );
+  if (!container) {
+    throw new Error('".notion-frame .notion-scroller" is not found');
+  }
+  return container;
+}
+
+export function extractHeadings(): HeadingsType {
   console.info('# fetch heading');
 
   let headings: HeadingsType = [];
 
-  const container = document.querySelector('.notion-frame .notion-scroller');
-  if (!container) {
-    throw new Error('".notion-frame .notion-scroller" is not found');
-  }
-
-  const elems = container.querySelectorAll<HTMLElement>(
+  const elems = getContainer().querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
       '[placeholder="Heading 2"],' +
       '[placeholder="Heading 3"]',
@@ -42,20 +47,14 @@ export const extractHeadings = (): HeadingsType => {
     });
   }
   return headings;
-};
+}
 
 // destructive
-export const setHighlight = (headings: HeadingsType): void => {
+export function setHighlight(headings: HeadingsType): void {
   if (headings.length === 0) {
     return;
   }
-  const container = document.querySelector<HTMLElement>(
-    '.notion-frame .notion-scroller',
-  );
-  if (!container) {
-    throw new Error('".notion-frame .notion-scroller" is not found');
-  }
-
+  const container = getContainer();
   const currentOffset = container.scrollTop + container.offsetTop;
 
   let current: HeadingType | null = null;
@@ -65,4 +64,4 @@ export const setHighlight = (headings: HeadingsType): void => {
     current = heading;
   }
   (current ??= headings[0]).isFocused = true;
-};
+}

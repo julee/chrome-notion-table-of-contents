@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Toolbar = ({
+export default function Toolbar({
   isFolded,
   setFolded,
   setHidden,
@@ -8,7 +8,7 @@ const Toolbar = ({
   isFolded: boolean;
   setFolded: React.Dispatch<React.SetStateAction<boolean>>;
   setHidden: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
+}) {
   const toggleFolded = () => {
     setFolded((prev) => !prev);
   };
@@ -47,6 +47,4 @@ const Toolbar = ({
       </span>
     </div>
   );
-};
-
-export default Toolbar;
+}

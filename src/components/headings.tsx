@@ -1,33 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { debounce } from '../utils';
+import { debounce, getContainer } from '../utils';
+import Heading from './heading';
 import { extractHeadings, setHighlight } from './headings/utils';
 
-const Headings = () => {
+export default function Headings({ isFolded }: { isFolded: boolean }) {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
-
-  const container = document.querySelector('.notion-frame .notion-scroller');
-  if (!container) {
-    throw new Error('".notion-frame .notion-scroller" is not found');
-  }
-  const scrollToHeading = (blockId: string) => {
-    const target = document.querySelector<HTMLElement>(
-      `[data-block-id="${blockId}"]`,
-    );
-    if (!target) {
-      return;
-    }
-
-    container.scroll({
-      top: target.offsetTop,
-    });
-  };
 
   const refreshAllHeadings = () => {
     const headings = extractHeadings();
     setHighlight(headings);
     setHeadings(headings);
   };
+
+  const container = getContainer();
 
   useEffect(() => {
     let observer: MutationObserver;
@@ -60,7 +46,7 @@ const Headings = () => {
           setHighlight(cloned);
           return cloned;
         }),
-      300,
+      200,
     );
     container.addEventListener('scroll', fn);
     fn();
@@ -68,24 +54,14 @@ const Headings = () => {
   }, []);
 
   return (
-    <>
+    <div id="toc-headings" style={isFolded ? { display: 'none' } : {}}>
       {headings.length === 0 ? (
         <p>No headings</p>
       ) : (
         headings.map((heading) => (
-          <p
-            className={`toc-h${heading.rank} toc-heading toc-clickable ${
-              heading.isFocused ? 'toc-focused' : ''
-            }`}
-            key={heading.blockId}
-            onClick={() => scrollToHeading(heading.blockId)}
-          >
-            {heading.text}
-          </p>
+          <Heading key={heading.blockId} heading={heading} />
         ))
       )}
-    </>
+    </div>
   );
-};
-
-export default Headings;
+}
