@@ -28,6 +28,7 @@ export default function Container() {
     })();
   };
 
+  // receive events
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {

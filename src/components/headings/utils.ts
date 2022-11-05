@@ -1,12 +1,4 @@
-export function getContainer() {
-  const container = document.querySelector<HTMLElement>(
-    '.notion-frame .notion-scroller',
-  );
-  if (!container) {
-    throw new Error('".notion-frame .notion-scroller" is not found');
-  }
-  return container;
-}
+import { getContainer } from '../../utils';
 
 export function extractHeadings(): HeadingsType {
   console.info('# fetch heading');
