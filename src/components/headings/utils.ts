@@ -17,7 +17,7 @@ export function extractHeadings(): HeadingsType {
     }
     headings.push({
       text: (heading.textContent || '').trim(),
-      rank: Number(
+      level: Number(
         (heading.getAttribute('placeholder') || '').replace(/^Heading /, ''),
       ),
       blockId: parentElem.getAttribute('data-block-id') || '',
@@ -29,30 +29,32 @@ export function extractHeadings(): HeadingsType {
     headings.length !== 0 &&
     Math.min.apply(
       null,
-      headings.map((h) => h.rank),
+      headings.map((h) => h.level),
     ) !== 1
   ) {
     headings = headings.map((heading) => {
-      heading.rank--;
+      heading.level--;
       return heading;
     });
   }
   return headings;
 }
 
-// destructive
-export function setHighlight(headings: HeadingsType): void {
+export function setHighlight(headings: HeadingsType): HeadingsType {
   if (headings.length === 0) {
-    return;
+    return headings;
   }
   const container = getContainer();
-  const currentOffset = container.scrollTop + container.offsetTop;
+  const currentOffset = container.offsetTop + container.scrollTop;
+  const newHeadings = structuredClone(headings);
 
   let current: HeadingType | null = null;
-  for (const heading of headings) {
+  for (const heading of newHeadings) {
     heading.isFocused = false;
-    if (currentOffset < Number(heading.offset)) continue;
+    if (currentOffset < heading.offset) continue;
     current = heading;
   }
-  (current ??= headings[0]).isFocused = true;
+  (current ??= newHeadings[0]).isFocused = true;
+
+  return newHeadings;
 }

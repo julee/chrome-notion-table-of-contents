@@ -1,21 +1,18 @@
-/**
- * @jest-environment jsdom
- */
-
-import { extractHeadings } from './utils';
-
-const wrap = (str: string) => `
-  <div class="notion-frame">
-    <div class="notion-scroller">
-      ${str}
-    </div>
-  </div>`;
-
-afterEach(() => {
-  document.body.innerHTML = '';
-});
+import * as utils from '../../utils';
+import { extractHeadings, setHighlight } from './utils';
 
 describe('extractHeadings', () => {
+  const wrap = (str: string) => `
+    <div class="notion-frame">
+      <div class="notion-scroller">
+        ${str}
+      </div>
+    </div>`;
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
   it('basic', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h1-xxx">
@@ -37,21 +34,21 @@ describe('extractHeadings', () => {
     expect(extractHeadings()).toEqual([
       {
         text: 'This is h1',
-        rank: 1,
+        level: 1,
         blockId: 'h1-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h2',
-        rank: 2,
+        level: 2,
         blockId: 'h2-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
-        rank: 3,
+        level: 3,
         blockId: 'h3-xxx',
         offset: 0,
         isFocused: false,
@@ -74,14 +71,14 @@ describe('extractHeadings', () => {
     expect(extractHeadings()).toEqual([
       {
         text: 'This is h2',
-        rank: 1,
+        level: 1,
         blockId: 'h2-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
-        rank: 2,
+        level: 2,
         blockId: 'h3-xxx',
         offset: 0,
         isFocused: false,
@@ -91,8 +88,66 @@ describe('extractHeadings', () => {
 });
 
 describe('setHighlight', () => {
-  // const spy = jest
-  //   .spyOn(HTMLElement.prototype, 'offsetTop', 'get')
-  //   .mockReturnValue(10);
-  expect(1).toBe(1);
+  // https://github.com/jsdom/jsdom/issues/3363
+  /* eslint @typescript-eslint/no-explicit-any: 0 */
+  global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+
+  for (const test of [
+    {
+      name: 'basic',
+      input: {
+        scrollTop: 100,
+        headings: [{ offset: 10 }, { offset: 90 }, { offset: 110 }],
+      },
+      expects: [
+        { isFocused: false },
+        { isFocused: true },
+        { isFocused: false },
+      ],
+    },
+    {
+      name: 'no headings',
+      input: {
+        scrollTop: 100,
+        headings: [],
+      },
+      expects: [],
+    },
+    {
+      name: 'scrollTop < heading[0].offset',
+      input: {
+        scrollTop: 0,
+        headings: [{ offset: 10 }, { offset: 90 }],
+      },
+      expects: [{ isFocused: true }, { isFocused: false }],
+    },
+    {
+      name: 'scrollTop > heading[-1].offset',
+      input: {
+        scrollTop: 100,
+        headings: [{ offset: 10 }, { offset: 90 }],
+      },
+      expects: [{ isFocused: false }, { isFocused: true }],
+    },
+  ]) {
+    it(test.name + '', () => {
+      jest.spyOn(utils, 'getContainer').mockImplementation(() => {
+        const elem = document.createElement('div');
+        elem.scrollTop = test.input.scrollTop;
+        return elem;
+      });
+
+      expect(
+        setHighlight(
+          test.input.headings.map((heading) => ({
+            blockId: 'xxx',
+            text: 'text',
+            level: 1,
+            isFocused: false,
+            ...{ offset: heading.offset },
+          })),
+        ).map((heading) => ({ isFocused: heading.isFocused })),
+      ).toEqual(test.expects);
+    });
+  }
 });

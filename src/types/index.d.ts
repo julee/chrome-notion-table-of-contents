@@ -1,7 +1,7 @@
 type HeadingType = {
   blockId: string;
   text: string;
-  rank: number;
+  level: number;
   offset: number;
   isFocused: boolean;
 };

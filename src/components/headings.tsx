@@ -9,8 +9,7 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
 
   const refreshAllHeadings = () => {
     const headings = extractHeadings();
-    setHighlight(headings);
-    setHeadings(headings);
+    setHeadings(setHighlight(headings));
   };
 
   const container = getContainer();
@@ -22,8 +21,8 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
       refreshAllHeadings();
 
       // watch headings' change
-      const fn = debounce(refreshAllHeadings, 1000);
-      observer = new MutationObserver(fn);
+      const handleChange = debounce(refreshAllHeadings, 1000);
+      observer = new MutationObserver(handleChange);
       observer.observe(container as Node, {
         childList: true,
         subtree: true,
@@ -40,12 +39,7 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
   // highlight current
   useEffect(() => {
     const fn = debounce(
-      () =>
-        setHeadings((headings) => {
-          const cloned = structuredClone(headings);
-          setHighlight(cloned);
-          return cloned;
-        }),
+      () => setHeadings((headings) => setHighlight(headings)),
       200,
     );
     container.addEventListener('scroll', fn);

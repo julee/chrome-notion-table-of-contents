@@ -29,7 +29,7 @@ export function debounce(fn: () => void, delay: number): () => void {
   };
 }
 
-export function getContainer() {
+export function getContainer(): HTMLElement {
   const container = document.querySelector<HTMLElement>(
     '.notion-frame .notion-scroller',
   );

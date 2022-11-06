@@ -15,7 +15,7 @@ export default function Heading({ heading: h }: { heading: HeadingType }) {
   };
   return (
     <p
-      className={`toc-h${h.rank} toc-heading toc-clickable ${
+      className={`toc-h${h.level} toc-heading toc-clickable ${
         h.isFocused ? 'toc-focused' : ''
       }`}
       key={h.blockId}
