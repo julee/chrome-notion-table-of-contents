@@ -8,8 +8,7 @@
     z-index: 10000;
 
     /* appearance */
-    background-color: white;
-    border: gray solid 1px;
+    border: solid 1px;
     font-size: 14px;
 }
 
@@ -45,18 +44,16 @@
 }
 
 .toc-heading {
-    color: #656380;
     margin: 4px 0;
     padding-left: 10px;
     border-left: 3px transparent solid;
 }
 .toc-heading:hover {
     text-decoration: underline;
-    border-left: 3px gray solid;
+    border-left: 3px solid;
 }
 .toc-focused {
-    color: black;
-    border-left: 3px black solid;
+    border-left: 3px solid;
     font-weight: bold;
 }
 
@@ -65,4 +62,21 @@
 }
 .toc-h3 {
     margin-left: 48px;
+}
+
+/*  color ----------------------- */
+
+.toc-container {
+    background-color: white;
+    border-color: gray;
+}
+.toc-heading {
+    color: #656380;
+}
+.toc-heading:hover {
+    border-color: gray;
+}
+.toc-focused {
+    color: black;
+    border-color: black;
 }
