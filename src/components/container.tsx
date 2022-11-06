@@ -58,9 +58,12 @@ export default function Container() {
   }
 
   return (
-    <Draggable handle="#toc-draggable-handle">
-      <div id="toc-container" style={isHidden ? { display: 'none' } : {}}>
-        <div id="toc-draggable-handle"></div>
+    <Draggable handle=".toc-draggable-handle">
+      <div
+        className="toc-container"
+        style={isHidden ? { display: 'none' } : {}}
+      >
+        <div className="toc-draggable-handle"></div>
         <Toolbar
           isFolded={isFolded}
           setFolded={setFolded}

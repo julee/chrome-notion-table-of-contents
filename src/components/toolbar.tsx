@@ -14,7 +14,7 @@ export default function Toolbar({
   };
 
   return (
-    <div id="toc-toolbar">
+    <div className="toc-toolbar">
       {isFolded ? (
         <span
           className="toc-clickable toc-icon-container"

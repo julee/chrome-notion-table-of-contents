@@ -48,7 +48,7 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
   }, []);
 
   return (
-    <div id="toc-headings" style={isFolded ? { display: 'none' } : {}}>
+    <div className="toc-headings" style={isFolded ? { display: 'none' } : {}}>
       {headings.length === 0 ? (
         <p>No headings</p>
       ) : (

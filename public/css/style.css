@@ -1,4 +1,4 @@
-#toc-container {
+.toc-container {
     /* position */
     position: fixed;
     width: 350px;
@@ -17,12 +17,12 @@
     cursor: pointer;
 }
 
-#toc-draggable-handle {
+.toc-draggable-handle {
     cursor: grab;
     min-height: 25px;
 }
 
-#toc-toolbar {
+.toc-toolbar {
     position: absolute;
     top: 7px;
     right: 7px;
@@ -35,12 +35,12 @@
     width: 10px;
 }
 
-#toc-headings {
+.toc-headings {
     margin: 0 10px 25px 15px;
     overflow: hidden;
     max-height: 80vh;
 }
-#toc-headings:hover {
+.toc-headings:hover {
     overflow-y: scroll;
 }
 
