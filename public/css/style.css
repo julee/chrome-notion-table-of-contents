@@ -12,9 +12,6 @@
     border: gray solid 1px;
     font-size: 14px;
 }
-#toc-cointainer * {
-    outline: dotted pink !important;
-} /* debug -------------------------------*/
 
 .toc-clickable {
     cursor: pointer;
@@ -40,6 +37,11 @@
 
 #toc-headings {
     margin: 0 10px 25px 15px;
+    overflow: hidden;
+    max-height: 80vh;
+}
+#toc-headings:hover {
+    overflow-y: scroll;
 }
 
 .toc-heading {

@@ -13,7 +13,6 @@ export function extractHeadings(): HeadingsType {
   for (const heading of elems) {
     const parentElem = heading.closest('[data-block-id]');
     if (!parentElem) {
-      console.error(parentElem);
       throw new Error('parent element is not found');
     }
     headings.push({
