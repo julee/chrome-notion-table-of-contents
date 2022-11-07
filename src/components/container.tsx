@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
-import { waitFor } from '../utils';
+import { querySelector, waitFor } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
@@ -10,6 +10,7 @@ export default function Container() {
   const [isHidden, setHidden] = useState(false);
   const [isFolded, setFolded] = useState(false);
   const [isMounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const buildComponent = async () => {
     await waitFor('main');
@@ -19,7 +20,16 @@ export default function Container() {
     (async () => {
       setMounted((isMounted) => {
         if (!isMounted) {
-          buildComponent();
+          (async () => {
+            await buildComponent();
+            setTheme(
+              querySelector('.notion-light-theme,.notion-dark-theme').matches(
+                '.notion-light-theme',
+              )
+                ? 'light'
+                : 'dark',
+            );
+          })();
           return false;
         }
         setHidden((isHidden) => !isHidden);
@@ -60,7 +70,9 @@ export default function Container() {
   return (
     <Draggable handle=".toc-draggable-handle">
       <div
-        className="toc-container"
+        className={`toc-container ${
+          theme === 'light' ? 'theme-light' : 'theme-dark'
+        }`}
         style={isHidden ? { display: 'none' } : {}}
       >
         <div className="toc-draggable-handle"></div>

@@ -30,11 +30,13 @@ export function debounce(fn: () => void, delay: number): () => void {
 }
 
 export function getContainer(): HTMLElement {
-  const container = document.querySelector<HTMLElement>(
-    '.notion-frame .notion-scroller',
-  );
-  if (!container) {
-    throw new Error('".notion-frame .notion-scroller" is not found');
+  return querySelector('.notion-frame .notion-scroller');
+}
+
+export function querySelector(selector: string): HTMLElement {
+  const elem = document.querySelector<HTMLElement>(selector);
+  if (!elem) {
+    throw new Error(`"${selector}" is not found`);
   }
-  return container;
+  return elem;
 }
