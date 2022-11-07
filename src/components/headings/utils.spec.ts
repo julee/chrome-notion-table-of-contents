@@ -90,9 +90,10 @@ describe('extractHeadings', () => {
 describe('setHighlight', () => {
   // https://github.com/jsdom/jsdom/issues/3363
   /* eslint @typescript-eslint/no-explicit-any: 0 */
+  // 2 つ以上になったら setupFilesAfterEnv にまとめる
   global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
 
-  for (const test of [
+  it.each([
     {
       name: 'basic',
       input: {
@@ -129,25 +130,23 @@ describe('setHighlight', () => {
       },
       expects: [{ isFocused: false }, { isFocused: true }],
     },
-  ]) {
-    it(test.name + '', () => {
-      jest.spyOn(utils, 'getContainer').mockImplementation(() => {
-        const elem = document.createElement('div');
-        elem.scrollTop = test.input.scrollTop;
-        return elem;
-      });
-
-      expect(
-        setHighlight(
-          test.input.headings.map((heading) => ({
-            blockId: 'xxx',
-            text: 'text',
-            level: 1,
-            isFocused: false,
-            ...{ offset: heading.offset },
-          })),
-        ).map((heading) => ({ isFocused: heading.isFocused })),
-      ).toEqual(test.expects);
+  ])('$name', ({ input, expects }) => {
+    jest.spyOn(utils, 'getContainer').mockImplementation(() => {
+      const elem = document.createElement('div');
+      elem.scrollTop = input.scrollTop;
+      return elem;
     });
-  }
+
+    expect(
+      setHighlight(
+        input.headings.map((heading) => ({
+          blockId: 'xxx',
+          text: 'text',
+          level: 1,
+          isFocused: false,
+          ...{ offset: heading.offset },
+        })),
+      ).map((heading) => ({ isFocused: heading.isFocused })),
+    ).toEqual(expects);
+  });
 });
