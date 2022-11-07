@@ -7,9 +7,9 @@ import Toolbar from './toolbar';
 export default function Container() {
   console.info('# render container');
 
-  const [isHidden, setHidden] = useState(false);
-  const [isFolded, setFolded] = useState(false);
-  const [isMounted, setMounted] = useState(false);
+  const [isHidden, setHidden] = useState<boolean>(false);
+  const [isFolded, setFolded] = useState<boolean>(false);
+  const [isMounted, setMounted] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
   const buildComponent = async () => {
