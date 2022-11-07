@@ -10,7 +10,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
-    "plugin:jest/recommended",
+    'plugin:react-hooks/recommended',
+    'plugin:jest/recommended',
     'plugin:testing-library/react',
     'prettier',
   ],
@@ -21,5 +22,7 @@ module.exports = {
       version: 'detect',
     },
   },
-  rules: {},
+  rules: {
+    'react-hooks/exhaustive-deps': 'off',
+  },
 };
