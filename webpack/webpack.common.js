@@ -7,6 +7,7 @@ module.exports = {
   entry: {
     background: path.join(srcDir, 'background.ts'),
     'content-script': path.join(srcDir, 'content-script.tsx'),
+    mount: path.join(srcDir, 'mount.tsx'),
   },
   output: {
     publicPath: '',

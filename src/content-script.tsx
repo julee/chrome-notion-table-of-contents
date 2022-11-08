@@ -1,8 +1,2 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Container from './components/container';
-
-const root = document.createElement('div');
-document.body.appendChild(root);
-
-createRoot(root).render(<Container />);
+console.log(chrome.scripting);
+chrome.runtime.sendMessage({ action: 'mount' }).catch((e) => console.error(e));
