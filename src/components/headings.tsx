@@ -3,6 +3,7 @@ import { debounce, getContainer } from '../utils';
 import Heading from './heading';
 import { extractHeadings, setHighlight } from './headings/utils';
 
+// TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
 export default function Headings({ isFolded }: { isFolded: boolean }) {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
