@@ -6,7 +6,7 @@ const srcDir = path.join(__dirname, '..', 'src');
 module.exports = {
   entry: {
     background: path.join(srcDir, 'background.ts'),
-    content_script: path.join(srcDir, 'content_script.tsx'),
+    content_script: path.join(srcDir, 'contentScript.tsx'),
   },
   output: {
     publicPath: '',
@@ -31,4 +31,12 @@ module.exports = {
       options: {},
     }),
   ],
+  optimization: {
+    splitChunks: {
+      name: 'vendor',
+      chunks(chunk) {
+        return chunk.name !== 'background';
+      },
+    },
+  },
 };
