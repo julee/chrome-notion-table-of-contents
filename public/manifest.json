@@ -4,17 +4,17 @@
   "description": "Notion Table of Contents",
   "version": "1.1.0",
   "action": {
-    "default_icon": { "19": "images/icon.png" }
+    "default_icon": { "19": "./images/icon.png" }
   },
   "content_scripts": [
     {
       "matches": ["https://www.notion.so/*"],
-      "js": ["js/content_script.js"],
-      "css": ["css/style.css"]
+      "js": ["./js/vendor.js", "./js/content_script.js"],
+      "css": ["./css/style.css"]
     }
   ],
   "background": {
-    "service_worker": "js/background.js"
+    "service_worker": "./js/background.js"
   },
   "permissions": ["webNavigation"],
   "web_accessible_resources": [
