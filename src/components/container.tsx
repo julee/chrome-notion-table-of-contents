@@ -12,37 +12,37 @@ export default function Container() {
   const [isMounted, setMounted] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  const buildComponent = async () => {
-    await waitFor('main');
-    setMounted(true);
-  };
   const toggleVisibility = () => {
-    (async () => {
-      setMounted((isMounted) => {
-        if (!isMounted) {
-          (async () => {
-            await buildComponent();
-            setTheme(
-              querySelector('.notion-light-theme,.notion-dark-theme').matches(
-                '.notion-light-theme',
-              )
-                ? 'light'
-                : 'dark',
-            );
-          })();
-          return false;
-        }
-        setHidden((isHidden) => !isHidden);
-        return true;
-      });
-    })();
+    // setHidden((isHidden) => !isHidden);
+    setHidden((isHidden) => {
+      console.log(`prev isHidden: ${isHidden} -> ${!isHidden}`);
+      return !isHidden;
+    });
   };
 
-  // receive events
   useEffect(() => {
+    // build
+    (async () => {
+      await waitFor('main');
+      console.log('# ⭐first rendering');
+      setMounted(true);
+      setTheme(
+        querySelector('.notion-light-theme,.notion-dark-theme').matches(
+          '.notion-light-theme',
+        )
+          ? 'light'
+          : 'dark',
+      );
+    })();
+
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CLICK_ACTION':
+          // setMounted(true);
+          setMounted((prev) => {
+            console.log(`prev mounted: ${prev} -> true`);
+            return true;
+          });
           toggleVisibility();
           break;
 
@@ -57,10 +57,10 @@ export default function Container() {
       }
     });
 
-    // Ctrl + n
-    document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
-      if (event.ctrlKey && event.code === 'KeyN') toggleVisibility();
-    });
+    // // TODO: やるにしても commands で
+    // document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
+    //   if (event.ctrlKey && event.code === 'KeyN') toggleVisibility();
+    // });
   }, []);
 
   if (!isMounted) {
