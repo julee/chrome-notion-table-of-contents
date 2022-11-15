@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 const srcDir = path.join(__dirname, '..', 'src');
 
 module.exports = {
@@ -10,7 +9,7 @@ module.exports = {
   },
   output: {
     publicPath: '',
-    path: path.join(__dirname, '../dist/js'),
+    path: path.join(__dirname, '../public/js'),
     filename: '[name].js',
   },
   module: {
@@ -25,12 +24,6 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [{ from: '.', to: '../', context: 'public' }],
-      options: {},
-    }),
-  ],
   optimization: {
     splitChunks: {
       name: 'vendor',
