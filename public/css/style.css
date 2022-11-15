@@ -41,9 +41,6 @@
 }
 .toc-headings:hover {
     margin-right: 3px;
-}
-
-.toc-headings:hover {
     overflow-y: auto;
 }
 .toc-headings::-webkit-scrollbar {
