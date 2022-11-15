@@ -1,7 +1,7 @@
 import { getContainer } from '../../utils';
 
 export function extractHeadings(): HeadingsType {
-  console.info('# fetch heading');
+  console.info('# extract headings');
 
   let headings: HeadingsType = [];
 

@@ -3,20 +3,12 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
     detail: chrome.webNavigation.WebNavigationTransitionCallbackDetails,
   ) => {
     const mounted = await hasMounted(detail.tabId);
-    console.log(mounted);
     if (mounted) sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
   },
   { url: [{ hostEquals: 'www.notion.so' }] },
 );
 
 chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
-  /*
-    タブに対し mount が一位でなければならない。
-    しかし hash で持つとメモリリーク ... 。
-    そもそも hash に持つのが駄目
-    ページが変わっても tab id は一緒だから(document idがある)
-    -> ドキュメントに何か
-  */
   if (tab.id === undefined)
     throw new Error(`tab.id is undefined. tab: ${JSON.stringify(tab)}`);
 
@@ -53,7 +45,7 @@ async function hasMounted(tabId: number) {
 }
 
 async function sendMessage(tabId: number, req: { type: string }) {
-  console.log('# ' + req.type);
+  console.info('# ' + req.type);
   try {
     await chrome.tabs.sendMessage(tabId ?? 0, req);
   } catch (error) {
