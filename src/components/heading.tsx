@@ -1,21 +1,26 @@
 import React from 'react';
 import { getContainer, querySelector } from '../utils';
 
-export default function Heading({ heading: h }: { heading: HeadingType }) {
+export default function Heading({
+  blockId,
+  isFocused,
+  level,
+  text,
+}: HeadingType) {
   const scrollToHeading = () => {
     getContainer().scroll({
-      top: querySelector(`[data-block-id="${h.blockId}"]`).offsetTop,
+      top: querySelector(`[data-block-id="${blockId}"]`).offsetTop,
     });
   };
   return (
     <p
-      className={`toc-h${h.level} toc-heading toc-clickable ${
-        h.isFocused ? 'toc-focused' : ''
+      className={`toc-h${level} toc-heading toc-clickable ${
+        isFocused ? 'toc-focused' : ''
       }`}
-      key={h.blockId}
+      key={blockId}
       onClick={() => scrollToHeading()}
     >
-      {h.text}
+      {text}
     </p>
   );
 }
