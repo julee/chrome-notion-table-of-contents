@@ -27,6 +27,8 @@ export default function Container() {
       );
     })();
 
+    // TODO: chrome. API は本来ここに書きたくない
+    // ここでは customEvent とかの listener にして、chrome API は外部から呼びたい
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CLICK_ACTION':
@@ -61,6 +63,9 @@ export default function Container() {
         style={isHidden ? { display: 'none' } : {}}
       >
         <div className="toc-draggable-handle"></div>
+        {
+          // TODO: 内部で chrome. API 呼んでるので剥がしたい
+        }
         <Toolbar
           isFolded={isFolded}
           setFolded={setFolded}
