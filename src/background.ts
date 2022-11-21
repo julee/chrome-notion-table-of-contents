@@ -21,18 +21,16 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
   if (tabs.length === 0) throw new Error('no active tabs');
   const tabId = tabs[0].id ?? 0;
 
-  chrome.scripting
-    .executeScript({
+  await Promise.all([
+    chrome.scripting.executeScript({
       target: { tabId },
       files: ['./js/vendor.js', './js/mount.js'],
-    })
-    .catch((e) => console.error(e));
-  chrome.scripting
-    .insertCSS({
+    }),
+    chrome.scripting.insertCSS({
       target: { tabId },
       files: ['./css/style.css'],
-    })
-    .catch((e) => console.error(e));
+    }),
+  ]);
 });
 
 async function hasMounted(tabId: number) {
