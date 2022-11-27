@@ -89,9 +89,8 @@ describe('extractHeadings', () => {
 
 describe('setHighlight', () => {
   // https://github.com/jsdom/jsdom/issues/3363
-  /* eslint @typescript-eslint/no-explicit-any: 0 */
   // 2 つ以上になったら setupFilesAfterEnv にまとめる
-  global.structuredClone = (val: any) => JSON.parse(JSON.stringify(val));
+  global.structuredClone = (val: unknown) => JSON.parse(JSON.stringify(val));
 
   it.each([
     {
