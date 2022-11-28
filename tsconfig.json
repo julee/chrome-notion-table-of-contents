@@ -11,5 +11,11 @@
     "noEmitOnError": true,
     "jsx": "react",
     "typeRoots": ["node_modules/@types"]
-  }
+  },
+  "include": ["src"],
+  "exclude": [
+    "./src/**/__tests__/**/*.ts",
+    "./src/**/*.spec.ts",
+    "./src/**/*.test.ts"
+  ]
 }
