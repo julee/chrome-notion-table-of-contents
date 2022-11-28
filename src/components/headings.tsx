@@ -54,7 +54,7 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
         <p>No headings</p>
       ) : (
         headings.map((heading) => (
-          <Heading key={heading.blockId} heading={heading} />
+          <Heading key={heading.blockId} {...heading} />
         ))
       )}
     </div>
