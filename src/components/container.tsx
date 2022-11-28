@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
-import { querySelector, waitFor } from '../utils';
+import { querySelector } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
@@ -15,7 +15,6 @@ export default function Container() {
   useEffect(() => {
     // build
     (async () => {
-      await waitFor('main'); // Heading コンポーネントが依存している要素が描画されるまで待つ
       console.info('# first rendering');
       setRenderable(true);
       setTheme(

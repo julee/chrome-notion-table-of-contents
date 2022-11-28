@@ -1,3 +1,5 @@
+const UrlFilter = { urlPrefix: 'https://www.notion.so' };
+
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (
     detail: chrome.webNavigation.WebNavigationTransitionCallbackDetails,
@@ -5,7 +7,7 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
     const mounted = await hasMounted(detail.tabId);
     if (mounted) sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
   },
-  { url: [{ hostEquals: 'www.notion.so' }] },
+  { url: [UrlFilter] },
 );
 
 chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
@@ -32,6 +34,28 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
     }),
   ]);
 });
+
+chrome.runtime.onInstalled.addListener(async () => {
+  chrome.action.disable();
+  // Promise is not supported
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+    chrome.declarativeContent.onPageChanged.addRules([
+      {
+        conditions: [
+          new chrome.declarativeContent.PageStateMatcher({
+            pageUrl: UrlFilter,
+            css: ['main'],
+          }),
+        ],
+        actions: [new chrome.declarativeContent.ShowAction()],
+      },
+    ]);
+  });
+});
+
+// ========================================
+// Utils
+// ========================================
 
 async function hasMounted(tabId: number) {
   return (
