@@ -15,7 +15,7 @@ export default function Container() {
   useEffect(() => {
     // build
     (async () => {
-      await waitFor('main');
+      await waitFor('main'); // Heading コンポーネントが依存している要素が描画されるまで待つ
       console.info('# first rendering');
       setRenderable(true);
       setTheme(
