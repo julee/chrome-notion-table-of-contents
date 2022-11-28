@@ -42,11 +42,19 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
   ]);
 });
 
+// この hasMounted (内部で executeScript() ) のために host_permissions が必要
+// action の click はユーザー操作起点なので activeTab で賄えるが
+// これはユーザー操作で **ない** ので賄えない
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
-    if (await hasMounted(detail.tabId)) {
-      sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
+    let mounted: boolean;
+    try {
+      mounted = await hasMounted(detail.tabId);
+    } catch (_) {
+      // 手動でリンクをクリックしたものでないイベント。初回ロード時など
+      mounted = false;
     }
+    if (mounted) sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
   },
   { url: [URL_FILTER] },
 );

@@ -9,8 +9,12 @@
   "background": {
     "service_worker": "./js/background.js"
   },
-  "permissions": ["webNavigation", "scripting", "declarativeContent"],
-  "host_permissions": ["https://www.notion.so/*"],
+  "permissions": [
+    "webNavigation",
+    "scripting",
+    "declarativeContent",
+    "activeTab"
+  ],
   "web_accessible_resources": [
     {
       "resources": ["images/*.png"],
