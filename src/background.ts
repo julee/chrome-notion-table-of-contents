@@ -9,7 +9,6 @@ chrome.runtime.onInstalled.addListener(async () => {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
             pageUrl: URL_FILTER,
-            css: ['main'],
           }),
         ],
         actions: [new chrome.declarativeContent.ShowAction()],
@@ -45,8 +44,7 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
-    const mounted = await hasMounted(detail.tabId);
-    if (mounted) {
+    if (await hasMounted(detail.tabId)) {
       sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
     }
   },

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Draggable from 'react-draggable';
-import { querySelector } from '../utils';
+import { querySelector, waitFor } from '../utils';
 import Headings from './headings';
 import Toolbar from './toolbar';
 
@@ -12,9 +12,10 @@ export default function Container() {
   const [renderable, setRenderable] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // build
     (async () => {
+      await waitFor('main'); // Heading コンポーネントが依存している要素が描画されるまで待つ
       console.info('# first rendering');
       setRenderable(true);
       setTheme(
@@ -25,9 +26,9 @@ export default function Container() {
           : 'dark',
       );
     })();
+  }, []);
 
-    // TODO: chrome. API は本来ここに書きたくない
-    // ここでは customEvent とかの listener にして、chrome API は外部から呼びたい
+  useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CLICK_ACTION':
@@ -49,9 +50,7 @@ export default function Container() {
     });
   }, []);
 
-  if (!renderable) {
-    return null;
-  }
+  if (!renderable) return null;
 
   return (
     <Draggable handle=".toc-draggable-handle">
@@ -62,9 +61,6 @@ export default function Container() {
         style={isHidden ? { display: 'none' } : {}}
       >
         <div className="toc-draggable-handle"></div>
-        {
-          // TODO: 内部で chrome. API 呼んでるので剥がしたい
-        }
         <Toolbar
           isFolded={isFolded}
           setFolded={setFolded}
