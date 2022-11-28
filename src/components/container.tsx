@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Draggable from 'react-draggable';
 import { querySelector, waitFor } from '../utils';
 import Headings from './headings';
@@ -9,63 +9,48 @@ export default function Container() {
 
   const [isHidden, setHidden] = useState<boolean>(false);
   const [isFolded, setFolded] = useState<boolean>(false);
-  const [isMounted, setMounted] = useState<boolean>(false);
+  const [renderable, setRenderable] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  const buildComponent = async () => {
-    await waitFor('main');
-    setMounted(true);
-  };
-  const toggleVisibility = () => {
+  useLayoutEffect(() => {
+    // build
     (async () => {
-      setMounted((isMounted) => {
-        if (!isMounted) {
-          (async () => {
-            await buildComponent();
-            setTheme(
-              querySelector('.notion-light-theme,.notion-dark-theme').matches(
-                '.notion-light-theme',
-              )
-                ? 'light'
-                : 'dark',
-            );
-          })();
-          return false;
-        }
-        setHidden((isHidden) => !isHidden);
-        return true;
-      });
+      await waitFor('main'); // Heading コンポーネントが依存している要素が描画されるまで待つ
+      console.info('# first rendering');
+      setRenderable(true);
+      setTheme(
+        querySelector('.notion-light-theme,.notion-dark-theme').matches(
+          '.notion-light-theme',
+        )
+          ? 'light'
+          : 'dark',
+      );
     })();
-  };
+  }, []);
 
-  // receive events
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CLICK_ACTION':
-          toggleVisibility();
+          setRenderable((prevRenderable) => {
+            setHidden((isHidden) => (prevRenderable ? !isHidden : false));
+            return true;
+          });
           break;
 
         case 'MOVE_PAGE':
           setHidden(false);
           setFolded(false);
-          setMounted(false);
+          setRenderable(false);
           break;
 
         default:
           throw new Error(`unknown type: ${type}`);
       }
     });
-
-    // Ctrl + n
-    document.addEventListener('keydown', (event: globalThis.KeyboardEvent) => {
-      if (event.ctrlKey && event.code === 'KeyN') toggleVisibility();
-    });
   }, []);
 
-  if (!isMounted) {
-    return null;
-  }
+  if (!renderable) return null;
 
   return (
     <Draggable handle=".toc-draggable-handle">

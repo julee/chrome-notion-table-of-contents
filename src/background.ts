@@ -1,23 +1,79 @@
-const sendToActiveTab = async (req: { type: string }) => {
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  try {
-    await chrome.tabs.sendMessage(tabs[0]?.id ?? 0, req);
-  } catch (error) {
-    if (error)
-      console.error({
-        message:
-          'tabs.sendMessage failed. Maybe content script is not loaded yet',
-        error,
-      });
+const URL_FILTER = { urlPrefix: 'https://www.notion.so' };
+
+chrome.runtime.onInstalled.addListener(async () => {
+  chrome.action.disable();
+  // Promise is not supported
+  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
+    chrome.declarativeContent.onPageChanged.addRules([
+      {
+        conditions: [
+          new chrome.declarativeContent.PageStateMatcher({
+            pageUrl: URL_FILTER,
+          }),
+        ],
+        actions: [new chrome.declarativeContent.ShowAction()],
+      },
+    ]);
+  });
+});
+
+chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
+  if (tab.id === undefined)
+    throw new Error(`tab.id is undefined. tab: ${JSON.stringify(tab)}`);
+
+  if (await hasMounted(tab.id)) {
+    sendMessage(tab.id, { type: 'CLICK_ACTION' });
+    return;
   }
-};
-chrome.action.onClicked.addListener(() => {
-  sendToActiveTab({ type: 'CLICK_ACTION' });
+
+  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tabs.length === 0) throw new Error('no active tabs');
+  const tabId = tabs[0].id ?? 0;
+
+  await Promise.all([
+    chrome.scripting.executeScript({
+      target: { tabId },
+      files: ['./js/vendor.js', './js/mount.js'],
+    }),
+    chrome.scripting.insertCSS({
+      target: { tabId },
+      files: ['./css/style.css'],
+    }),
+  ]);
 });
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
-  () => {
-    sendToActiveTab({ type: 'MOVE_PAGE' });
+  async (detail) => {
+    if (await hasMounted(detail.tabId)) {
+      sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
+    }
   },
-  { url: [{ hostEquals: 'www.notion.so' }] }
+  { url: [URL_FILTER] },
 );
+
+// ========================================
+// Utils
+// ========================================
+
+async function hasMounted(tabId: number) {
+  return (
+    await chrome.scripting.executeScript({
+      target: { tabId },
+      func: () => !!document.querySelector('.toc-has-mounted'),
+    })
+  )[0].result;
+}
+
+async function sendMessage(tabId: number, req: { type: string }) {
+  console.info('# ' + req.type);
+  try {
+    await chrome.tabs.sendMessage(tabId ?? 0, req);
+  } catch (error) {
+    if (error)
+      throw new Error(
+        `tabs.sendMessage(${JSON.stringify(
+          req,
+        )}) failed. \norig error: ${error}`,
+      );
+  }
+}

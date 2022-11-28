@@ -1,5 +1,4 @@
-npm-debug.log
-node_modules/
-dist/
-tmp/
-out.zip
+/npm-debug.log
+/node_modules/
+/public/js/
+/out.zip
