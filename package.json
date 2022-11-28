@@ -7,7 +7,7 @@
     "eslint": "eslint 'src/**/*.{ts,tsx}'",
     "eslint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
     "prettier": "prettier --write . '!dist/**/*'",
-    "zip": "rm out.zip; zip -r out.zip dist"
+    "release": "rm out.zip; yarn run build; zip -r out.zip public"
   },
   "repository": {
     "type": "git",
