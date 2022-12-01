@@ -27,9 +27,8 @@ module.exports = {
   optimization: {
     splitChunks: {
       name: 'vendor',
-      chunks(chunk) {
-        return chunk.name !== 'background';
-      },
+      chunks: (chunk) =>
+         chunk.name !== 'background'
     },
   },
 };
