@@ -25,4 +25,5 @@ module.exports = {
   rules: {
     'react-hooks/exhaustive-deps': 'off',
   },
+  ignorePatterns: ['webpack.config.js'],
 };

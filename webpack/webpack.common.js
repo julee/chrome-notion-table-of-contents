@@ -15,9 +15,26 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
+        test: /\.tsx?/,
         exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: ['last 1 years and Chrome >= 1'],
+                    useBuiltIns: 'usage',
+                    corejs: 3,
+                  },
+                ],
+              ],
+            },
+          },
+          'ts-loader',
+        ],
       },
     ],
   },
@@ -27,8 +44,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       name: 'vendor',
-      chunks: (chunk) =>
-         chunk.name !== 'background'
+      chunks: (chunk) => chunk.name !== 'background',
     },
   },
 };
