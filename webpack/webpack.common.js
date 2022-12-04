@@ -1,16 +1,10 @@
-const webpack = require('webpack');
-const path = require('path');
-const srcDir = path.join(__dirname, '..', 'src');
-
 module.exports = {
   entry: {
-    background: path.join(srcDir, 'background.ts'),
-    mount: path.join(srcDir, 'mount.tsx'),
+    background: './src/ts/background.ts',
+    mount: './src/ts/mount.tsx',
   },
   output: {
-    publicPath: '',
-    path: path.join(__dirname, '../public/js'),
-    filename: '[name].js',
+    path: `${process.cwd()}/public/js`,
   },
   module: {
     rules: [
