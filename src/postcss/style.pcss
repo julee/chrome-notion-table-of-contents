@@ -38,27 +38,28 @@
   margin: 0 10px 20px 15px;
   overflow: hidden;
   max-height: 80vh;
-}
-.toc-headings:hover {
-  margin-right: 3px;
-  overflow-y: auto;
-}
-.toc-headings::-webkit-scrollbar {
-  width: 6px;
-}
 
-.toc-headings::-webkit-scrollbar-thumb {
-  border-radius: 5px;
+  &:hover {
+    margin-right: 3px;
+    overflow-y: auto;
+  }
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+  }
 }
 
 .toc-heading {
   margin: 4px 0;
   padding-left: 10px;
   border-left: 3px transparent solid;
-}
-.toc-heading:hover {
-  text-decoration: underline;
-  border-left: 3px solid;
+
+  &:hover {
+    text-decoration: underline;
+    border-left: 3px solid;
+  }
 }
 .toc-focused {
   border-left: 3px solid;
@@ -72,40 +73,43 @@
   margin-left: 48px;
 }
 
-/*  color ----------------------- */
+/*  color theme ----------------------- */
 
-.theme-light.toc-container {
-  background-color: white;
-  border-color: gray;
+.theme-light {
+  &.toc-container {
+    background-color: white;
+    border-color: gray;
+  }
+  .toc-heading {
+    color: #656380;
+  }
+  .toc-heading:hover {
+    border-color: gray;
+  }
+  .toc-focused {
+    color: black;
+    border-color: black;
+  }
+  . .toc-headings::-webkit-scrollbar-thumb {
+    background-color: #dddcd6;
+  }
 }
-.theme-light .toc-heading {
-  color: #656380;
-}
-.theme-light .toc-heading:hover {
-  border-color: gray;
-}
-.theme-light .toc-focused {
-  color: black;
-  border-color: black;
-}
-.theme-light .toc-headings::-webkit-scrollbar-thumb {
-  background-color: #dddcd6;
-}
-/* dark */
-.theme-dark.toc-container {
-  background-color: #202020;
-  border-color: gray;
-}
-.theme-dark .toc-heading {
-  color: #dddcd6;
-}
-.theme-dark .toc-heading:hover {
-  border-color: gray;
-}
-.theme-dark .toc-focused {
-  color: white;
-  border-color: white;
-}
-.theme-dark .toc-headings::-webkit-scrollbar-thumb {
-  background-color: #656380;
+.theme-dark {
+  &.toc-container {
+    background-color: #202020;
+    border-color: gray;
+  }
+  .toc-heading {
+    color: #dddcd6;
+  }
+  .toc-heading:hover {
+    border-color: gray;
+  }
+  .toc-focused {
+    color: white;
+    border-color: white;
+  }
+  .toc-headings::-webkit-scrollbar-thumb {
+    background-color: #656380;
+  }
 }

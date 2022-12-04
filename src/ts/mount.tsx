@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import '../postcss/style.pcss';
 import Container from './components/container';
 
 const root = document.createElement('div');

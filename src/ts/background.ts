@@ -30,16 +30,10 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
   if (tabs.length === 0) throw new Error('no active tabs');
   const tabId = tabs[0].id ?? 0;
 
-  await Promise.all([
-    chrome.scripting.executeScript({
-      target: { tabId },
-      files: ['./js/vendor.js', './js/mount.js'],
-    }),
-    chrome.scripting.insertCSS({
-      target: { tabId },
-      files: ['./css/style.css'],
-    }),
-  ]);
+  await chrome.scripting.executeScript({
+    target: { tabId },
+    files: ['./js/vendor.js', './js/mount.js'],
+  });
 });
 
 // この hasMounted (内部で executeScript() ) のために host_permissions が必要

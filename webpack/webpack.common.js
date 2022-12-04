@@ -30,6 +30,21 @@ module.exports = {
           'ts-loader',
         ],
       },
+      {
+        test: /\.pcss$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['postcss-nested'],
+              },
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {
