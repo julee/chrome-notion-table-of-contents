@@ -1,3 +1,4 @@
+/** @type import('webpack').Configuration */
 module.exports = {
   entry: {
     background: './src/ts/background.ts',
