@@ -22,14 +22,11 @@ chrome.runtime.onInstalled.addListener(async () => {
 // これはユーザー操作で **ない** ので賄えない
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
-    let mounted: boolean;
-    try {
-      mounted = await hasMounted(detail.tabId);
-    } catch (_) {
-      // 手動でリンクをクリックしたものでないイベント。初回ロード時など
-      mounted = false;
-    }
-    if (mounted) sendMessage(detail.tabId, { type: 'MOVE_PAGE' });
+    const mounted = await hasMounted(detail.tabId).catch((e) => {
+      console.trace(e);
+      throw e;
+    });
+    if (mounted) sendMessage(detail.tabId, { type: 'CHANGE_PAGE' });
   },
   { url: [URL_FILTER] },
 );
@@ -40,12 +37,25 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
 
 // TODO ロジック変える
 async function hasMounted(tabId: number) {
-  return (
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      func: () => !!document.querySelector('.toc-react-root'),
-    })
+  // 手動でリンクをクリックしたものでないイベント。初回ロード時など
+  // host_permissions があればこの行は要らない
+  if (!chrome.scripting) console.log('chrome.scripting is undefined');
+  if (!chrome.scripting) return false;
+
+  console.log(tabId);
+  const r = (
+    await chrome.scripting
+      .executeScript({
+        target: { tabId },
+        func: () => !!document.querySelector('.toc-react-root'),
+      })
+      .catch((e) => {
+        console.warn(e);
+        throw e;
+      })
   )[0].result;
+
+  return r;
 }
 
 async function sendMessage(tabId: number, req: { type: string }) {

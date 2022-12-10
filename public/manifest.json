@@ -15,7 +15,13 @@
   "background": {
     "service_worker": "./js/background.js"
   },
-  "permissions": ["webNavigation", "declarativeContent", "activeTab"],
+  "permissions": [
+    "webNavigation",
+    "declarativeContent",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": ["https://www.notion.so/*"],
   "web_accessible_resources": [
     {
       "resources": ["images/*.png"],

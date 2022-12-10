@@ -9,12 +9,16 @@ export default function Container() {
   const [isHidden, setHidden] = useState<boolean>(false);
   const [renderable, setRenderable] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [pageChangedTime, setPageChangedTime] = useState<number>(0);
 
   useLayoutEffect(() => {
     // build
     (async () => {
-      await waitFor('main'); // Heading コンポーネントが依存している要素が描画されるまで待つ
       console.info('# first rendering');
+      // Heading コンポーネントが依存している要素が描画されるまで待つ
+      // このコンポーネントが読まれる時点で sidebar までは描画されているが、main まではまだ確定されていない
+      await waitFor('main');
+
       setRenderable(true);
       setTheme(
         querySelector('.notion-light-theme,.notion-dark-theme').matches(
@@ -29,9 +33,10 @@ export default function Container() {
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
-        case 'MOVE_PAGE':
+        case 'CHANGE_PAGE':
+          console.log('# CHANGE PAGE');
           setHidden(false);
-          setRenderable(false);
+          setPageChangedTime(Date.now());
           break;
 
         default:
@@ -50,7 +55,9 @@ export default function Container() {
       style={isHidden ? { display: 'none' } : {}}
     >
       <Toolbar setHidden={setHidden} />
-      <Headings />
+      {/* 描画コストが高いので、useMemo したほうが良さそう
+          と思ったけど重い処理は DidMount でしか行われないので大丈夫だった */}
+      <Headings pageChangedTime={pageChangedTime} />
     </div>
   );
 }
