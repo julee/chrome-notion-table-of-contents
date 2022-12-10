@@ -17,17 +17,6 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
-chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
-  if (tab.id === undefined)
-    throw new Error(`tab.id is undefined. tab: ${JSON.stringify(tab)}`);
-
-  if (!(await hasMounted(tab.id))) {
-    console.log('Action is clicked, but not moounted yet.');
-    return;
-  }
-  sendMessage(tab.id, { type: 'CLICK_ACTION' });
-});
-
 // この hasMounted (内部で executeScript() ) のために host_permissions が必要
 // action の click はユーザー操作起点なので activeTab で賄えるが
 // これはユーザー操作で **ない** ので賄えない

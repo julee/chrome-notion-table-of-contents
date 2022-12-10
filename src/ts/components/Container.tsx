@@ -29,13 +29,6 @@ export default function Container() {
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
-        case 'CLICK_ACTION':
-          setRenderable((prevRenderable) => {
-            setHidden((isHidden) => (prevRenderable ? !isHidden : false));
-            return true;
-          });
-          break;
-
         case 'MOVE_PAGE':
           setHidden(false);
           setRenderable(false);
