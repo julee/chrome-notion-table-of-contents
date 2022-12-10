@@ -21,19 +21,11 @@ chrome.action.onClicked.addListener(async (tab: chrome.tabs.Tab) => {
   if (tab.id === undefined)
     throw new Error(`tab.id is undefined. tab: ${JSON.stringify(tab)}`);
 
-  if (await hasMounted(tab.id)) {
-    sendMessage(tab.id, { type: 'CLICK_ACTION' });
+  if (!(await hasMounted(tab.id))) {
+    console.log('Action is clicked, but not moounted yet.');
     return;
   }
-
-  const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-  if (tabs.length === 0) throw new Error('no active tabs');
-  const tabId = tabs[0].id ?? 0;
-
-  await chrome.scripting.executeScript({
-    target: { tabId },
-    files: ['./js/vendor.js', './js/mount.js'],
-  });
+  sendMessage(tab.id, { type: 'CLICK_ACTION' });
 });
 
 // この hasMounted (内部で executeScript() ) のために host_permissions が必要
@@ -57,6 +49,7 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
 // Utils
 // ========================================
 
+// TODO ロジック変える
 async function hasMounted(tabId: number) {
   return (
     await chrome.scripting.executeScript({

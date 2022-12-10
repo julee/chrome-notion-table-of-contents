@@ -1,5 +1,5 @@
 import * as utils from '../../utils';
-import { extractHeadings, setHighlight } from './utils';
+import { extractHeadings, setHighlight } from './headings';
 
 describe('extractHeadings', () => {
   const wrap = (str: string) => `

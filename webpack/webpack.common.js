@@ -2,7 +2,7 @@
 module.exports = {
   entry: {
     background: './src/ts/background.ts',
-    mount: './src/ts/mount.tsx',
+    'content-script': './src/ts/contentScript.tsx',
   },
   output: {
     path: `${process.cwd()}/public/js`,

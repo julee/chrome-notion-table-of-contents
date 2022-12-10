@@ -1,8 +1,8 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import Draggable from 'react-draggable';
 import { querySelector, waitFor } from '../utils';
-import Headings from './headings';
-import Toolbar from './toolbar';
+import Headings from './Headings';
+import Toolbar from './Toolbar';
 
 export default function Container() {
   console.info('# render container');

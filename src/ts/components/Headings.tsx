@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { debounce, getContainer } from '../utils';
-import Heading from './heading';
-import { extractHeadings, setHighlight } from './headings/utils';
+import Heading from './Heading';
+import { extractHeadings, setHighlight } from './utils/headings';
 
 // TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
 export default function Headings({ isFolded }: { isFolded: boolean }) {
