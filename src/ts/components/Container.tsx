@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import Draggable from 'react-draggable';
 import { querySelector, waitFor } from '../utils';
 import Headings from './Headings';
 import Toolbar from './Toolbar';
@@ -53,21 +52,18 @@ export default function Container() {
   if (!renderable) return null;
 
   return (
-    <Draggable handle=".toc-draggable-handle">
-      <div
-        className={`toc-container ${
-          theme === 'light' ? 'theme-light' : 'theme-dark'
-        }`}
-        style={isHidden ? { display: 'none' } : {}}
-      >
-        <div className="toc-draggable-handle"></div>
-        <Toolbar
-          isFolded={isFolded}
-          setFolded={setFolded}
-          setHidden={setHidden}
-        />
-        <Headings isFolded={isFolded} />
-      </div>
-    </Draggable>
+    <div
+      className={`toc-container ${
+        theme === 'light' ? 'theme-light' : 'theme-dark'
+      }`}
+      style={isHidden ? { display: 'none' } : {}}
+    >
+      <Toolbar
+        isFolded={isFolded}
+        setFolded={setFolded}
+        setHidden={setHidden}
+      />
+      <Headings isFolded={isFolded} />
+    </div>
   );
 }
