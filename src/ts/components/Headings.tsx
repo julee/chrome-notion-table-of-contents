@@ -28,7 +28,7 @@ export default function Headings({
       refreshAllHeadings();
 
       // watch headings' change
-      const handleChange = debounce(refreshAllHeadings, 1000);
+      const handleChange = debounce(refreshAllHeadings, 150);
       observer = new MutationObserver(handleChange);
       observer.observe(container as Node, {
         childList: true,
