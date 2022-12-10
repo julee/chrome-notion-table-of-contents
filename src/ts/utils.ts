@@ -22,13 +22,13 @@ export function querySelector(selector: string): HTMLElement {
   return elem;
 }
 
-export function waitFor(selector: string): Promise<NodeListOf<HTMLElement>> {
+export function waitFor(selector: string): Promise<HTMLElement> {
   return new Promise((resolve) => {
     const getElements = (fn?: () => void) => {
-      const elems = document.querySelectorAll<HTMLElement>(selector);
-      if (elems.length > 0) {
+      const elem = document.querySelector<HTMLElement>(selector);
+      if (elem) {
         if (fn) fn();
-        resolve(elems);
+        resolve(elem);
       }
     };
     getElements();

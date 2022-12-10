@@ -20,7 +20,6 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
-                    targets: ['>= 0.2% and Chrome >= 1'],
                     useBuiltIns: 'usage',
                     corejs: 3,
                   },
@@ -56,5 +55,8 @@ module.exports = {
       name: 'vendor',
       chunks: (chunk) => chunk.name !== 'background',
     },
+  },
+  experiments: {
+    topLevelAwait: true,
   },
 };

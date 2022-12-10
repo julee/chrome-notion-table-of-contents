@@ -54,7 +54,7 @@ async function hasMounted(tabId: number) {
   return (
     await chrome.scripting.executeScript({
       target: { tabId },
-      func: () => !!document.querySelector('.toc-has-mounted'),
+      func: () => !!document.querySelector('.toc-react-root'),
     })
   )[0].result;
 }
