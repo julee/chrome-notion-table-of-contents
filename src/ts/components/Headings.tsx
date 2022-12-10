@@ -4,7 +4,7 @@ import Heading from './Heading';
 import { extractHeadings, setHighlight } from './utils/headings';
 
 // TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
-export default function Headings({ isFolded }: { isFolded: boolean }) {
+export default function Headings() {
   const [headings, setHeadings] = useState<HeadingsType>([]);
   console.info('# render heading');
 
@@ -49,7 +49,7 @@ export default function Headings({ isFolded }: { isFolded: boolean }) {
   }, []);
 
   return (
-    <div className="toc-headings" style={isFolded ? { display: 'none' } : {}}>
+    <div className="toc-headings">
       {headings.length === 0 ? (
         <p>No headings</p>
       ) : (

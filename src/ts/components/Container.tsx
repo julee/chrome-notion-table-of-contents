@@ -7,7 +7,6 @@ export default function Container() {
   console.info('# render container');
 
   const [isHidden, setHidden] = useState<boolean>(false);
-  const [isFolded, setFolded] = useState<boolean>(false);
   const [renderable, setRenderable] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -39,7 +38,6 @@ export default function Container() {
 
         case 'MOVE_PAGE':
           setHidden(false);
-          setFolded(false);
           setRenderable(false);
           break;
 
@@ -58,12 +56,8 @@ export default function Container() {
       }`}
       style={isHidden ? { display: 'none' } : {}}
     >
-      <Toolbar
-        isFolded={isFolded}
-        setFolded={setFolded}
-        setHidden={setHidden}
-      />
-      <Headings isFolded={isFolded} />
+      <Toolbar setHidden={setHidden} />
+      <Headings />
     </div>
   );
 }
