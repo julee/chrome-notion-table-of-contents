@@ -1,15 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { querySelector, waitFor } from '../utils';
+import Header from './Header';
 import Headings from './Headings';
-import Toolbar from './Toolbar';
+import { useFolded } from './hooks/container';
 
 export default function Container() {
   console.info('# render container');
 
-  const [isHidden, setHidden] = useState<boolean>(false);
   const [renderable, setRenderable] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pageChangedTime, setPageChangedTime] = useState<number>(0);
+  const [folded, setFolded] = useFolded(true);
 
   useLayoutEffect(() => {
     // build
@@ -34,8 +35,6 @@ export default function Container() {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CHANGE_PAGE':
-          console.log('# CHANGE PAGE');
-          setHidden(false);
           setPageChangedTime(Date.now());
           break;
 
@@ -45,19 +44,18 @@ export default function Container() {
     });
   }, []);
 
-  if (!renderable) return null;
-
   return (
     <div
       className={`toc-container ${
         theme === 'light' ? 'theme-light' : 'theme-dark'
       }`}
-      style={isHidden ? { display: 'none' } : {}}
     >
-      <Toolbar setHidden={setHidden} />
-      {/* 描画コストが高いので、useMemo したほうが良さそう
-          と思ったけど重い処理は DidMount でしか行われないので大丈夫だった */}
-      <Headings pageChangedTime={pageChangedTime} />
+      <Header folded={folded} setFolded={setFolded} />
+      {renderable && !folded && (
+        <>
+          <Headings pageChangedTime={pageChangedTime} />
+        </>
+      )}
     </div>
   );
 }

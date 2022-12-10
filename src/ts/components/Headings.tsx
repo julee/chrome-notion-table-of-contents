@@ -4,6 +4,8 @@ import Heading from './Heading';
 import { extractHeadings, setHighlight } from './utils/headings';
 
 // TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
+// MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
+//       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
   pageChangedTime,
 }: {

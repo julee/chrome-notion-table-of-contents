@@ -1,6 +1,6 @@
 import { getContainer } from '../../utils';
 
-export function extractHeadings(): HeadingsType {
+export const extractHeadings = (): HeadingsType => {
   console.info('# extract headings');
 
   let headings: HeadingsType = [];
@@ -38,9 +38,9 @@ export function extractHeadings(): HeadingsType {
     });
   }
   return headings;
-}
+};
 
-export function setHighlight(headings: HeadingsType): HeadingsType {
+export const setHighlight = (headings: HeadingsType): HeadingsType => {
   if (headings.length === 0) {
     return headings;
   }
@@ -57,4 +57,4 @@ export function setHighlight(headings: HeadingsType): HeadingsType {
   (current ??= newHeadings[0]).isFocused = true;
 
   return newHeadings;
-}
+};

@@ -19,15 +19,10 @@
     "webNavigation",
     "declarativeContent",
     "scripting",
+    "storage",
     "activeTab"
   ],
   "host_permissions": ["https://www.notion.so/*"],
-  "web_accessible_resources": [
-    {
-      "resources": ["images/*.png"],
-      "matches": ["https://www.notion.so/*"]
-    }
-  ],
   "icons": {
     "16": "./images/icon16.png",
     "32": "./images/icon32.png",

@@ -1,31 +1,32 @@
-.toc-container {
-  z-index: 10000;
-
-  /* position */
-  width: 350px;
-  min-height: 40px;
-  font-size: 14px;
-
-  /* appearance */
-  border: solid 1px;
-}
-
 .toc-clickable {
   cursor: pointer;
 }
 
-.toc-toolbar {
-  position: absolute;
-  top: 7px;
-  right: 7px;
+.toc-container {
+  z-index: 10000;
+  width: 350px;
+  min-height: 40px;
+  font-size: 14px;
+  border: solid 1px;
+
+  svg {
+    display: inline;
+    flex-shrink: 0;
+    fill: rgb(55 53 47 / 45%);
+    backface-visibility: hidden;
+  }
 }
 
-.toc-icon-container {
-  padding: 5px;
+.icon-folded,
+.icon-expanded {
+  --w: 15px;
+
+  width: var(--w);
+  height: var(--w);
 }
 
-.toc-icon {
-  width: 10px;
+.icon-folded {
+  transform: rotateZ(-90deg);
 }
 
 .toc-headings {

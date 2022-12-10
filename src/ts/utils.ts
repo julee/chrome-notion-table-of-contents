@@ -1,4 +1,4 @@
-export function debounce(fn: () => void, delay: number): () => void {
+export const debounce = (fn: () => void, delay: number): (() => void) => {
   let timeoutID: number | null = null;
   return () => {
     if (timeoutID) {
@@ -8,21 +8,21 @@ export function debounce(fn: () => void, delay: number): () => void {
       fn();
     }, delay);
   };
-}
+};
 
-export function getContainer(): HTMLElement {
+export const getContainer = (): HTMLElement => {
   return querySelector('.notion-frame .notion-scroller');
-}
+};
 
-export function querySelector(selector: string): HTMLElement {
+export const querySelector = (selector: string): HTMLElement => {
   const elem = document.querySelector<HTMLElement>(selector);
   if (!elem) {
     throw new Error(`"${selector}" is not found`);
   }
   return elem;
-}
+};
 
-export function waitFor(selector: string): Promise<HTMLElement> {
+export const waitFor = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
     const getElements = (fn?: () => void) => {
       const elem = document.querySelector<HTMLElement>(selector);
@@ -39,4 +39,4 @@ export function waitFor(selector: string): Promise<HTMLElement> {
       });
     }, 300);
   });
-}
+};
