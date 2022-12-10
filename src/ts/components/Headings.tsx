@@ -56,13 +56,10 @@ export default function Headings({
 
   return (
     <div className="toc-headings">
-      {headings.length === 0 ? (
-        <p>No headings</p>
-      ) : (
+      {headings.length >= 1 &&
         headings.map((heading) => (
           <Heading key={heading.blockId} {...heading} />
-        ))
-      )}
+        ))}
     </div>
   );
 }
