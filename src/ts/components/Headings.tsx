@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import { debounce, getContainer, getI18nMessage, waitFor } from '../utils';
 import Heading from './Heading';
+import { useHeadings } from './hooks/headings';
 import { extractHeadings, setHighlight } from './utils/headings';
 
 const DEBOUNCE_TIME = 150;
@@ -15,24 +16,7 @@ export default function Headings({
   locale: Locale;
   pageChangedTime: number;
 }) {
-  const [headings, _setHeadings] = useState<Headings>([]);
-  const headingsRef = useRef<Headings | null>(null);
-
-  const setHeadings = useCallback(
-    (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
-      if (typeof valOrFunction === 'function') {
-        _setHeadings((prevHeadings) => {
-          const newHeadings = valOrFunction(prevHeadings);
-          headingsRef.current = newHeadings;
-          return newHeadings;
-        });
-      } else {
-        _setHeadings(valOrFunction);
-        headingsRef.current = valOrFunction;
-      }
-    },
-    [],
-  );
+  const [headings, setHeadings, headingsRef] = useHeadings([]);
 
   console.info('# render heading');
 
@@ -50,6 +34,8 @@ export default function Headings({
     (async () => {
       // Heading コンポーネントが依存している要素が描画されるまで待つ
       // このコンポーネントが読まれる時点で sidebar までは描画されているが、main まではまだ確定されていない
+      // NOTE: もう少し深い要素まで見たほうがいいかもしれない
+      // たまに 1 個の見出ししか描画されないことがある原因これかも
       await waitFor('main');
       refreshAllHeadings();
     })();

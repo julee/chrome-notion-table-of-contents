@@ -33,6 +33,8 @@ export default function Container() {
   }, []);
 
   useEffect(() => {
+    // 現状 Headings でしか使っていないが、将来的に
+    // 他のコンポーネントが使う message を受け取る可能性もあるので、ここに置く
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CHANGE_PAGE':
