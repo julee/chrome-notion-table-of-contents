@@ -12,6 +12,8 @@ export default function Container() {
   const [pageChangedTime, setPageChangedTime] = useState<number>(0);
   const [folded, setFolded] = useFolded(false);
   const [locale, setLocale] = useState<Locale>(LOCALE.EN);
+  const [canReceieveMessages, setCanReceieveMessages] =
+    useState<boolean>(false);
 
   useLayoutEffect(() => {
     (async () => {
@@ -41,13 +43,16 @@ export default function Container() {
           throw new Error(`unknown type: ${type}`);
       }
     });
+    setCanReceieveMessages(true);
   }, []);
 
   return (
     <div
-      className={`toc-container ${
-        theme === 'light' ? 'theme-light' : 'theme-dark'
-      }`}
+      className={[
+        'toc-container',
+        theme === 'light' ? 'toc-theme-light' : 'toc-theme-dark',
+        canReceieveMessages ? 'toc-can-receive-messages' : '',
+      ].join(' ')}
     >
       <Header locale={locale} folded={folded} setFolded={setFolded} />
       {folded || (

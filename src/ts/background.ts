@@ -17,13 +17,21 @@ chrome.runtime.onInstalled.addListener(async () => {
   });
 });
 
-// この hasMounted (内部で executeScript() ) のために host_permissions が必要
-// action の click はユーザー操作起点なので activeTab で賄えるが
-// これはユーザー操作で **ない** ので賄えない
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
-    if (await hasMounted(detail.tabId))
+    if (
+      // このために host_permissions が必要
+      // これが呼ばれるより前にユーザー操作(click action など)があれば activeTab で賄える
+      // (が、そのような操作は現状ではしない)
+      (
+        await chrome.scripting.executeScript({
+          target: { tabId: detail.tabId },
+          func: () => !!document.querySelector('.toc-can-receive-messages'),
+        })
+      )[0].result
+    ) {
       sendMessage(detail.tabId, { type: 'CHANGE_PAGE' });
+    }
   },
   { url: [URL_FILTER] },
 );
@@ -31,16 +39,6 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
 // ========================================
 // Utils
 // ========================================
-
-async function hasMounted(tabId: number) {
-  return (
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      func: () => !!document.querySelector('.toc-react-root'),
-    })
-  )[0].result;
-}
-
 async function sendMessage(tabId: number, req: { type: string }) {
   console.info('# ' + req.type);
   try {
