@@ -22,21 +22,23 @@ export const querySelector = (selector: string): HTMLElement => {
   return elem;
 };
 
+const GET_ELEMENT_INTERVAL = 100;
+
 export const waitFor = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
-    const getElements = (fn?: () => void) => {
+    const getElement = (fn?: () => void) => {
       const elem = document.querySelector<HTMLElement>(selector);
       if (elem) {
         if (fn) fn();
         resolve(elem);
       }
     };
-    getElements();
+    getElement();
 
     const id = setInterval(() => {
-      getElements(() => {
+      getElement(() => {
         clearInterval(id);
       });
-    }, 300);
+    }, GET_ELEMENT_INTERVAL);
   });
 };

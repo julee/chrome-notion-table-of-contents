@@ -1,9 +1,9 @@
 import { getContainer } from '../../utils';
 
-export const extractHeadings = (): HeadingsType => {
+export const extractHeadings = (): Headings => {
   console.info('# extract headings');
 
-  let headings: HeadingsType = [];
+  let headings: Headings = [];
 
   const elems = getContainer().querySelectorAll<HTMLElement>(
     '[placeholder="Heading 1"],' +
@@ -40,7 +40,7 @@ export const extractHeadings = (): HeadingsType => {
   return headings;
 };
 
-export const setHighlight = (headings: HeadingsType): HeadingsType => {
+export const setHighlight = (headings: Headings): Headings => {
   if (headings.length === 0) {
     return headings;
   }
@@ -48,7 +48,7 @@ export const setHighlight = (headings: HeadingsType): HeadingsType => {
   const currentOffset = container.offsetTop + container.scrollTop;
   const newHeadings = structuredClone(headings);
 
-  let current: HeadingType | null = null;
+  let current: Heading | null = null;
   for (const heading of newHeadings) {
     heading.isFocused = false;
     if (currentOffset < heading.offset) continue;
