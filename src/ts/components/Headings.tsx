@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { debounce, getContainer, waitFor } from '../utils';
+import { debounce, getContainer, getI18nMessage, waitFor } from '../utils';
 import Heading from './Heading';
 import { extractHeadings, setHighlight } from './utils/headings';
 
@@ -9,8 +9,10 @@ const DEBOUNCE_TIME = 150;
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
+  locale,
   pageChangedTime,
 }: {
+  locale: Locale;
   pageChangedTime: number;
 }) {
   const [headings, _setHeadings] = useState<Headings>([]);
@@ -91,5 +93,7 @@ export default function Headings({
         <Heading key={heading.blockId} {...heading} />
       ))}
     </div>
-  ) : null;
+  ) : (
+    <p className="toc-no-headings">{getI18nMessage(locale, 'NO_HEADINGS')}</p>
+  );
 }

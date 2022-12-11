@@ -18,7 +18,7 @@ export default function Headings({
 }) {
   return (
     <div className="toc-header toc-clickable">
-      <p onClick={() => setFolded(!folded)}>
+      <p className="toc-title" onClick={() => setFolded(!folded)}>
         {folded ? (
           <Icon className="icon-folded" />
         ) : (

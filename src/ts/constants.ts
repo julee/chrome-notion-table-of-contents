@@ -7,8 +7,6 @@ export const THEME = {
 export const LOCALE = {
   JA: 'ja-JP',
   EN: 'en', // en-GB(Great Britain) とかもあるので
-  KR: 'ko-KR',
-  FR: 'fr-FR',
 } as const;
 
 export const MESSAGES: {
@@ -19,7 +17,9 @@ export const MESSAGES: {
   TABLE_OF_CONTENTS: {
     [LOCALE.EN]: 'Table of contents',
     [LOCALE.JA]: '目次',
-    [LOCALE.KR]: '목차',
-    [LOCALE.FR]: 'Table des matières',
+  },
+  NO_HEADINGS: {
+    [LOCALE.EN]: 'No headings',
+    [LOCALE.JA]: '見出しなし',
   },
 } as const;

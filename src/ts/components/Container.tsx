@@ -57,7 +57,7 @@ export default function Container() {
       <Header locale={locale} folded={folded} setFolded={setFolded} />
       {folded || (
         <>
-          <Headings pageChangedTime={pageChangedTime} />
+          <Headings locale={locale} pageChangedTime={pageChangedTime} />
         </>
       )}
     </div>
