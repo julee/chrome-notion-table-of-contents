@@ -5,37 +5,6 @@ import { extractHeadings, setHighlight } from './utils/headings';
 
 const DEBOUNCE_TIME = 150;
 
-const ALT = [
-  {
-    blockId: 'XXXXX1',
-    text: '## Alternative Text ##',
-    level: 1,
-    offset: 0,
-    isFocused: false,
-  },
-  {
-    blockId: 'XXXXX2',
-    text: '## Alternative Text ##',
-    level: 1,
-    offset: 0,
-    isFocused: false,
-  },
-  {
-    blockId: 'XXXXX3',
-    text: '## Alternative Text ##',
-    level: 1,
-    offset: 0,
-    isFocused: false,
-  },
-  {
-    blockId: 'XXXXX4',
-    text: '## Alternative Text ##',
-    level: 1,
-    offset: 0,
-    isFocused: false,
-  },
-];
-
 // TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
@@ -116,12 +85,11 @@ export default function Headings({
     return () => container.removeEventListener('scroll', fn);
   }, []);
 
-  return (
+  return headings.length > 0 ? (
     <div className="toc-headings">
-      {headings.length >= 0 &&
-        headings.map((heading) => (
-          <Heading key={heading.blockId} {...heading} />
-        ))}
+      {headings.map((heading) => (
+        <Heading key={heading.blockId} {...heading} />
+      ))}
     </div>
-  );
+  ) : null;
 }

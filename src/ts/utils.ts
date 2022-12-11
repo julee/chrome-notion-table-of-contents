@@ -1,3 +1,5 @@
+import { MESSAGES } from './constants';
+
 export const debounce = (fn: () => void, delay: number): (() => void) => {
   let timeoutID: number | null = null;
   return () => {
@@ -11,10 +13,10 @@ export const debounce = (fn: () => void, delay: number): (() => void) => {
 };
 
 export const getContainer = (): HTMLElement => {
-  return querySelector('.notion-frame .notion-scroller');
+  return $('.notion-frame .notion-scroller');
 };
 
-export const querySelector = (selector: string): HTMLElement => {
+export const $ = (selector: string): HTMLElement => {
   const elem = document.querySelector<HTMLElement>(selector);
   if (!elem) {
     throw new Error(`"${selector}" is not found`);
@@ -41,4 +43,13 @@ export const waitFor = (selector: string): Promise<HTMLElement> => {
       });
     }, GET_ELEMENT_INTERVAL);
   });
+};
+
+// Notion の使用言語のメッセージを取得する
+// Chrome の言語設定と必ずしも一致しないため、 chrome.i18n を使わず独自に管理する
+export const getI18nMessage = (locale: Locale, name: string) => {
+  if (!Object.hasOwn(MESSAGES, name))
+    throw new Error(`name:${name} is not found`);
+
+  return MESSAGES[name as keyof typeof MESSAGES][locale];
 };

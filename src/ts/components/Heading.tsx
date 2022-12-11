@@ -1,10 +1,10 @@
 import React from 'react';
-import { getContainer, querySelector } from '../utils';
+import { $, getContainer } from '../utils';
 
 export default function Heading({ blockId, isFocused, level, text }: Heading) {
   const scrollToHeading = () => {
     getContainer().scroll({
-      top: querySelector(`[data-block-id="${blockId}"]`).offsetTop,
+      top: $(`[data-block-id="${blockId}"]`).offsetTop,
     });
   };
   return (
