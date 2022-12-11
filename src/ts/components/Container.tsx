@@ -10,7 +10,7 @@ export default function Container() {
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [pageChangedTime, setPageChangedTime] = useState<number>(0);
-  const [folded, setFolded] = useFolded(true);
+  const [folded, setFolded] = useFolded(false);
   const [locale, setLocale] = useState<Locale>(LOCALE.EN);
 
   useLayoutEffect(() => {
