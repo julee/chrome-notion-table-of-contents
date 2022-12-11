@@ -1,3 +1,8 @@
+export const THEME = {
+  LIGHT: 'light',
+  DARK: 'dark',
+};
+
 // ここに無い言語の場合 en にフォールバックするように(コードが)なっている
 export const LOCALE = {
   JA: 'ja-JP',

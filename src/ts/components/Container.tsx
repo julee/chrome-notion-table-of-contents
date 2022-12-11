@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { LOCALE } from '../constants';
+import { LOCALE, THEME } from '../constants';
 import { waitFor } from '../utils';
 import Header from './Header';
 import Headings from './Headings';
@@ -8,7 +8,7 @@ import { useFolded } from './hooks/container';
 export default function Container() {
   console.info('# render container');
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
   const [pageChangedTime, setPageChangedTime] = useState<number>(0);
   const [folded, setFolded] = useFolded(false);
   const [locale, setLocale] = useState<Locale>(LOCALE.EN);
@@ -18,7 +18,7 @@ export default function Container() {
   useLayoutEffect(() => {
     (async () => {
       const elem = await waitFor('.notion-light-theme,.notion-dark-theme');
-      setTheme(elem.matches('.notion-light-theme') ? 'light' : 'dark');
+      setTheme(elem.matches('.notion-light-theme') ? THEME.LIGHT : THEME.DARK);
     })();
     (async () => {
       await waitFor('#notion-app');
@@ -50,7 +50,7 @@ export default function Container() {
     <div
       className={[
         'toc-container',
-        theme === 'light' ? 'toc-theme-light' : 'toc-theme-dark',
+        `toc-theme-${theme}`,
         canReceieveMessages ? 'toc-can-receive-messages' : '',
       ].join(' ')}
     >
