@@ -6,21 +6,31 @@ export const extractHeadings = (): Headings => {
   let headings: Headings = [];
 
   const elems = getContainer().querySelectorAll<HTMLElement>(
-    '[placeholder="Heading 1"],' +
-      '[placeholder="Heading 2"],' +
-      '[placeholder="Heading 3"]',
+    '.notion-header-block',
   );
   for (const heading of elems) {
-    const parentElem = heading.closest('[data-block-id]');
-    if (!parentElem) {
-      throw new Error('parent element is not found');
+    const blockId = heading.getAttribute('data-block-id');
+    if (!blockId) {
+      console.error('data-block-id is not found', elems);
+      continue;
     }
+    const placeHolder = heading
+      .querySelector('[placeholder]')
+      ?.getAttribute('placeholder');
+    if (!placeHolder) {
+      console.error('placeholder is not found', elems);
+      continue;
+    }
+    const level = placeHolder.match(/[0-9]+$/)?.[0];
+    if (level === undefined) {
+      console.error('heading level is not found', placeHolder);
+      continue;
+    }
+
     headings.push({
       text: (heading.textContent || '').trim(),
-      level: Number(
-        (heading.getAttribute('placeholder') || '').replace(/^Heading /, ''),
-      ),
-      blockId: parentElem.getAttribute('data-block-id') || '',
+      level: Number(level),
+      blockId,
       offset: heading.offsetTop,
       isFocused: false,
     });
