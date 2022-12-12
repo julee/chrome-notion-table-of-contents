@@ -17,11 +17,13 @@ const DEBOUNCE_TIME = 150;
 export default function Headings({
   locale,
   pageChangedTime,
+  setHidden,
 }: {
   locale: Locale;
   pageChangedTime: number;
+  setHidden: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [headings, setHeadings, headingsRef] = useHeadings([]);
+  const [headings, setHeadings, headingsRef] = useHeadings([], setHidden);
 
   console.info('# render heading');
 
@@ -30,6 +32,7 @@ export default function Headings({
     setHeadings(setHighlight(headings));
   };
 
+  // render headings
   useEffect(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
     if (headingsRef.current) setHeadings(headingsRef.current);

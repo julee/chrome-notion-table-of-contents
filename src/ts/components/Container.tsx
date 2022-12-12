@@ -12,6 +12,7 @@ export default function Container() {
   const [pageChangedTime, setPageChangedTime] = useState<number>(0);
   const [folded, setFolded] = useFolded(false);
   const [locale, setLocale] = useState<Locale>(LOCALE.EN);
+  const [hidden, setHidden] = useState<boolean>(true);
 
   useLayoutEffect(() => {
     (async () => {
@@ -45,12 +46,25 @@ export default function Container() {
     });
   }, []);
 
+  // NOTE: 本来なら hidden: true の場合はコンポーネントごと描画しない方がスマートだが
+  // そうするためには headings の抽出処理を Headings.tsx からこのコンポーネントにリフトアップする必要があり
+  // (コンポーネントごと表示しない場合、Headings.tsx の useEffect が呼ばれない
+  //  == pageChangedTime が変わっても再描画できない)
+  // それはいささか大手術(だし、headings の生成をこのコンポーネントでやるのも、責務分担的にどうなのよ...)
+  // なので、いったんは display: none で凌ぐ
   return (
-    <div className={['toc-container', `toc-theme-${theme}`].join(' ')}>
+    <div
+      className={['toc-container', `toc-theme-${theme}`].join(' ')}
+      {...(hidden && { style: { display: 'none' } })}
+    >
       <Header locale={locale} folded={folded} setFolded={setFolded} />
       {folded || (
         <>
-          <Headings locale={locale} pageChangedTime={pageChangedTime} />
+          <Headings
+            locale={locale}
+            pageChangedTime={pageChangedTime}
+            setHidden={setHidden}
+          />
         </>
       )}
     </div>
