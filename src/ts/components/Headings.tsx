@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { debounce, getContainer, getI18nMessage, waitFor } from '../utils';
+import {
+  debounce,
+  getContainer as getMainContainer,
+  getI18nMessage,
+  waitFor,
+} from '../utils';
 import Heading from './Heading';
 import { useHeadings } from './hooks/headings';
 import { extractHeadings, setHighlight } from './utils/headings';
@@ -25,8 +30,6 @@ export default function Headings({
     setHeadings(setHighlight(headings));
   };
 
-  const container = getContainer();
-
   useEffect(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
     if (headingsRef.current) setHeadings(headingsRef.current);
@@ -49,7 +52,7 @@ export default function Headings({
 
       const handleChange = debounce(refreshAllHeadings, DEBOUNCE_TIME);
       observer = new MutationObserver(handleChange);
-      observer.observe(container as Node, {
+      observer.observe(getMainContainer() as Node, {
         childList: true,
         subtree: true,
         characterData: true,
@@ -60,7 +63,7 @@ export default function Headings({
         observer.disconnect();
       }
     };
-  }, []);
+  }, [pageChangedTime]);
 
   // highlight current
   useEffect(() => {
@@ -68,10 +71,13 @@ export default function Headings({
       () => setHeadings((headings) => setHighlight(headings)),
       DEBOUNCE_TIME,
     );
-    container.addEventListener('scroll', fn);
-    fn();
-    return () => container.removeEventListener('scroll', fn);
-  }, []);
+    (async () => {
+      await waitFor('main');
+      getMainContainer().addEventListener('scroll', fn);
+      fn();
+    })();
+    return () => getMainContainer().removeEventListener('scroll', fn);
+  }, [pageChangedTime]);
 
   return headings.length > 0 ? (
     <div className="toc-headings">
