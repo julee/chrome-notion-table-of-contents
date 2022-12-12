@@ -6,7 +6,7 @@ export const extractHeadings = (): Headings => {
   let headings: Headings = [];
 
   const elems = getContainer().querySelectorAll<HTMLElement>(
-    '.notion-header-block',
+    '[class^="notion-"][class$="header-block"]',
   );
   for (const heading of elems) {
     const blockId = heading.getAttribute('data-block-id');
@@ -14,16 +14,15 @@ export const extractHeadings = (): Headings => {
       console.error('data-block-id is not found', elems);
       continue;
     }
-    const placeHolder = heading
-      .querySelector('[placeholder]')
-      ?.getAttribute('placeholder');
-    if (!placeHolder) {
-      console.error('placeholder is not found', elems);
-      continue;
-    }
-    const level = placeHolder.match(/[0-9]+$/)?.[0];
+    const level = heading.classList.contains('notion-header-block')
+      ? 1
+      : heading.classList.contains('notion-sub_header-block')
+      ? 2
+      : heading.classList.contains('notion-sub_sub_header-block')
+      ? 3
+      : undefined;
     if (level === undefined) {
-      console.error('heading level is not found', placeHolder);
+      console.error(`Cannot get level. ${JSON.stringify(heading.classList)}`);
       continue;
     }
 

@@ -20,12 +20,12 @@ describe('extractHeadings', () => {
           This is h1
         </div>
       </div>
-      <div data-block-id="h2-xxx" class="notion-header-block">
+      <div data-block-id="h2-xxx" class="notion-sub_header-block">
         <div placeholder="Heading 2">
           This is h2
         </div>
       </div>
-      <div data-block-id="h3-xxx" class="notion-header-block">
+      <div data-block-id="h3-xxx" class="notion-sub_sub_header-block">
         <div placeholder="Heading 3">
           This is h3
         </div>
@@ -57,12 +57,12 @@ describe('extractHeadings', () => {
   });
   it('un-indent', () => {
     document.body.innerHTML = wrap(`
-      <div data-block-id="h2-xxx" class="notion-header-block">
+      <div data-block-id="h2-xxx" class="notion-sub_header-block">
         <div placeholder="Heading 2">
           This is h2
         </div>
       </div>
-      <div data-block-id="h3-xxx" class="notion-header-block">
+      <div data-block-id="h3-xxx" class="notion-sub_sub_header-block">
         <div placeholder="Heading 3">
           This is h3
         </div>
@@ -110,10 +110,10 @@ describe('locales', () => {
       <div data-block-id="h1-xxx" class="notion-header-block">
         <div placeholder="${prefix}1">This is h1</div>
       </div>
-      <div data-block-id="h2-xxx" class="notion-header-block">
+      <div data-block-id="h2-xxx" class="notion-sub_header-block">
         <div placeholder="${prefix}2">This is h2</div>
       </div>
-      <div data-block-id="h3-xxx" class="notion-header-block">
+      <div data-block-id="h3-xxx" class="notion-sub_sub_header-block">
         <div placeholder="${prefix}3">This is h3</div>
       </div>
     `);
