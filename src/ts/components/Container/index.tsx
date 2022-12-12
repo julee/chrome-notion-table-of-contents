@@ -46,7 +46,7 @@ export default function Container() {
   }, []);
 
   return (
-    <div className={['toc-container', `toc-theme-${theme}`].join(' ')}>
+    <div className={`toc-container toc-theme-${theme}`}>
       <Header locale={locale} folded={folded} setFolded={setFolded} />
       {folded || (
         <>
