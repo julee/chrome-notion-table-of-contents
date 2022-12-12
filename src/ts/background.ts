@@ -19,18 +19,14 @@ chrome.runtime.onInstalled.addListener(async () => {
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
-    if (
-      // このために host_permissions が必要
-      // これが呼ばれるより前にユーザー操作(click action など)があれば activeTab で賄える
-      // (が、そのような操作は現状ではしない)
-      (
-        await chrome.scripting.executeScript({
-          target: { tabId: detail.tabId },
-          func: () => !!document.querySelector('.toc-can-receive-messages'),
-        })
-      )[0].result
-    ) {
-      sendMessage(detail.tabId, { type: 'CHANGE_PAGE' });
+    try {
+      await sendMessage(detail.tabId, { type: 'CHANGE_PAGE' });
+    } catch (error) {
+      // content script がロードされる以前に送信すると当然エラーになり、その場合は無視する
+      // executeScript を駆使して content script がロードするかチェックする術もあるが
+      // 通信が 1 往復多くなるし、
+      // そのためだけに scripting permission を使う理由を審査時に説明するのもだるいし ... 。
+      if (!(error + '').match(/Could not establish connection/)) throw error;
     }
   },
   { url: [URL_FILTER] },
@@ -46,9 +42,8 @@ async function sendMessage(tabId: number, req: { type: string }) {
   } catch (error) {
     if (error)
       throw new Error(
-        `tabs.sendMessage(${JSON.stringify(
-          req,
-        )}) failed. \norig error: ${error}`,
+        `tabs.sendMessage(${JSON.stringify(req)}) failed.\n` +
+          (error instanceof Error ? error.message : error),
       );
   }
 }
