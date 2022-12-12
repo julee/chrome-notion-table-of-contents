@@ -1,9 +1,9 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { LOCALE, THEME } from '../constants';
-import { waitFor } from '../utils';
-import Header from './Header';
-import Headings from './Headings';
-import { useFolded } from './hooks/container';
+import { LOCALE, THEME } from '../../constants';
+import { waitFor } from '../../utils';
+import Header from '../Header';
+import Headings from '../Headings';
+import { useFolded } from './hooks';
 
 export default function Container() {
   console.info('# render container');

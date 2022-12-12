@@ -1,5 +1,5 @@
 import * as utils from '../../../utils';
-import { extractHeadings, setHighlight } from '../headings';
+import { extractHeadings, setHighlight } from '../utils';
 
 const wrap = (str: string) => `
 <div class="notion-frame">

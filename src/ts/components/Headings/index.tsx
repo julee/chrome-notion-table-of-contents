@@ -4,10 +4,10 @@ import {
   getContainer as getMainContainer,
   getI18nMessage,
   waitFor,
-} from '../utils';
-import Heading from './Heading';
-import { useHeadings } from './hooks/headings';
-import { extractHeadings, setHighlight } from './utils/headings';
+} from '../../utils';
+import Heading from '../Heading';
+import { useHeadings } from './hooks';
+import { extractHeadings, setHighlight } from './utils';
 
 const DEBOUNCE_TIME = 150;
 
