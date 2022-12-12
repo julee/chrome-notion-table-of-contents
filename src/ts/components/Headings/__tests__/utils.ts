@@ -85,6 +85,31 @@ describe('extractHeadings', () => {
       },
     ]);
   });
+  it('removes empty blocks', () => {
+    document.body.innerHTML = wrap(`
+      <div data-block-id="h1-xxx" class="notion-sub_header-block">
+        <div placeholder="Heading 2">
+        </div>
+      </div>
+      <div data-block-id="h1-xxx" class="notion-header-block">
+        <div placeholder="Heading 1">
+          This is h1
+        </div>
+      </div>
+      <div data-block-id="h3-xxx" class="notion-sub_sub_header-block">
+        <div placeholder="Heading 3"> </div>
+      </div>
+    `);
+    expect(extractHeadings()).toEqual([
+      {
+        text: 'This is h1',
+        level: 1,
+        blockId: 'h1-xxx',
+        offset: 0,
+        isFocused: false,
+      },
+    ]);
+  });
 });
 
 describe('locales', () => {

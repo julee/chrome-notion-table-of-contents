@@ -8,29 +8,32 @@ export const extractHeadings = (): Headings => {
   const elems = getContainer().querySelectorAll<HTMLElement>(
     '[class^="notion-"][class$="header-block"]',
   );
-  for (const heading of elems) {
-    const blockId = heading.getAttribute('data-block-id');
+  for (const elem of elems) {
+    const text = (elem.textContent || '').trim();
+    if (text === '') continue;
+
+    const blockId = elem.getAttribute('data-block-id');
     if (!blockId) {
       console.error('data-block-id is not found', elems);
       continue;
     }
-    const level = heading.classList.contains('notion-header-block')
+    const level = elem.classList.contains('notion-header-block')
       ? 1
-      : heading.classList.contains('notion-sub_header-block')
+      : elem.classList.contains('notion-sub_header-block')
       ? 2
-      : heading.classList.contains('notion-sub_sub_header-block')
+      : elem.classList.contains('notion-sub_sub_header-block')
       ? 3
       : undefined;
     if (level === undefined) {
-      console.error(`Cannot get level. ${JSON.stringify(heading.classList)}`);
+      console.error(`Cannot get level. ${JSON.stringify(elem.classList)}`);
       continue;
     }
 
     headings.push({
-      text: (heading.textContent || '').trim(),
+      text,
       level: Number(level),
       blockId,
-      offset: heading.offsetTop,
+      offset: elem.offsetTop,
       isFocused: false,
     });
   }
