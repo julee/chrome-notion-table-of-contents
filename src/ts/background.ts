@@ -1,22 +1,5 @@
 const URL_FILTER = { urlPrefix: 'https://www.notion.so' };
 
-chrome.runtime.onInstalled.addListener(async () => {
-  chrome.action.disable();
-  // Promise is not supported
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
-    chrome.declarativeContent.onPageChanged.addRules([
-      {
-        conditions: [
-          new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: URL_FILTER,
-          }),
-        ],
-        actions: [new chrome.declarativeContent.ShowAction()],
-      },
-    ]);
-  });
-});
-
 chrome.webNavigation.onHistoryStateUpdated.addListener(
   async (detail) => {
     try {

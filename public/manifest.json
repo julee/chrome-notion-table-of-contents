@@ -4,9 +4,6 @@
   "description": "__MSG_description__",
   "version": "2.0.1",
   "default_locale": "en",
-  "action": {
-    "default_icon": "./images/icon38.png"
-  },
   "content_scripts": [
     {
       "matches": ["https://www.notion.so/*"],
@@ -16,7 +13,7 @@
   "background": {
     "service_worker": "./js/background.js"
   },
-  "permissions": ["webNavigation", "declarativeContent", "storage"],
+  "permissions": ["webNavigation", "storage"],
   "icons": {
     "16": "./images/icon16.png",
     "32": "./images/icon32.png",
