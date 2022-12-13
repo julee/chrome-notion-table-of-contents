@@ -161,7 +161,7 @@ describe('setHighlight', () => {
         scrollTop: 100,
         headings: [{ offset: 10 }, { offset: 90 }, { offset: 110 }],
       },
-      expects: [
+      expected: [
         { isFocused: false },
         { isFocused: true },
         { isFocused: false },
@@ -173,7 +173,7 @@ describe('setHighlight', () => {
         scrollTop: 100,
         headings: [],
       },
-      expects: [],
+      expected: [],
     },
     {
       name: 'scrollTop < heading[0].offset',
@@ -181,7 +181,7 @@ describe('setHighlight', () => {
         scrollTop: 0,
         headings: [{ offset: 10 }, { offset: 90 }],
       },
-      expects: [{ isFocused: true }, { isFocused: false }],
+      expected: [{ isFocused: true }, { isFocused: false }],
     },
     {
       name: 'scrollTop > heading[-1].offset',
@@ -189,9 +189,9 @@ describe('setHighlight', () => {
         scrollTop: 100,
         headings: [{ offset: 10 }, { offset: 90 }],
       },
-      expects: [{ isFocused: false }, { isFocused: true }],
+      expected: [{ isFocused: false }, { isFocused: true }],
     },
-  ])('$name', ({ input, expects }) => {
+  ])('$name', ({ input, expected }) => {
     jest.spyOn(utils, 'getContainer').mockImplementation(() => {
       const elem = document.createElement('div');
       elem.scrollTop = input.scrollTop;
@@ -208,6 +208,6 @@ describe('setHighlight', () => {
           ...{ offset: heading.offset },
         })),
       ).map((heading) => ({ isFocused: heading.isFocused })),
-    ).toEqual(expects);
+    ).toEqual(expected);
   });
 });
