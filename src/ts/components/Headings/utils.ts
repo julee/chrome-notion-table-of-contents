@@ -1,12 +1,20 @@
 import { getContainer } from '../../utils';
 
+const HEADING_CLASS = {
+  H1: 'notion-header-block',
+  H2: 'notion-sub_header-block',
+  H3: 'notion-sub_sub_header-block',
+} as const;
+
 export const extractHeadings = (): Headings => {
   console.info('# extract headings');
 
   let headings: Headings = [];
 
   const elems = getContainer().querySelectorAll<HTMLElement>(
-    '[class^="notion-"][class$="header-block"]',
+    Object.values(HEADING_CLASS)
+      .map((name) => `.${name}`)
+      .join(','),
   );
   for (const elem of elems) {
     const text = (elem.textContent || '').trim();
@@ -17,11 +25,11 @@ export const extractHeadings = (): Headings => {
       console.error('data-block-id is not found', elems);
       continue;
     }
-    const level = elem.classList.contains('notion-header-block')
+    const level = elem.classList.contains(HEADING_CLASS.H1)
       ? 1
-      : elem.classList.contains('notion-sub_header-block')
+      : elem.classList.contains(HEADING_CLASS.H2)
       ? 2
-      : elem.classList.contains('notion-sub_sub_header-block')
+      : elem.classList.contains(HEADING_CLASS.H3)
       ? 3
       : undefined;
     if (level === undefined) {
