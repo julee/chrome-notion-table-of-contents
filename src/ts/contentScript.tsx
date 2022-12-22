@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '../postcss/style.pcss';
-import Container from './components/Container';
+import App from './components/App';
 import { waitFor } from './utils';
 
 // Notion blog とかでも content script が読み込まれるのは無駄なので
@@ -21,5 +21,5 @@ if (document.getElementById('notion-app')) {
     );
   sidebar.insertBefore(root, pageList);
 
-  createRoot(root).render(<Container />);
+  createRoot(root).render(<App />);
 }

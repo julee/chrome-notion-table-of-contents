@@ -1,5 +1,5 @@
 import React from 'react';
-import { $, getContainer } from '../utils';
+import { $, getContainer } from '../../utils';
 
 export default function Heading({ blockId, isFocused, level, text }: Heading) {
   const scrollToHeading = () => {

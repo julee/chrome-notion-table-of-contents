@@ -1,5 +1,5 @@
 import React from 'react';
-import { getI18nMessage } from '../utils';
+import { getI18nMessage } from '../../utils';
 
 const Icon = ({ className }: { className: string }) => (
   <svg className={className} viewBox="0 0 12 12">
