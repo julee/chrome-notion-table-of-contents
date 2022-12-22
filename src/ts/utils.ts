@@ -1,5 +1,3 @@
-import { MESSAGES } from './constants';
-
 export const debounce = (fn: () => void, delay: number): (() => void) => {
   let timeoutID: number | null = null;
   return () => {
@@ -43,14 +41,4 @@ export const waitFor = (selector: string): Promise<HTMLElement> => {
       });
     }, GET_ELEMENT_INTERVAL);
   });
-};
-
-// Notion の使用言語のメッセージを取得する
-// Chrome の言語設定と必ずしも一致しないため、 chrome.i18n を使わず独自に管理する
-// TODO: 壊れやすくなるリスクとリターンが釣り合って無くね？ Chrome の locale に寄せたほうが。。。
-export const getI18nMessage = (locale: Locale, name: string) => {
-  if (!Object.hasOwn(MESSAGES, name))
-    throw new Error(`name:${name} is not found`);
-
-  return MESSAGES[name as keyof typeof MESSAGES][locale];
 };

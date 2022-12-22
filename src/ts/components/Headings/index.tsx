@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
   debounce,
   getContainer as getMainContainer,
-  getI18nMessage,
   waitFor,
 } from '../../utils';
 import Heading from '../Heading';
@@ -15,10 +14,8 @@ const DEBOUNCE_TIME = 150;
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
-  locale,
   pageChangedTime,
 }: {
-  locale: Locale;
   pageChangedTime: number;
 }) {
   const [headings, setHeadings, headingsRef] = useHeadings([]);
@@ -86,6 +83,6 @@ export default function Headings({
       ))}
     </div>
   ) : (
-    <p className="toc-no-headings">{getI18nMessage(locale, 'NO_HEADINGS')}</p>
+    <p className="toc-no-headings">{chrome.i18n.getMessage('NO_HEADINGS')}</p>
   );
 }

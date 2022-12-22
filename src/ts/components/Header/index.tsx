@@ -1,5 +1,4 @@
 import React from 'react';
-import { getI18nMessage } from '../../utils';
 
 const Icon = ({ className }: { className: string }) => (
   <svg className={className} viewBox="0 0 12 12">
@@ -8,11 +7,9 @@ const Icon = ({ className }: { className: string }) => (
 );
 
 export default function Headings({
-  locale,
   folded,
   setFolded,
 }: {
-  locale: Locale;
   folded: boolean;
   setFolded: (valOrCb: ((val: boolean) => boolean) | boolean) => void;
 }) {
@@ -24,7 +21,7 @@ export default function Headings({
         ) : (
           <Icon className="icon-expanded" />
         )}
-        {getI18nMessage(locale, 'TABLE_OF_CONTENTS')}
+        {chrome.i18n.getMessage('TABLE_OF_CONTENTS')}
       </p>
     </div>
   );

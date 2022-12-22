@@ -10,5 +10,3 @@ type Heading = {
 type Headings = Heading[];
 
 type Theme = valueOf<typeof import('../constants').THEME>;
-
-type Locale = valueOf<typeof import('../constants').LOCALE>;
