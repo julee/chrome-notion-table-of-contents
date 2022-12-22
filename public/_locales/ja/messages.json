@@ -1,5 +1,11 @@
 {
-   "description": {
-      "message": "Notion の目次をサイドバーに表示します"
-   }
+  "EXTENSION_DESCRIPTION": {
+    "message": "Notion の目次をサイドバーに表示します"
+  },
+  "TABLE_OF_CONTENTS": {
+    "message": "目次"
+  },
+  "NO_HEADINGS": {
+    "message": "見出しなし"
+  }
 }

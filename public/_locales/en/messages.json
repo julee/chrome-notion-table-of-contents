@@ -1,5 +1,11 @@
 {
-   "description": {
-      "message": "Show table of contents (outline) on the sidebar for Notion pages"
-   }
+  "EXTENSION_DESCRIPTION": {
+    "message": "Show table of contents (outline) on the sidebar for Notion pages"
+  },
+  "TABLE_OF_CONTENTS": {
+    "message": "Table of contents"
+  },
+  "NO_HEADINGS": {
+    "message": "No headings"
+  }
 }
