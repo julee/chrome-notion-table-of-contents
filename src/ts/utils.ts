@@ -1,15 +1,3 @@
-export const debounce = (fn: () => void, delay: number): (() => void) => {
-  let timeoutID: number | null = null;
-  return () => {
-    if (timeoutID) {
-      clearTimeout(timeoutID);
-    }
-    timeoutID = window.setTimeout(() => {
-      fn();
-    }, delay);
-  };
-};
-
 export const getContainer = (): HTMLElement => {
   return $('.notion-frame .notion-scroller');
 };

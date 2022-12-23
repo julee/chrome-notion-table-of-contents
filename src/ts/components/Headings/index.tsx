@@ -1,22 +1,19 @@
 import React, { useEffect } from 'react';
-import {
-  debounce,
-  getContainer as getMainContainer,
-  waitFor,
-} from '../../utils';
+import { debounce, throttle } from 'throttle-debounce';
+import { THROTTLE_TIME } from '../../constants';
+import { getContainer as getMainContainer, waitFor } from '../../utils';
 import Heading from '../Heading';
 import { useHeadings } from './hooks';
 import { extractHeadings, setHighlight } from './utils';
 
-const DEBOUNCE_TIME = 150;
-
-// TODO: テスタビリティのために、DOM 依存の処理は分離した方が良いのでは？
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
   pageChangedTime,
+  maxHeight,
 }: {
   pageChangedTime: number;
+  maxHeight: string;
 }) {
   const [headings, setHeadings, headingsRef] = useHeadings([]);
 
@@ -47,7 +44,7 @@ export default function Headings({
     (async () => {
       await waitFor('main');
 
-      const handleChange = debounce(refreshAllHeadings, DEBOUNCE_TIME);
+      const handleChange = debounce(refreshAllHeadings, THROTTLE_TIME);
       observer = new MutationObserver(handleChange);
       observer.observe(getMainContainer() as Node, {
         childList: true,
@@ -64,9 +61,9 @@ export default function Headings({
 
   // highlight current
   useEffect(() => {
-    const fn = debounce(
+    const fn = throttle(
       () => setHeadings((headings) => setHighlight(headings)),
-      DEBOUNCE_TIME,
+      THROTTLE_TIME,
     );
     (async () => {
       await waitFor('main');
@@ -77,7 +74,7 @@ export default function Headings({
   }, [pageChangedTime]);
 
   return headings.length > 0 ? (
-    <div className="toc-headings">
+    <div className="toc-headings" style={{ maxHeight }}>
       {headings.map((heading) => (
         <Heading key={heading.blockId} {...heading} />
       ))}

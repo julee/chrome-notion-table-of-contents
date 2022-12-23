@@ -3,3 +3,5 @@ export const THEME = {
   LIGHT: 'light',
   DARK: 'dark',
 };
+
+export const THROTTLE_TIME = 150;
