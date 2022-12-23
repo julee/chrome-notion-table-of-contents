@@ -25,5 +25,6 @@ export const useHeadings = (
     },
     [],
   );
+
   return [headings, setHeadings, headingsRef];
 };

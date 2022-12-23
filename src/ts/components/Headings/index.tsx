@@ -17,8 +17,6 @@ export default function Headings({
 }) {
   const [headings, setHeadings, headingsRef] = useHeadings([]);
 
-  console.info('# render heading');
-
   const refreshAllHeadings = () => {
     const headings = extractHeadings();
     setHeadings(setHighlight(headings));
@@ -59,7 +57,7 @@ export default function Headings({
     };
   }, [pageChangedTime]);
 
-  // highlight current
+  // highlight current focused
   useEffect(() => {
     const fn = throttle(
       () => setHeadings((headings) => setHighlight(headings)),
