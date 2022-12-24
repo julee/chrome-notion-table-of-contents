@@ -10,7 +10,8 @@ const defaultMaxHeight = '30vh'; // FIXME duplicate
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
-  const [pageChangedTime, setPageChangedTime] = useState<number>(0);
+  const [pageLoadedAt, setPageLoadedAt] = useState<number>(Date.now());
+  const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
   const [folded, setFolded] = useFolded(false);
   const [maxHeight, setMaxHeight] = useState(defaultMaxHeight);
 
@@ -22,12 +23,12 @@ export default function App() {
     })();
   }, []);
 
-  // set paageChangedTime
+  // set paageLoadedAt
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
         case 'CHANGE_PAGE':
-          setPageChangedTime(Date.now());
+          setPageLoadedAt(Date.now());
           break;
 
         default:
@@ -43,11 +44,15 @@ export default function App() {
           走り続けるのはどうかと思うので、今のところは採用しない */}
       {folded || (
         <>
-          <Headings maxHeight={maxHeight} pageChangedTime={pageChangedTime} />
+          <Headings
+            maxHeight={maxHeight}
+            pageLoadedAt={pageLoadedAt}
+            setTocUpdatedAt={setTocUpdatedAt}
+          />
           <ExpandButton
             maxHeight={maxHeight}
             setMaxHeight={setMaxHeight}
-            pageChangedTime={pageChangedTime}
+            tocUpdatedAt={tocUpdatedAt}
           />
         </>
       )}

@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { debounce, throttle } from 'throttle-debounce';
+import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, setHighlight } from './utils';
 
 export const useHeadings = ({
-  pageChangedTime,
+  pageLoadedAt,
+  setTocUpdatedAt,
 }: {
-  pageChangedTime: number;
+  pageLoadedAt: number;
+  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
 }): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
   const headingsRef = useRef<Headings | null>(null);
@@ -31,6 +33,7 @@ export const useHeadings = ({
   const refreshAllHeadings = () => {
     const headings = extractHeadings();
     setHeadings(setHighlight(headings));
+    setTocUpdatedAt(Date.now());
   };
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export const useHeadings = ({
       await waitFor('main');
       refreshAllHeadings();
     })();
-  }, [pageChangedTime]);
+  }, [pageLoadedAt]);
 
   // watch headings' change
   useEffect(() => {
@@ -53,8 +56,9 @@ export const useHeadings = ({
     (async () => {
       await waitFor('main');
 
-      const handleChange = debounce(refreshAllHeadings, THROTTLE_TIME);
-      observer = new MutationObserver(handleChange);
+      observer = new MutationObserver(
+        throttle(refreshAllHeadings, THROTTLE_TIME),
+      );
       observer.observe(getMainContainer() as Node, {
         childList: true,
         subtree: true,
@@ -66,7 +70,7 @@ export const useHeadings = ({
         observer.disconnect();
       }
     };
-  }, [pageChangedTime]);
+  }, [pageLoadedAt]);
 
   // highlight current focused
   useEffect(() => {
@@ -80,7 +84,7 @@ export const useHeadings = ({
       fn();
     })();
     return () => getMainContainer().removeEventListener('scroll', fn);
-  }, [pageChangedTime]);
+  }, [pageLoadedAt]);
 
   return headings;
 };
