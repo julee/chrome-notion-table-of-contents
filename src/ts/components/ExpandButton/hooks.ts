@@ -8,7 +8,7 @@ export const useHasScrollBar = () => {
   return {
     hasScrollbar,
     setHasScrollbar: useCallback(async () => {
-      const elem = await waitFor('.toc-headings');
+      const elem = await waitFor('.toc-headings,.toc-no-headings');
       _setHasScrollbar(elem ? elem.scrollHeight > elem.clientHeight : false);
     }, []),
   };
