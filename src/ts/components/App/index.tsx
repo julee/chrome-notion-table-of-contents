@@ -21,7 +21,7 @@ export default function App() {
     })();
   }, []);
 
-  // set paageLoadedAt
+  // set pageLoadedAt
   useEffect(() => {
     chrome.runtime.onMessage.addListener(({ type }: { type: string }) => {
       switch (type) {
