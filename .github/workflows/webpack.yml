@@ -30,32 +30,5 @@ jobs:
 
       - name: Build
         run: yarn run build
-      - run: |
-         pwd
-         echo '..'
-         ls ..
-         echo '../..'
-         ls ../../
-         find . -type d -maxdepth 2
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: npx jest
-  lint:
-    runs-on: ubuntu-latest  
-    needs: build
-    steps:
-      - run: yarn run lint
-  check-ng-words:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - run: |
-         pwd
-         echo '..'
-         ls ..
-         echo '../..'
-         ls ../../
-         find . -type d -maxdepth 2
-         yarn run check-ngword
+
+      - run: yarn run ci
