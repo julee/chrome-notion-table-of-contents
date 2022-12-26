@@ -33,11 +33,17 @@ jobs:
       - name: Build
         run: yarn run build
   test:
+    runs-on: ubuntu-latest
     needs: build
-    run: npx jest
+    steps:
+      - run: npx jest
   lint:
+    runs-on: ubuntu-latest  
     needs: build
-    run: yarn run lint
+    steps:
+      - run: yarn run lint
   check-ng-words:
+    runs-on: ubuntu-latest
     needs: build
-    run: yarn run check-ngword
+    steps:
+      - run: yarn run check-ngword
