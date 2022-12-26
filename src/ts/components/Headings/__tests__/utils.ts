@@ -33,7 +33,7 @@ describe('extractHeadings', () => {
     `);
     expect(extractHeadings()).toEqual([
       {
-        text: 'This is h1',
+        text: 'This is h6',
         level: 1,
         blockId: 'h1-xxx',
         offset: 0,
