@@ -29,7 +29,7 @@ export const useFolded = (defaultVal: boolean) => {
   };
 };
 
-const DEFAULT_MAX_HEIGHT = '30vh';
+const DEFAULT_MAX_HEIGHT = '26vh';
 const EXPANDED_MAX_HEIGHT = 'calc(100vh - 213px)';
 
 export const useMaxheight = () => {
