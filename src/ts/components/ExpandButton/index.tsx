@@ -4,19 +4,16 @@ import { THROTTLE_TIME } from '../../constants';
 import { FoldIcon } from '../FoldIcon';
 import { useHasScrollBar } from './hooks';
 
-const defaultMaxHeight = '30vh';
-const expandedMaxHeight = 'calc(100vh - 213px)';
-
 export const ExpandButton = ({
-  maxHeight,
-  setMaxHeight,
+  toggleMaxHeight,
+  isDefaultMaxHeight,
   tocUpdatedAt,
 }: {
-  maxHeight: string;
-  setMaxHeight: React.Dispatch<React.SetStateAction<string>>;
+  toggleMaxHeight: () => void;
+  isDefaultMaxHeight: boolean;
   tocUpdatedAt: number;
 }) => {
-  const [hasScrollbar, setHasScrollbar] = useHasScrollBar();
+  const { hasScrollbar, setHasScrollbar } = useHasScrollBar();
 
   // set hasScrollbar
   useEffect(() => {
@@ -26,17 +23,9 @@ export const ExpandButton = ({
     setHasScrollbar(); // setTocUpdatedAt する側で throttle してるので、ここでは間引かない
   }, [tocUpdatedAt]);
 
-  const handleClick = () => {
-    setMaxHeight((prevHeight) => {
-      return prevHeight === defaultMaxHeight
-        ? expandedMaxHeight
-        : defaultMaxHeight;
-    });
-  };
-
   return hasScrollbar ? (
-    <div className="toc-expand-button" onClick={() => handleClick()}>
-      <FoldIcon direction={maxHeight === defaultMaxHeight ? 'down' : 'up'} />
+    <div className="toc-expand-button" onClick={() => toggleMaxHeight()}>
+      <FoldIcon direction={isDefaultMaxHeight ? 'down' : 'up'} />
     </div>
   ) : null;
 };

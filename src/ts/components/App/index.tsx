@@ -4,16 +4,14 @@ import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
-import { useFolded } from './hooks';
-
-const defaultMaxHeight = '30vh'; // FIXME duplicate
+import { useFolded, useMaxheight } from './hooks';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
   const [pageLoadedAt, setPageLoadedAt] = useState<number>(Date.now());
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
-  const [folded, setFolded] = useFolded(false);
-  const [maxHeight, setMaxHeight] = useState(defaultMaxHeight);
+  const { folded, setFolded } = useFolded(false);
+  const { maxHeight, toggleMaxHeight, isDefaultMaxHeight } = useMaxheight();
 
   // set theme
   useLayoutEffect(() => {
@@ -50,8 +48,8 @@ export default function App() {
             setTocUpdatedAt={setTocUpdatedAt}
           />
           <ExpandButton
-            maxHeight={maxHeight}
-            setMaxHeight={setMaxHeight}
+            toggleMaxHeight={toggleMaxHeight}
+            isDefaultMaxHeight={isDefaultMaxHeight}
             tocUpdatedAt={tocUpdatedAt}
           />
         </>

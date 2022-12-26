@@ -2,9 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 const KEY = 'FOLDED';
 
-export const useFolded = (
-  defaultVal: boolean,
-): [boolean, (valOrCb: ((val: boolean) => boolean) | boolean) => void] => {
+export const useFolded = (defaultVal: boolean) => {
   const [folded, _setFolded] = useState<boolean>(defaultVal);
 
   useEffect(() => {
@@ -14,8 +12,9 @@ export const useFolded = (
     })();
   }, []);
 
-  const setFolded = useCallback(
-    (valOrCb: ((val: boolean) => boolean) | boolean) => {
+  return {
+    folded,
+    setFolded: useCallback((valOrCb: ((val: boolean) => boolean) | boolean) => {
       if (typeof valOrCb === 'function') {
         _setFolded((prevVal: boolean) => {
           const val = valOrCb(prevVal);
@@ -26,9 +25,27 @@ export const useFolded = (
         chrome.storage.local.set({ [KEY]: valOrCb });
         _setFolded(valOrCb);
       }
-    },
-    [],
-  );
+    }, []),
+  };
+};
 
-  return [folded, setFolded];
+const DEFAULT_MAX_HEIGHT = '30vh';
+const EXPANDED_MAX_HEIGHT = 'calc(100vh - 213px)';
+
+export const useMaxheight = () => {
+  const [maxHeight, setMaxHeight] = useState(DEFAULT_MAX_HEIGHT);
+
+  return {
+    maxHeight,
+    toggleMaxHeight: useCallback(
+      () =>
+        setMaxHeight((prevMaxHeight) =>
+          prevMaxHeight === DEFAULT_MAX_HEIGHT
+            ? EXPANDED_MAX_HEIGHT
+            : DEFAULT_MAX_HEIGHT,
+        ),
+      [],
+    ),
+    isDefaultMaxHeight: maxHeight === DEFAULT_MAX_HEIGHT,
+  };
 };
