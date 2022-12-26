@@ -12,7 +12,8 @@
     "lint:css:fix": "stylelint --fix ./src/**/*.pcss",
     "lint": "yarn run eslint && yarn run prettier && yarn run lint:css",
     "lint:fix": "yarn run eslint:fix && yarn run prettier:fix && yarn run lint:css:fix",
-    "release": "rm out.zip; yarn run build; zip -r out.zip public"
+    "release": "rm out.zip; yarn run build; zip -r out.zip public",
+    "check-ngword": "if grep -rE \"console\\.(log|dir)|FIXME\" ./src; then exit 1; else echo \"All good\"; fi"
   },
   "repository": {
     "type": "git",

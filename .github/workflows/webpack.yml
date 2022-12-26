@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  jest:
+  build:
     name: Jest
     runs-on: macos-latest
 
@@ -32,9 +32,12 @@ jobs:
 
       - name: Build
         run: yarn run build
-
-      - name: Test
-        run: npx jest
-
-      - name: Lint
-        run: yarn run lint
+  test:
+    needs: build
+    run: npx jest
+  lint:
+    needs: build
+    run: yarn run lint
+  check-ng-words:
+    needs: build
+    run: yarn run check-ngword
