@@ -11,7 +11,7 @@ export default function App() {
   const [pageLoadedAt, setPageLoadedAt] = useState<number>(Date.now());
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
   const { folded, setFolded } = useFolded(false);
-  const { maxHeight, toggleMaxHeight, isDefaultMaxHeight } = useMaxheight();
+  const { maxHeight, setMaxHeight } = useMaxheight();
 
   // set theme
   useLayoutEffect(() => {
@@ -48,8 +48,8 @@ export default function App() {
             setTocUpdatedAt={setTocUpdatedAt}
           />
           <ExpandButton
-            toggleMaxHeight={toggleMaxHeight}
-            isDefaultMaxHeight={isDefaultMaxHeight}
+            setMaxHeight={setMaxHeight}
+            pageLoadedAt={pageLoadedAt}
             tocUpdatedAt={tocUpdatedAt}
           />
         </>

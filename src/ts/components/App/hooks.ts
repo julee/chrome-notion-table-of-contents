@@ -37,15 +37,23 @@ export const useMaxheight = () => {
 
   return {
     maxHeight,
-    toggleMaxHeight: useCallback(
-      () =>
-        setMaxHeight((prevMaxHeight) =>
-          prevMaxHeight === DEFAULT_MAX_HEIGHT
-            ? EXPANDED_MAX_HEIGHT
-            : DEFAULT_MAX_HEIGHT,
+    setMaxHeight: useCallback(
+      (
+        fn: ({
+          defaultVal,
+          expanded,
+        }: {
+          defaultVal: string;
+          expanded: string;
+        }) => string,
+      ) =>
+        setMaxHeight(() =>
+          fn({
+            defaultVal: DEFAULT_MAX_HEIGHT,
+            expanded: EXPANDED_MAX_HEIGHT,
+          }),
         ),
       [],
     ),
-    isDefaultMaxHeight: maxHeight === DEFAULT_MAX_HEIGHT,
   };
 };

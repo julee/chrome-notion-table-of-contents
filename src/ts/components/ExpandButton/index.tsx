@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
+import { useMaxheight } from '../App/hooks';
 import { FoldIcon } from '../FoldIcon';
 import { useHasScrollBar } from './hooks';
 
 export const ExpandButton = ({
-  toggleMaxHeight,
-  isDefaultMaxHeight,
+  pageLoadedAt,
   tocUpdatedAt,
+  setMaxHeight,
 }: {
-  toggleMaxHeight: () => void;
-  isDefaultMaxHeight: boolean;
+  pageLoadedAt: number;
   tocUpdatedAt: number;
+  setMaxHeight: ReturnType<typeof useMaxheight>['setMaxHeight'];
 }) => {
   const { hasScrollbar, setHasScrollbar } = useHasScrollBar();
   const [folded, setFolded] = useState(true);
@@ -26,15 +27,25 @@ export const ExpandButton = ({
     setHasScrollbar(); // setTocUpdatedAt する側で throttle してるので、ここでは間引かない
   }, [tocUpdatedAt]);
 
+  // ページ遷移したら閉じる
+  // 本来は上層にリフトアップしたほうが再描画しなくて済むのだろうが ...
+  // setFolded はこのコンポーネントで完結させたいので今のところはやらない
+  useEffect(() => {
+    setFolded(true);
+    setMaxHeight(({ defaultVal }) => defaultVal);
+  }, [pageLoadedAt]);
+
   return !folded || hasScrollbar ? (
     <div
       className="toc-expand-button"
       onClick={() => {
         setFolded(!folded);
-        toggleMaxHeight();
+        setMaxHeight(({ defaultVal, expanded }) =>
+          folded ? expanded : defaultVal,
+        );
       }}
     >
-      <FoldIcon direction={isDefaultMaxHeight ? 'down' : 'up'} />
+      <FoldIcon direction={folded ? 'down' : 'up'} />
     </div>
   ) : null;
 };
