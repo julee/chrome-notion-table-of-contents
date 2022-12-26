@@ -11,6 +11,7 @@ export const $ = (selector: string): HTMLElement => {
 };
 
 const GET_ELEMENT_INTERVAL = 100;
+const TIMEOUT = 15_000;
 
 export const waitFor = (selector: string): Promise<HTMLElement> => {
   return new Promise((resolve) => {
@@ -23,7 +24,13 @@ export const waitFor = (selector: string): Promise<HTMLElement> => {
     };
     getElement();
 
+    let elapsed = 0;
     const id = setInterval(() => {
+      elapsed += GET_ELEMENT_INTERVAL;
+      if (elapsed >= TIMEOUT) {
+        console.info(`# Timeout for ${selector}`);
+        return;
+      }
       getElement(() => {
         clearInterval(id);
       });
