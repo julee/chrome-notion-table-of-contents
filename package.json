@@ -6,9 +6,12 @@
     "build": "webpack --config webpack/webpack.prod.js",
     "eslint": "eslint 'src/**/*.{ts,tsx}'",
     "eslint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
-    "prettier": "prettier --write . '!./public/**/*'",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
     "lint:css": "stylelint ./src/**/*.pcss",
     "lint:css:fix": "stylelint --fix ./src/**/*.pcss",
+    "lint": "yarn run eslint && yarn run prettier && yarn run lint:css",
+    "lint:fix": "yarn run eslint:fix && yarn run prettier:fix && yarn run lint:css:fix",
     "release": "rm out.zip; yarn run build; zip -r out.zip public"
   },
   "repository": {
