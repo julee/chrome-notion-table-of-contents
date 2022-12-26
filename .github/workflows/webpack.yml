@@ -44,4 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - run: yarn run check-ngword
+      - run: |
+         pwd
+         find . -type d -maxdepth 2
+         yarn run check-ngword
