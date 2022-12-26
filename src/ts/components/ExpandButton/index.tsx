@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
 import { FoldIcon } from '../FoldIcon';
@@ -14,17 +14,26 @@ export const ExpandButton = ({
   tocUpdatedAt: number;
 }) => {
   const { hasScrollbar, setHasScrollbar } = useHasScrollBar();
+  const [folded, setFolded] = useState(true);
 
   // set hasScrollbar
   useEffect(() => {
-    window.addEventListener('resize', throttle(setHasScrollbar, THROTTLE_TIME));
+    const fn = throttle(setHasScrollbar, THROTTLE_TIME);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
   }, []);
   useEffect(() => {
     setHasScrollbar(); // setTocUpdatedAt する側で throttle してるので、ここでは間引かない
   }, [tocUpdatedAt]);
 
-  return hasScrollbar ? (
-    <div className="toc-expand-button" onClick={() => toggleMaxHeight()}>
+  return !folded || hasScrollbar ? (
+    <div
+      className="toc-expand-button"
+      onClick={() => {
+        setFolded(!folded);
+        toggleMaxHeight();
+      }}
+    >
       <FoldIcon direction={isDefaultMaxHeight ? 'down' : 'up'} />
     </div>
   ) : null;
