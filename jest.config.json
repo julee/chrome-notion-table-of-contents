@@ -1,8 +1,6 @@
 {
   "transform": {
-    "\\.[jt]sx?$": [
-      "ts-jest"
-    ]
+    "\\.[jt]sx?$": ["ts-jest"]
   },
   "testEnvironment": "jest-environment-jsdom"
 }
