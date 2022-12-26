@@ -10,9 +10,7 @@ concurrency:
 
 jobs:
   build:
-    name: Jest
     runs-on: macos-latest
-
     steps:
       - uses: actions/checkout@v3
 
