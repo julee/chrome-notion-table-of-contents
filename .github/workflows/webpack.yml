@@ -46,7 +46,9 @@ jobs:
     steps:
       - run: |
          pwd
+         echo '..'
          ls ..
+         echo '../..'
          ls ../../
          find . -type d -maxdepth 2
          yarn run check-ngword
