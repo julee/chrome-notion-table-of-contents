@@ -14,8 +14,6 @@ export const usePageChangeEvent = (handler: () => void | (() => void)) => {
     };
     chrome.runtime.onMessage.addListener(fn);
 
-    return () => {
-      chrome.runtime.onMessage.removeListener(fn);
-    };
+    return () => chrome.runtime.onMessage.removeListener(fn);
   }, []);
 };
