@@ -60,7 +60,7 @@ export const extractHeadings = (): Headings => {
   return headings;
 };
 
-export const setHighlight = (headings: Headings): Headings => {
+export const highlightCurrentFocused = (headings: Headings): Headings => {
   if (headings.length === 0) {
     return headings;
   }

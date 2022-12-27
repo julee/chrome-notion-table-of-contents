@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
+import { usePageChangeEvent } from '../../hooks';
 import { useMaxheight } from '../App/hooks';
 import { FoldIcon } from '../FoldIcon';
 import { useHasScrollBar } from './hooks';
 
 export const ExpandButton = ({
-  pageLoadedAt,
   tocUpdatedAt,
   setMaxHeight,
   isContainerFolded,
 }: {
-  pageLoadedAt: number;
   tocUpdatedAt: number;
   setMaxHeight: ReturnType<typeof useMaxheight>['setMaxHeight'];
   isContainerFolded: boolean;
@@ -29,13 +28,11 @@ export const ExpandButton = ({
     setHasScrollbar(); // setTocUpdatedAt する側で throttle してるので、ここでは間引かない
   }, [tocUpdatedAt, isContainerFolded]);
 
-  // ページ遷移したら閉じる
-  // 本来は上層にリフトアップしたほうが再描画しなくて済むのだろうが ...
-  // setFolded はこのコンポーネントで完結させたいので今のところはやらない
-  useEffect(() => {
+  // ページ遷移したら畳む
+  usePageChangeEvent(() => {
     setFolded(true);
     setMaxHeight(({ defaultVal }) => defaultVal);
-  }, [pageLoadedAt]);
+  });
 
   return !folded || hasScrollbar ? (
     <div

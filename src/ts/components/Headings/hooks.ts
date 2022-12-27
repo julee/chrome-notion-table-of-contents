@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
+import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
-import { extractHeadings, setHighlight } from './utils';
+import { extractHeadings, highlightCurrentFocused } from './utils';
 
 export const useHeadings = ({
-  pageLoadedAt,
   setTocUpdatedAt,
 }: {
-  pageLoadedAt: number;
   setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
 }): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
@@ -32,11 +31,11 @@ export const useHeadings = ({
 
   const refreshAllHeadings = () => {
     const headings = extractHeadings();
-    setHeadings(setHighlight(headings));
+    setHeadings(highlightCurrentFocused(headings));
     setTocUpdatedAt(Date.now());
   };
 
-  useEffect(() => {
+  usePageChangeEvent(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
     if (headingsRef.current) setHeadings(headingsRef.current);
 
@@ -48,10 +47,10 @@ export const useHeadings = ({
       await waitFor('main');
       refreshAllHeadings();
     })();
-  }, [pageLoadedAt]);
+  });
 
   // watch headings' change
-  useEffect(() => {
+  usePageChangeEvent(() => {
     let observer: MutationObserver;
     (async () => {
       await waitFor('main');
@@ -66,16 +65,14 @@ export const useHeadings = ({
       });
     })();
     return () => {
-      if (observer) {
-        observer.disconnect();
-      }
+      if (observer) observer.disconnect();
     };
-  }, [pageLoadedAt]);
+  });
 
   // highlight current focused
-  useEffect(() => {
+  usePageChangeEvent(() => {
     const fn = throttle(
-      () => setHeadings((headings) => setHighlight(headings)),
+      () => setHeadings((headings) => highlightCurrentFocused(headings)),
       THROTTLE_TIME,
     );
     (async () => {
@@ -84,7 +81,7 @@ export const useHeadings = ({
       fn();
     })();
     return () => getMainContainer().removeEventListener('scroll', fn);
-  }, [pageLoadedAt]);
+  });
 
   return headings;
 };

@@ -1,5 +1,5 @@
 import * as utils from '../../../utils';
-import { extractHeadings, setHighlight } from '../utils';
+import { extractHeadings, highlightCurrentFocused } from '../utils';
 
 const wrap = (str: string) => `
 <div class="notion-frame">
@@ -199,7 +199,7 @@ describe('setHighlight', () => {
     });
 
     expect(
-      setHighlight(
+      highlightCurrentFocused(
         input.headings.map((heading) => ({
           blockId: 'xxx',
           text: 'text',

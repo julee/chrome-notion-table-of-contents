@@ -5,15 +5,13 @@ import { useHeadings } from './hooks';
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
-  pageLoadedAt,
   setTocUpdatedAt,
   maxHeight,
 }: {
-  pageLoadedAt: number;
   maxHeight: string;
   setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
 }) {
-  const headings = useHeadings({ pageLoadedAt, setTocUpdatedAt });
+  const headings = useHeadings({ setTocUpdatedAt });
 
   return headings.length > 0 ? (
     <div className="toc-headings" style={{ maxHeight }}>
