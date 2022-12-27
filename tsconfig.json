@@ -11,10 +11,5 @@
     "noEmitOnError": true,
     "jsx": "react"
   },
-  "include": ["./src/ts"],
-  "exclude": [
-    "./src/ts/**/__tests__/**/*.ts",
-    "./src/ts/**/*.spec.ts",
-    "./src/ts/**/*.test.ts"
-  ]
+  "include": ["./src/ts"]
 }

@@ -8,6 +8,10 @@ const wrap = (str: string) => `
   </div>
 </div>`;
 
+/* eslint  @typescript-eslint/no-empty-function: 0 */
+beforeAll(() => jest.spyOn(console, 'info').mockImplementation(() => {}));
+afterAll(() => jest.restoreAllMocks());
+
 describe('extractHeadings', () => {
   afterEach(() => {
     document.body.innerHTML = '';
