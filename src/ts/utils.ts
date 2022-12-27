@@ -29,6 +29,7 @@ export const waitFor = (selector: string): Promise<HTMLElement> => {
       elapsed += GET_ELEMENT_INTERVAL;
       if (elapsed >= TIMEOUT) {
         console.error(`# Timeout for ${selector}`);
+        clearInterval(id);
         return;
       }
       getElement(() => {
