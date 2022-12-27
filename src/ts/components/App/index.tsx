@@ -38,22 +38,21 @@ export default function App() {
   return (
     <div className={`toc-container toc-theme-${theme}`}>
       <Header folded={folded} setFolded={setFolded} />
-      {/* display: none という手もあるが、畳みっぱなしにしてる裏で計算が
-          走り続けるのはどうかと思うので、今のところは採用しない */}
-      {folded || (
-        <>
-          <Headings
-            maxHeight={maxHeight}
-            pageLoadedAt={pageLoadedAt}
-            setTocUpdatedAt={setTocUpdatedAt}
-          />
-          <ExpandButton
-            setMaxHeight={setMaxHeight}
-            pageLoadedAt={pageLoadedAt}
-            tocUpdatedAt={tocUpdatedAt}
-          />
-        </>
-      )}
+      {/* 閉じてる間も目次の描画の処理が走り続けるのはイマイチだが、、
+          描画し続けていないと ExpandButton.folded の状態を保持し続けられないので。 */}
+      <div {...(folded && { className: 'toc-hidden' })}>
+        <Headings
+          maxHeight={maxHeight}
+          pageLoadedAt={pageLoadedAt}
+          setTocUpdatedAt={setTocUpdatedAt}
+        />
+        <ExpandButton
+          setMaxHeight={setMaxHeight}
+          pageLoadedAt={pageLoadedAt}
+          tocUpdatedAt={tocUpdatedAt}
+          isContainerFolded={folded}
+        />
+      </div>
     </div>
   );
 }

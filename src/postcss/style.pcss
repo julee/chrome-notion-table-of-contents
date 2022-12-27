@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.toc-hidden {
+  display: none;
+}
+
 .toc-container {
   padding: 10px 0;
   margin: 0;
@@ -14,10 +18,10 @@
     flex-shrink: 0;
     backface-visibility: hidden;
   }
-}
 
-.toc-container:has(.toc-expand-button) {
-  padding: 10px 0 0;
+  &:not(:has(.toc-hidden))&:has(.toc-expand-button) {
+    padding-bottom: 0;
+  }
 }
 
 /*  header ----------------------- */

@@ -9,10 +9,12 @@ export const ExpandButton = ({
   pageLoadedAt,
   tocUpdatedAt,
   setMaxHeight,
+  isContainerFolded,
 }: {
   pageLoadedAt: number;
   tocUpdatedAt: number;
   setMaxHeight: ReturnType<typeof useMaxheight>['setMaxHeight'];
+  isContainerFolded: boolean;
 }) => {
   const { hasScrollbar, setHasScrollbar } = useHasScrollBar();
   const [folded, setFolded] = useState(true);
@@ -25,7 +27,7 @@ export const ExpandButton = ({
   }, []);
   useEffect(() => {
     setHasScrollbar(); // setTocUpdatedAt する側で throttle してるので、ここでは間引かない
-  }, [tocUpdatedAt]);
+  }, [tocUpdatedAt, isContainerFolded]);
 
   // ページ遷移したら閉じる
   // 本来は上層にリフトアップしたほうが再描画しなくて済むのだろうが ...
