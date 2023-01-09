@@ -3,7 +3,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "webpack --config webpack/webpack.dev.js --watch",
-    "build": "webpack --config webpack/webpack.prod.js",
+    "build": "yarn install && webpack --config webpack/webpack.prod.js",
     "eslint": "eslint 'src/**/*.{ts,tsx}'",
     "eslint:fix": "eslint --fix 'src/**/*.{ts,tsx}'",
     "prettier": "prettier --check .",
