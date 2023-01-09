@@ -6,7 +6,7 @@
   "default_locale": "en",
   "content_scripts": [
     {
-      "matches": ["https://www.notion.so/*"],
+      "matches": ["*://*.notion.so/*", "*://*.notion.site/*"],
       "js": ["./js/vendor.js", "./js/content-script.js"]
     }
   ],
