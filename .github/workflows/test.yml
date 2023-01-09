@@ -2,7 +2,6 @@ name: Test
 
 on:
   - push
-  - pull_request
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -33,3 +32,18 @@ jobs:
 
       - name: Test && Lint && NG Words Check
         run: yarn run ci
+
+      # https://action-slack.netlify.app/usage/
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,ref,workflow,took
+          username: Github Actions
+          icon_emoji: ':github:'
+          text: ${{ job.status }}
+          author_name: ''
+          mention: channel
+          if_mention: failure
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
