@@ -16,7 +16,7 @@ export const ExpandButton = ({
   isContainerFolded: boolean;
 }) => {
   const { hasScrollbar, setHasScrollbar } = useHasScrollBar();
-  const [folded, setFolded] = useState(true);
+  const [tailFolded, setTailFolded] = useState(true);
 
   // set hasScrollbar
   useEffect(() => {
@@ -30,21 +30,21 @@ export const ExpandButton = ({
 
   // ページ遷移したら畳む
   usePageChangeEvent(() => {
-    setFolded(true);
+    setTailFolded(true);
     setMaxHeight(({ defaultVal }) => defaultVal);
   });
 
-  return !folded || hasScrollbar ? (
+  return !tailFolded || hasScrollbar ? (
     <div
       className="toc-expand-button"
       onClick={() => {
-        setFolded(!folded);
+        setTailFolded(!tailFolded);
         setMaxHeight(({ defaultVal, expanded }) =>
-          folded ? expanded : defaultVal,
+          tailFolded ? expanded : defaultVal,
         );
       }}
     >
-      <FoldIcon direction={folded ? 'down' : 'up'} />
+      <FoldIcon direction={tailFolded ? 'down' : 'up'} />
     </div>
   ) : null;
 };

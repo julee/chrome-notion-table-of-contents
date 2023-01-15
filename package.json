@@ -15,7 +15,7 @@
     "test": "jest",
     "release": "rm out.zip; yarn run build; zip -r out.zip public",
     "check-ngword": "if grep -rE \"console\\.(log|dir)|FIXME\" ./src; then exit 1; else echo \"All good\"; fi",
-    "ci": "run-p test lint check-ngword"
+    "check-all": "run-p test lint check-ngword"
   },
   "repository": {
     "type": "git",
