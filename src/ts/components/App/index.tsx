@@ -4,12 +4,12 @@ import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
-import { useFolded, useMaxheight } from './hooks';
+import { useMaxheight, useWholeFolded } from './hooks';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
-  const { folded, setFolded } = useFolded(false);
+  const { wholeFolded, setWholeFolded } = useWholeFolded(false);
   const { maxHeight, setMaxHeight } = useMaxheight();
 
   // set theme
@@ -22,15 +22,15 @@ export default function App() {
 
   return (
     <div className={`toc-container toc-theme-${theme}`}>
-      <Header folded={folded} setFolded={setFolded} />
+      <Header folded={wholeFolded} setFolded={setWholeFolded} />
       {/* 閉じてる間も目次の描画の処理が走り続けるのはイマイチだが、、
           描画し続けていないと ExpandButton.folded の状態を保持し続けられないので。 */}
-      <div {...(folded && { className: 'toc-hidden' })}>
+      <div {...(wholeFolded && { className: 'toc-hidden' })}>
         <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
         <ExpandButton
           setMaxHeight={setMaxHeight}
           tocUpdatedAt={tocUpdatedAt}
-          isContainerFolded={folded}
+          isContainerFolded={wholeFolded}
         />
       </div>
     </div>
