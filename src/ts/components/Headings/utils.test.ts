@@ -1,5 +1,5 @@
-import * as utils from '../../../utils';
-import { extractHeadings, highlightCurrentFocused } from '../utils';
+import * as utils from '../../utils';
+import { extractHeadings, highlightCurrentFocused } from './utils';
 
 const wrap = (str: string) => `
 <div class="notion-frame">

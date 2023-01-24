@@ -2,8 +2,9 @@ import { useCallback, useEffect, useState } from 'react';
 
 const KEY = 'FOLDED';
 
-export const useWholeFolded = (defaultVal: boolean) => {
-  const [wholeFolded, setWholeFolded] = useState<boolean>(defaultVal);
+// TODO: test
+export const useWholeFolded = (_default: boolean) => {
+  const [wholeFolded, setWholeFolded] = useState<boolean>(_default);
 
   useEffect(() => {
     (async () => {
@@ -32,31 +33,22 @@ export const useWholeFolded = (defaultVal: boolean) => {
   };
 };
 
-const DEFAULT_MAX_HEIGHT = '26vh';
-const EXPANDED_MAX_HEIGHT = 'calc(100vh - 213px)';
+const FOLDED_MAX_HEIGHT = '26vh';
 
-export const useMaxheight = () => {
-  const [maxHeight, setMaxHeight] = useState(DEFAULT_MAX_HEIGHT);
+const EXPANDED_OFFSET = 75; // height of header and expand button
+const EXPANDED_MAX_HEIGHT = () => {
+  // TODO: use ref
+  const container = document.querySelector<HTMLElement>('.toc-container');
+  if (!container) throw new Error('.toc-container is not found');
+  return window.innerHeight - container.offsetTop - EXPANDED_OFFSET + 'px';
+};
+
+export const useTailFolded = (_default: boolean) => {
+  const [tailFolded, setTailFolded] = useState(_default);
 
   return {
-    maxHeight,
-    setMaxHeight: useCallback(
-      (
-        fn: ({
-          defaultVal,
-          expanded,
-        }: {
-          defaultVal: string;
-          expanded: string;
-        }) => string,
-      ) =>
-        setMaxHeight(() =>
-          fn({
-            defaultVal: DEFAULT_MAX_HEIGHT,
-            expanded: EXPANDED_MAX_HEIGHT,
-          }),
-        ),
-      [],
-    ),
+    tailFolded,
+    maxHeight: tailFolded ? FOLDED_MAX_HEIGHT : EXPANDED_MAX_HEIGHT(),
+    setTailFolded,
   };
 };

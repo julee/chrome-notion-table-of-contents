@@ -10,7 +10,6 @@ import { waitFor } from './utils';
 // 仰々しいコードになってしまいそうなので、この判定方法で妥協
 if (document.getElementById('notion-app')) {
   const root = document.createElement('div');
-  root.className = 'toc-react-root';
   document.body.appendChild(root);
 
   const pageList = await waitFor('.notion-sidebar .notion-scroller');
