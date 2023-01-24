@@ -30,7 +30,7 @@ export const useFolded = (defaultVal: boolean) => {
 };
 
 const DEFAULT_MAX_HEIGHT = '26vh';
-const EXPANDED_MAX_HEIGHT = 'calc(100vh - 213px)';
+const EXPANDED_MAX_HEIGHT = 'calc(100vh - 237px)';
 
 export const useMaxheight = () => {
   const [maxHeight, setMaxHeight] = useState(DEFAULT_MAX_HEIGHT);
