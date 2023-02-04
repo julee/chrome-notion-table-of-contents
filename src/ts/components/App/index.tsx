@@ -1,5 +1,6 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { THEME } from '../../constants';
+import { usePageChangeEvent } from '../../hooks';
 import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
@@ -20,6 +21,11 @@ export default function App() {
     })();
   }, []);
 
+  // ページ遷移したら畳む
+  usePageChangeEvent(() => {
+    setTailFolded(true);
+  });
+
   return (
     <div className={`toc-container toc-theme-${theme}`}>
       <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
@@ -28,7 +34,7 @@ export default function App() {
         <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
         <ExpandButton
           tocUpdatedAt={tocUpdatedAt}
-          isWhileFolded={wholeFolded}
+          isWholeFolded={wholeFolded}
           tailFolded={tailFolded}
           setTailFolded={setTailFolded}
         />

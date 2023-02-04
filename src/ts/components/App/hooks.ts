@@ -35,6 +35,9 @@ export const useWholeFolded = (_default: boolean) => {
 
 const FOLDED_MAX_HEIGHT = '26vh';
 
+// FIXME 今： resize したら maxHeight 計算し直さなきゃ駄目でしょ、ってとこ
+
+// FIXME: 閉じてるときどうなる ... ?
 const EXPANDED_OFFSET = 75; // height of header and expand button
 const EXPANDED_MAX_HEIGHT = () => {
   // TODO: use ref
