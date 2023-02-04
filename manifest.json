@@ -6,11 +6,11 @@
   "content_scripts": [
     {
       "matches": ["*://*.notion.so/*", "*://*.notion.site/*"],
-      "js": ["/src/ts/contentScript.tsx"]
+      "js": ["src/ts/contentScript.tsx"]
     }
   ],
   "background": {
-    "service_worker": "/src/ts/background.ts",
+    "service_worker": "src/ts/background.ts",
     "type": "module"
   },
   "permissions": ["webNavigation", "storage"],

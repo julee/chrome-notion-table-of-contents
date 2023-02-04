@@ -9,16 +9,7 @@ manifest.version = version;
 export default defineConfig(({ mode }) => {
   const isDevelopment = mode === 'development';
   return {
-    build: {
-      target: 'ESNext', // for top level await
-    },
-    ...(isDevelopment
-      ? {}
-      : {
-          esbuild: {
-            drop: ['console'],
-          },
-        }),
+    ...(isDevelopment ? {} : { esbuild: { drop: ['console'] } }),
     plugins: [crx({ manifest })],
     css: {
       postcss: {
