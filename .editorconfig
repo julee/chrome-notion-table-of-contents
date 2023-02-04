@@ -2,9 +2,4 @@ root = true
 
 [*]
 indent_style = space
-
-[*.css]
-indent_size = 4
-
-[*.{html,js,json,ts,tsx}]
 indent_size = 2

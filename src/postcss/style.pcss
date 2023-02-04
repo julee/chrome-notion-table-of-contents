@@ -101,18 +101,9 @@
   text-align: center;
 }
 
-@keyframes clicked-heading {
-	0%{
-		background-color: #ffc;
-	}
-
-	100%{
-		background-color: transparent;
-	}
-}
-
 /*  color theme ----------------------- */
 
+/* TODO: dark だけでいいはず */
 .toc-theme-light {
   --border-color: #e3e3e3;
 
@@ -172,5 +163,25 @@
 
   .toc-headings::-webkit-scrollbar-thumb {
     background-color: #656380;
+  }
+}
+
+@keyframes clicked-heading-animation {
+  0% {
+    background-color: #ffc;
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes clicked-heading-animation-dark {
+  0% {
+    background-color: #4c4d00;
+  }
+
+  100% {
+    background-color: transparent;
   }
 }
