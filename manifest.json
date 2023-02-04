@@ -2,22 +2,22 @@
   "manifest_version": 3,
   "name": "Notion Table of Contents (Outline)",
   "description": "__MSG_EXTENSION_DESCRIPTION__",
-  "version": "2.1.2",
   "default_locale": "en",
   "content_scripts": [
     {
       "matches": ["*://*.notion.so/*", "*://*.notion.site/*"],
-      "js": ["./js/vendor.js", "./js/content-script.js"]
+      "js": ["/src/ts/contentScript.tsx"]
     }
   ],
   "background": {
-    "service_worker": "./js/background.js"
+    "service_worker": "/src/ts/background.ts",
+    "type": "module"
   },
   "permissions": ["webNavigation", "storage"],
   "icons": {
-    "16": "./images/icon16.png",
-    "32": "./images/icon32.png",
-    "48": "./images/icon48.png",
-    "128": "./images/icon128.png"
+    "16": "images/icon16.png",
+    "32": "images/icon32.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
   }
 }
