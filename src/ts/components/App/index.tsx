@@ -4,7 +4,7 @@ import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
-import { useMaxheight, useWholeFolded } from './hooks';
+import { ThemeContext, useMaxheight, useWholeFolded } from './hooks';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
@@ -21,18 +21,20 @@ export default function App() {
   }, []);
 
   return (
-    <div className={`toc-container toc-theme-${theme}`}>
-      <Header folded={wholeFolded} setFolded={setWholeFolded} />
-      {/* 閉じてる間も目次の描画の処理が走り続けるのはイマイチだが、、
+    <ThemeContext.Provider value={theme}>
+      <div className={`toc-container toc-theme-${theme}`}>
+        <Header folded={wholeFolded} setFolded={setWholeFolded} />
+        {/* 閉じてる間も目次の描画の処理が走り続けるのはイマイチだが、、
           描画し続けていないと ExpandButton.folded の状態を保持し続けられないので。 */}
-      <div {...(wholeFolded && { className: 'toc-hidden' })}>
-        <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
-        <ExpandButton
-          setMaxHeight={setMaxHeight}
-          tocUpdatedAt={tocUpdatedAt}
-          isContainerFolded={wholeFolded}
-        />
+        <div {...(wholeFolded && { className: 'toc-hidden' })}>
+          <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
+          <ExpandButton
+            setMaxHeight={setMaxHeight}
+            tocUpdatedAt={tocUpdatedAt}
+            isContainerFolded={wholeFolded}
+          />
+        </div>
       </div>
-    </div>
+    </ThemeContext.Provider>
   );
 }
