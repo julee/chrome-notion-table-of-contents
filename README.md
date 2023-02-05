@@ -12,3 +12,7 @@ Show table of contents (outline) on the sidebar for Notion pages
 yarn install
 yarn run build
 ```
+
+## License
+
+[The MIT License](/LICENSE).
