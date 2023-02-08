@@ -1,10 +1,10 @@
-# Notion Table of Contents (Outline)
+# Notion Table of Contents (Chrome Extension)
 
 Show table of contents (outline) on the sidebar for Notion pages
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/notion-table-of-contents/ifghafniffhbggdjmcmhnpcdcnlpjflh)
+[Chrome Web Store](https://chrome.google.com/webstore/detail/ifghafniffhbggdjmcmhnpcdcnlpjflh)
 
-<a href="https://chrome.google.com/webstore/detail/notion-table-of-contents/ifghafniffhbggdjmcmhnpcdcnlpjflh"><img src="https://lh3.googleusercontent.com/HtP6RM2dPEvJAkRiiGLpojXjum47Z9f3HEW61SLD-5Fmpgq-aTZjKKSRw2xh-pQtxDeQlE9wT5IDtt7O-WfohIV2mg=w640-h400-e365-rj-sc0x00ffffff" /></a>
+<a href="https://chrome.google.com/webstore/detail/ifghafniffhbggdjmcmhnpcdcnlpjflh"><img src="https://lh3.googleusercontent.com/HtP6RM2dPEvJAkRiiGLpojXjum47Z9f3HEW61SLD-5Fmpgq-aTZjKKSRw2xh-pQtxDeQlE9wT5IDtt7O-WfohIV2mg=w640-h400-e365-rj-sc0x00ffffff" /></a>
 
 ## How to Build
 
