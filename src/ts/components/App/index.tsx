@@ -5,7 +5,7 @@ import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
-import { useTailFolded, useWholeFolded } from './hooks';
+import { ThemeContext, useTailFolded, useWholeFolded } from './hooks';
 
 export default function App() {
   const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
@@ -27,18 +27,20 @@ export default function App() {
   });
 
   return (
-    <div className={`toc-container toc-theme-${theme}`}>
-      <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
-      {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
-      <div {...(wholeFolded && { className: 'toc-hidden' })}>
-        <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
-        <ExpandButton
-          tocUpdatedAt={tocUpdatedAt}
-          isWholeFolded={wholeFolded}
-          tailFolded={tailFolded}
-          setTailFolded={setTailFolded}
-        />
+    <ThemeContext.Provider value={theme}>
+      <div className={`toc-container toc-theme-${theme}`}>
+        <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
+        {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
+        <div {...(wholeFolded && { className: 'toc-hidden' })}>
+          <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
+          <ExpandButton
+            tocUpdatedAt={tocUpdatedAt}
+            isWholeFolded={wholeFolded}
+            tailFolded={tailFolded}
+            setTailFolded={setTailFolded}
+          />
+        </div>
       </div>
-    </div>
+    </ThemeContext.Provider>
   );
 }

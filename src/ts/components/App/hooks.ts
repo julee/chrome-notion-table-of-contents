@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 const KEY = 'FOLDED';
 
@@ -54,4 +60,11 @@ export const useTailFolded = (_default: boolean) => {
     maxHeight: tailFolded ? FOLDED_MAX_HEIGHT : EXPANDED_MAX_HEIGHT(),
     setTailFolded,
   };
+};
+
+export const ThemeContext = createContext<Theme | null>(null);
+export const useTheme = () => {
+  const theme = useContext(ThemeContext);
+  if (!theme) throw new Error('Wrap this component with Provider.');
+  return theme;
 };
