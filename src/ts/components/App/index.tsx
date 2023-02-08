@@ -1,17 +1,42 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { ReactNode, useLayoutEffect, useState } from 'react';
 import { THEME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
-import { ThemeContext, useTailFolded, useWholeFolded } from './hooks';
+import { ThemeContext, useTailFolded, useTheme, useWholeFolded } from './hooks';
 
-export default function App() {
-  const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
+const Consumer = () => {
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
   const { wholeFolded, setWholeFolded } = useWholeFolded(false);
   const { tailFolded, maxHeight, setTailFolded } = useTailFolded(true);
+  const theme = useTheme();
+
+  // ページ遷移したら畳む
+  usePageChangeEvent(() => {
+    setTailFolded(true);
+  });
+
+  return (
+    <div className={`toc-container toc-theme-${theme}`}>
+      <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
+      {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
+      <div {...(wholeFolded && { className: 'toc-hidden' })}>
+        <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
+        <ExpandButton
+          tocUpdatedAt={tocUpdatedAt}
+          isWholeFolded={wholeFolded}
+          tailFolded={tailFolded}
+          setTailFolded={setTailFolded}
+        />
+      </div>
+    </div>
+  );
+};
+
+const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
+  const [theme, setTheme] = useState<Theme>(THEME.LIGHT);
 
   // set theme
   useLayoutEffect(() => {
@@ -21,26 +46,15 @@ export default function App() {
     })();
   }, []);
 
-  // ページ遷移したら畳む
-  usePageChangeEvent(() => {
-    setTailFolded(true);
-  });
-
   return (
-    <ThemeContext.Provider value={theme}>
-      <div className={`toc-container toc-theme-${theme}`}>
-        <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
-        {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
-        <div {...(wholeFolded && { className: 'toc-hidden' })}>
-          <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
-          <ExpandButton
-            tocUpdatedAt={tocUpdatedAt}
-            isWholeFolded={wholeFolded}
-            tailFolded={tailFolded}
-            setTailFolded={setTailFolded}
-          />
-        </div>
-      </div>
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={theme}>{children}</ThemeContext.Provider>
+  );
+};
+
+export default function App() {
+  return (
+    <ThemeContextProvider>
+      <Consumer />
+    </ThemeContextProvider>
   );
 }
