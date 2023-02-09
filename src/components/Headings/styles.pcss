@@ -1,0 +1,25 @@
+.toc-no-headings {
+  margin: 10px 0 3px 30px;
+}
+
+.toc-headings {
+  box-sizing: border-box;
+  margin: 5px 0 0 20px;
+  overflow: hidden;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    --bg-color: #dddcd6;
+
+    .toc-theme-dark & {
+      --bg-color: #383646;
+    }
+
+    background-color: var(--bg-color);
+    border-radius: 5px;
+  }
+}

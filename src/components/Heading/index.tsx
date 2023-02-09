@@ -2,6 +2,7 @@ import React from 'react';
 import { THEME } from '../../constants';
 import { $, getContainer } from '../../utils';
 import { useTheme } from '../App/hooks';
+import './styles.pcss';
 
 const ANIMATION_DURATION = 1_500;
 

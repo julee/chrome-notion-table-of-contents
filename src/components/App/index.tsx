@@ -5,7 +5,10 @@ import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
 import Header from '../Header';
 import Headings from '../Headings';
+import './common.pcss';
+import './customProperties.css';
 import { ThemeContext, useTailFolded, useTheme, useWholeFolded } from './hooks';
+import './styles.pcss';
 
 const Consumer = () => {
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());

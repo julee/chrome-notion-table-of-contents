@@ -3,6 +3,7 @@ import { throttle } from 'throttle-debounce';
 import { THROTTLE_TIME } from '../../constants';
 import { FoldIcon } from '../FoldIcon';
 import { useHasScrollBar } from './hooks';
+import './styles.pcss';
 
 export const ExpandButton = ({
   tocUpdatedAt,

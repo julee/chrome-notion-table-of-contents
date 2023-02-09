@@ -1,5 +1,6 @@
 import React from 'react';
 import { FoldIcon } from '../FoldIcon';
+import './styles.pcss';
 
 export default function Headings({
   wholeFolded,

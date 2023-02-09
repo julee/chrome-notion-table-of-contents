@@ -1,6 +1,5 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import '../postcss/style.pcss';
 import App from './components/App';
 import { waitFor } from './utils';
 
@@ -12,13 +11,15 @@ if (document.getElementById('notion-app')) {
   const root = document.createElement('div');
   document.body.appendChild(root);
 
-  const pageList = await waitFor('.notion-sidebar .notion-scroller');
-  const sidebar = pageList.parentNode;
-  if (!sidebar)
-    throw new Error(
-      "$('.notion-sidebar .notion-scroller').parentNode is not found",
-    );
-  sidebar.insertBefore(root, pageList);
+  (async () => {
+    const pageList = await waitFor('.notion-sidebar .notion-scroller');
+    const sidebar = pageList.parentNode;
+    if (!sidebar)
+      throw new Error(
+        "$('.notion-sidebar .notion-scroller').parentNode is not found",
+      );
+    sidebar.insertBefore(root, pageList);
 
-  createRoot(root).render(<App />);
+    createRoot(root).render(<App />);
+  })();
 }
