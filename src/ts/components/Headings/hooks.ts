@@ -5,6 +5,7 @@ import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
+// Very long but can't be splited ...
 export const useHeadings = ({
   setTocUpdatedAt,
 }: {
@@ -29,11 +30,15 @@ export const useHeadings = ({
     [],
   );
 
-  const refreshAllHeadings = () => {
+  const refreshAllHeadings = useCallback(() => {
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
     setTocUpdatedAt(Date.now());
-  };
+  }, []);
+
+  // ----------------------------------------
+  // First rendering
+  // ----------------------------------------
 
   usePageChangeEvent(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
@@ -49,7 +54,11 @@ export const useHeadings = ({
     })();
   });
 
-  // watch headings' change
+  // ----------------------------------------
+  // Watch content and re-rendering
+  // ----------------------------------------
+
+  // watch edit of headings and follow the change
   usePageChangeEvent(() => {
     let observer: MutationObserver;
     (async () => {
