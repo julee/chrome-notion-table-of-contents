@@ -1,3 +1,4 @@
+import type { ManifestV3Export } from '@crxjs/vite-plugin';
 import { crx } from '@crxjs/vite-plugin';
 import postcssNested from 'postcss-nested';
 import { defineConfig } from 'vite';
@@ -9,8 +10,11 @@ manifest.version = version;
 export default defineConfig(({ mode }) => {
   const isDevelopment = mode === 'development';
   return {
+    build: {
+      target: 'ESNext', // for top level await
+    },
     ...(isDevelopment ? {} : { esbuild: { drop: ['console'] } }),
-    plugins: [crx({ manifest })],
+    plugins: [crx({ manifest: manifest as ManifestV3Export })],
     css: {
       postcss: {
         plugins: [postcssNested],

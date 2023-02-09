@@ -1,19 +1,20 @@
 import React from 'react';
 import { FoldIcon } from '../FoldIcon';
+import './styles.pcss';
 
 export default function Headings({
-  folded,
-  setFolded,
+  wholeFolded,
+  setWholeFolded,
 }: {
-  folded: boolean;
-  setFolded: (valOrCb: ((val: boolean) => boolean) | boolean) => void;
+  wholeFolded: boolean;
+  setWholeFolded: (valOrCb: ((val: boolean) => boolean) | boolean) => void;
 }) {
   return (
     <div
       className="toc-header toc-clickable"
-      onClick={() => setFolded(!folded)}
+      onClick={() => setWholeFolded(!wholeFolded)}
     >
-      <FoldIcon direction={folded ? 'right' : 'down'} />
+      <FoldIcon direction={wholeFolded ? 'right' : 'down'} />
       <span className="toc-title">
         {chrome.i18n.getMessage('TABLE_OF_CONTENTS')}
       </span>
