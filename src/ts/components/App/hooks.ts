@@ -62,7 +62,7 @@ export const useTailFolded = (_default: boolean) => {
   };
 };
 
-export const ThemeContext = createContext<Theme | null>(null);
+export const ThemeContext = createContext<Theme | undefined>(undefined);
 export const useTheme = () => {
   const theme = useContext(ThemeContext);
   if (!theme) throw new Error('Wrap this component with Provider.');
