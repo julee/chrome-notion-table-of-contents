@@ -5,3 +5,7 @@ export const THEME = {
 } as const;
 
 export const THROTTLE_TIME = 150;
+
+export const ACTION = {
+  PAGE_CHANGED: 'page-changed',
+};

@@ -1,5 +1,5 @@
-import React, { ReactNode, useLayoutEffect, useState } from 'react';
-import { THEME } from '../../constants';
+import React, { ReactNode, useLayoutEffect, useReducer, useState } from 'react';
+import { ACTION, THEME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { waitFor } from '../../utils';
 import { ExpandButton } from '../ExpandButton';
@@ -7,18 +7,25 @@ import Header from '../Header';
 import Headings from '../Headings';
 import './common.pcss';
 import './customProperties.css';
-import { ThemeContext, useTailFolded, useTheme, useWholeFolded } from './hooks';
+import { ThemeContext, useTheme } from './hooks';
+import { Reducer } from './reducer';
 import './styles.pcss';
 
 const Consumer = () => {
   const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
-  const { wholeFolded, setWholeFolded } = useWholeFolded(false);
-  const { tailFolded, maxHeight, setTailFolded } = useTailFolded(true);
   const theme = useTheme();
+
+  const [{ tailFolded, wholeFolded, showsExpandButton, maxHeight }, dispatch] =
+    useReducer(Reducer, {
+      tailFolded: true,
+      wholeFolded: false,
+      showsExpandButton: false,
+      maxHeight: '26vh',
+    });
 
   // ページ遷移したら畳む
   usePageChangeEvent(() => {
-    setTailFolded(true);
+    dispatch({ type: ACTION.PAGE_CHANGED });
   });
 
   return (

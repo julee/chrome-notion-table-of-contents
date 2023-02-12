@@ -10,3 +10,10 @@ type Heading = {
 type Headings = Heading[];
 
 type Theme = valueOf<typeof import('../constants').THEME>;
+
+type State = {
+  tailFolded: boolean;
+  wholeFolded: boolean;
+  showsExpandButton: boolean;
+  maxHeight: string;
+};
