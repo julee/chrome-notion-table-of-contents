@@ -27,12 +27,11 @@ const calcShowsExpandTailButton = (tailFolded: boolean): boolean => {
   return !tailFolded || hasScrollbar;
 };
 
-// FIXME: 閉じてるときどうなる ... ?
 const calcExpandedMaxHeight = () => {
   // TODO: use ref
   const container = document.querySelector<HTMLElement>('.toc-container');
   if (!container) throw new Error('.toc-container is not found');
-  return window.innerHeight - container.offsetTop - 75 + 'px';
+  return window.innerHeight - container.offsetTop - 69 + 'px';
 };
 
 export const reducer = (
@@ -58,6 +57,9 @@ export const reducer = (
       return state;
     case ACTION.RESIZED:
       state.showsExpandTailButton = calcShowsExpandTailButton(state.tailFolded);
+      state.maxHeight = state.tailFolded
+        ? DEFAULT_STATE.maxHeight
+        : calcExpandedMaxHeight();
       return state;
     case ACTION.HEADINGS_UPDATED:
       state.showsExpandTailButton = calcShowsExpandTailButton(state.tailFolded);
