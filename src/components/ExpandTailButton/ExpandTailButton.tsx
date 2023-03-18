@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { throttle } from 'throttle-debounce';
 import { ACTION, THROTTLE_TIME } from '../../constants';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
 import './styles.pcss';
 
-export const ExpandTailButton = ({
+export default memo(function ExpandTailButton({
   tailFolded,
   showsExpandTailButton,
   dispatch,
@@ -12,7 +12,7 @@ export const ExpandTailButton = ({
   tailFolded: boolean;
   showsExpandTailButton: boolean;
   dispatch: React.Dispatch<{ type: string }>;
-}) => {
+}) {
   // set hasScrollbar
   useEffect(() => {
     const fn = throttle(
@@ -33,4 +33,4 @@ export const ExpandTailButton = ({
       <FoldIcon direction={tailFolded ? 'down' : 'up'} />
     </div>
   );
-};
+});

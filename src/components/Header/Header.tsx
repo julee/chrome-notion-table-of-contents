@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ACTION } from '../../constants';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
 import './styles.pcss';
 
-export default function Headings({
+export default memo(function Headings({
   wholeFolded,
   dispatch,
 }: {
@@ -21,4 +21,4 @@ export default function Headings({
       </span>
     </div>
   );
-}
+});

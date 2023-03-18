@@ -2,7 +2,7 @@ import React, { ReactNode, useLayoutEffect, useReducer, useState } from 'react';
 import { ACTION, THEME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { waitFor } from '../../utils';
-import { ExpandTailButton } from '../ExpandTailButton/ExpandTailButton';
+import ExpandTailButton from '../ExpandTailButton/ExpandTailButton';
 import Header from '../Header/Header';
 import Headings from '../Headings/Headings';
 import './common.pcss';
