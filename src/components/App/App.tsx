@@ -8,7 +8,7 @@ import Headings from '../Headings/Headings';
 import './common.pcss';
 import './customProperties.css';
 import { ThemeContext, useTheme } from './hooks';
-import { reducer } from './reducer';
+import { DEFAULT_STATE, reducer } from './reducer';
 import './styles.pcss';
 
 const Consumer = () => {
@@ -17,15 +17,10 @@ const Consumer = () => {
   const [
     { tailFolded, wholeFolded, showsExpandTailButton, maxHeight },
     dispatch,
-  ] = useReducer(reducer, {
-    tailFolded: true,
-    wholeFolded: false,
-    showsExpandTailButton: false,
-    maxHeight: '26vh',
-  });
+  ] = useReducer(reducer, DEFAULT_STATE);
 
   usePageChangeEvent(() => {
-    dispatch({ type: ACTION.PAGE_CHANGED });
+    dispatch({ type: ACTION.PAGE_MOVED });
   });
 
   return (
@@ -33,7 +28,11 @@ const Consumer = () => {
       <Header wholeFolded={wholeFolded} dispatch={dispatch} />
       {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
       <div {...(wholeFolded && { className: 'toc-hidden' })}>
-        <Headings maxHeight={maxHeight} dispatch={dispatch} />
+        <Headings
+          maxHeight={maxHeight}
+          state={{ tailFolded, wholeFolded, showsExpandTailButton, maxHeight }}
+          dispatch={dispatch}
+        />
         <ExpandTailButton
           tailFolded={tailFolded}
           showsExpandTailButton={showsExpandTailButton}

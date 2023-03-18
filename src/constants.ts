@@ -7,7 +7,7 @@ export const THEME = {
 export const THROTTLE_TIME = 150;
 
 export const ACTION = {
-  PAGE_CHANGED: 'page-changed',
+  PAGE_MOVED: 'page-moved',
   WHOLE_FOLDED_BUTTON_CLICKED: 'click-whole-folded',
   TAIL_FOLDED_BUTTON_CLICKED: 'click-tail-folded',
   RESIZED: 'resized',
