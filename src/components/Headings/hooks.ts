@@ -1,15 +1,15 @@
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
-import { THROTTLE_TIME } from '../../constants';
+import { ACTION, THROTTLE_TIME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
 // Very long but can't be splited ...
 export const useHeadings = ({
-  setTocUpdatedAt,
+  dispatch,
 }: {
-  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
+  dispatch: React.Dispatch<{ type: string }>;
 }): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
   const headingsRef = useRef<Headings | null>(null);
@@ -33,7 +33,7 @@ export const useHeadings = ({
   const refreshAllHeadings = useCallback(() => {
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
-    setTocUpdatedAt(Date.now());
+    dispatch({ type: ACTION.HEADINGS_UPDATED });
   }, []);
 
   // ----------------------------------------

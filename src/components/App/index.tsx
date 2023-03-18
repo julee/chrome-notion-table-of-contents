@@ -2,43 +2,42 @@ import React, { ReactNode, useLayoutEffect, useReducer, useState } from 'react';
 import { ACTION, THEME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { waitFor } from '../../utils';
-import { ExpandButton } from '../ExpandButton';
+import { ExpandTailButton } from '../ExpandTailButton';
 import Header from '../Header';
 import Headings from '../Headings';
 import './common.pcss';
 import './customProperties.css';
 import { ThemeContext, useTheme } from './hooks';
-import { Reducer } from './reducer';
+import { reducer } from './reducer';
 import './styles.pcss';
 
 const Consumer = () => {
-  const [tocUpdatedAt, setTocUpdatedAt] = useState<number>(Date.now());
   const theme = useTheme();
 
-  const [{ tailFolded, wholeFolded, showsExpandButton, maxHeight }, dispatch] =
-    useReducer(Reducer, {
-      tailFolded: true,
-      wholeFolded: false,
-      showsExpandButton: false,
-      maxHeight: '26vh',
-    });
+  const [
+    { tailFolded, wholeFolded, showsExpandTailButton, maxHeight },
+    dispatch,
+  ] = useReducer(reducer, {
+    tailFolded: true,
+    wholeFolded: false,
+    showsExpandTailButton: false,
+    maxHeight: '26vh',
+  });
 
-  // ページ遷移したら畳む
   usePageChangeEvent(() => {
     dispatch({ type: ACTION.PAGE_CHANGED });
   });
 
   return (
     <div className={`toc-container toc-theme-${theme}`}>
-      <Header wholeFolded={wholeFolded} setWholeFolded={setWholeFolded} />
+      <Header wholeFolded={wholeFolded} dispatch={dispatch} />
       {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
       <div {...(wholeFolded && { className: 'toc-hidden' })}>
-        <Headings maxHeight={maxHeight} setTocUpdatedAt={setTocUpdatedAt} />
-        <ExpandButton
-          tocUpdatedAt={tocUpdatedAt}
-          isWholeFolded={wholeFolded}
+        <Headings maxHeight={maxHeight} dispatch={dispatch} />
+        <ExpandTailButton
           tailFolded={tailFolded}
-          setTailFolded={setTailFolded}
+          showsExpandTailButton={showsExpandTailButton}
+          dispatch={dispatch}
         />
       </div>
     </div>

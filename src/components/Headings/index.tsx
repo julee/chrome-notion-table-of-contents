@@ -6,13 +6,13 @@ import './styles.pcss';
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
 export default function Headings({
-  setTocUpdatedAt,
   maxHeight,
+  dispatch,
 }: {
   maxHeight: string;
-  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
+  dispatch: React.Dispatch<{ type: string }>;
 }) {
-  const headings = useHeadings({ setTocUpdatedAt });
+  const headings = useHeadings({ dispatch });
 
   return headings.length > 0 ? (
     <div className="toc-headings" style={{ maxHeight }}>
