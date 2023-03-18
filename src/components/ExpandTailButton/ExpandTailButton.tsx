@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { throttle } from 'throttle-debounce';
 import { ACTION, THROTTLE_TIME } from '../../constants';
-import { FoldIcon } from '../FoldIcon';
+import { FoldIcon } from '../FoldIcon/FoldIcon';
 import './styles.pcss';
 
 export const ExpandTailButton = ({

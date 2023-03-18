@@ -1,6 +1,6 @@
 import React from 'react';
 import { ACTION } from '../../constants';
-import { FoldIcon } from '../FoldIcon';
+import { FoldIcon } from '../FoldIcon/FoldIcon';
 import './styles.pcss';
 
 export default function Headings({

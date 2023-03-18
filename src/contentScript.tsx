@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './components/App';
+import App from './components/App/App';
 import { waitFor } from './utils';
 
 // Notion blog とかでも content script が読み込まれるのは無駄なので
