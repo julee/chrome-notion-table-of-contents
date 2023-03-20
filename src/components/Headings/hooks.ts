@@ -1,18 +1,17 @@
+import { useSetAtom } from 'jotai';
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
-import { ACTION, THROTTLE_TIME } from '../../constants';
+import { handleHeadingsUpdateAtom } from '../../atoms';
+import { THROTTLE_TIME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
 // Very long but can't be splited ...
-export const useHeadings = ({
-  dispatch,
-}: {
-  dispatch: React.Dispatch<{ type: string }>;
-}): Headings => {
+export const useHeadings = (): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
   const headingsRef = useRef<Headings | null>(null);
+  const handleHeadingsUpdate = useSetAtom(handleHeadingsUpdateAtom);
 
   const setHeadings = useCallback(
     (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
@@ -34,7 +33,7 @@ export const useHeadings = ({
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
     // use setTimeout() to process after the headings change is reflected in the DOM
-    setTimeout(() => dispatch({ type: ACTION.HEADINGS_UPDATED }));
+    setTimeout(() => handleHeadingsUpdate(), 0);
   }, []);
 
   // ----------------------------------------
@@ -88,7 +87,7 @@ export const useHeadings = ({
     (async () => {
       await waitFor('main');
       getMainContainer().addEventListener('scroll', fn);
-      fn();
+      await fn();
     })();
     return () => getMainContainer().removeEventListener('scroll', fn);
   });

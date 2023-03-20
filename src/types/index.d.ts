@@ -14,6 +14,6 @@ type Theme = valueOf<typeof import('../constants').THEME>;
 type State = {
   tailFolded: boolean;
   wholeFolded: boolean;
-  showsExpandTailButton: boolean;
+  showsTailFoldButton: boolean;
   maxHeight: string;
 };

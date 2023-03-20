@@ -7,7 +7,7 @@ const HEADING_CLASS = {
 } as const;
 
 export const extractHeadings = (): Headings => {
-  // console.info('# extract headings'); // FIXME
+  console.info('# extract headings');
 
   let headings: Headings = [];
 

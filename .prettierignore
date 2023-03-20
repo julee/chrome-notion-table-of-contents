@@ -1,2 +1,3 @@
 /public/js/**/*
 /dist/
+/pnpm-lock.yaml

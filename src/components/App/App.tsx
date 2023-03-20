@@ -1,43 +1,52 @@
-import React, { ReactNode, useLayoutEffect, useReducer, useState } from 'react';
-import { ACTION, THEME } from '../../constants';
-import { usePageChangeEvent } from '../../hooks';
+import { useAtomValue, useSetAtom } from 'jotai';
+import React, {
+  ReactNode,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
+import { throttle } from 'throttle-debounce';
+import {
+  handlePageMoveAtom,
+  handleResizeAtom,
+  wholeFoldedAtom,
+} from '../../atoms';
+import { THEME, THROTTLE_TIME } from '../../constants';
+import { usePageChangeEvent as usePageMoveEvent } from '../../hooks';
 import { waitFor } from '../../utils';
-import ExpandTailButton from '../ExpandTailButton/ExpandTailButton';
 import Header from '../Header/Header';
 import Headings from '../Headings/Headings';
+import TailFoldButton from '../TailFoldButton/TailFoldButton';
 import './common.pcss';
 import './customProperties.css';
 import { ThemeContext, useTheme } from './hooks';
-import { DEFAULT_STATE, reducer } from './reducer';
 import './styles.pcss';
 
-const Consumer = () => {
+const Main = () => {
   const theme = useTheme();
+  const wholeFolded = useAtomValue(wholeFoldedAtom);
 
-  const [
-    { tailFolded, wholeFolded, showsExpandTailButton, maxHeight },
-    dispatch,
-  ] = useReducer(reducer, DEFAULT_STATE);
+  const handlePageMove = useSetAtom(handlePageMoveAtom);
+  const handleResize = useSetAtom(handleResizeAtom);
 
-  usePageChangeEvent(() => {
-    dispatch({ type: ACTION.PAGE_MOVED });
+  useEffect(() => {
+    const fn = throttle(() => handleResize(), THROTTLE_TIME);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+
+  usePageMoveEvent(() => {
+    handlePageMove();
   });
 
   return (
     <div className={`toc-container toc-theme-${theme}`}>
-      <Header wholeFolded={wholeFolded} dispatch={dispatch} />
+      <Header />
       {/* TODO: 閉じてる間描画しない仕様にしても良いかもしれない */}
       <div {...(wholeFolded && { className: 'toc-hidden' })}>
-        <Headings
-          maxHeight={maxHeight}
-          state={{ tailFolded, wholeFolded, showsExpandTailButton, maxHeight }}
-          dispatch={dispatch}
-        />
-        <ExpandTailButton
-          tailFolded={tailFolded}
-          showsExpandTailButton={showsExpandTailButton}
-          dispatch={dispatch}
-        />
+        <Headings />
+        <TailFoldButton />
       </div>
     </div>
   );
@@ -62,7 +71,9 @@ const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
 export default function App() {
   return (
     <ThemeContextProvider>
-      <Consumer />
+      <Suspense fallback={<div></div>}>
+        <Main />
+      </Suspense>
     </ThemeContextProvider>
   );
 }
