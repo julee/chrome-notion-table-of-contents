@@ -11,8 +11,12 @@
     "stylelint-no-unsupported-browser-features"
   ],
   "rules": {
-    "no-descending-specificity": null,
-    "csstools/value-no-unknown-custom-properties": true,
+    "csstools/value-no-unknown-custom-properties": [
+      true,
+      {
+        "importFrom": ["src/components/App/customProperties.css"]
+      }
+    ],
     "csstree/validator": true,
     "plugin/declaration-block-no-ignored-properties": true,
     "plugin/no-unsupported-browser-features": true

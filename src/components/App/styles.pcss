@@ -1,0 +1,18 @@
+.toc-container {
+  padding: 10px 0;
+  margin: 0;
+  font-size: 14px;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+
+  svg {
+    display: inline;
+    flex-shrink: 0;
+    backface-visibility: hidden;
+  }
+
+  /* if the bottom ／＼ button exists */
+  &:not(:has(.toc-hidden))&:has(.toc-tail-fold-button) {
+    padding-bottom: 0;
+  }
+}

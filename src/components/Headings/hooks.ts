@@ -1,17 +1,17 @@
+import { useSetAtom } from 'jotai';
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
+import { handleHeadingsUpdateAtom } from '../../atoms';
 import { THROTTLE_TIME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
-export const useHeadings = ({
-  setTocUpdatedAt,
-}: {
-  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
-}): Headings => {
+// Very long but can't be splited ...
+export const useHeadings = (): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
   const headingsRef = useRef<Headings | null>(null);
+  const handleHeadingsUpdate = useSetAtom(handleHeadingsUpdateAtom);
 
   const setHeadings = useCallback(
     (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
@@ -29,11 +29,16 @@ export const useHeadings = ({
     [],
   );
 
-  const refreshAllHeadings = () => {
+  const refreshAllHeadings = useCallback(() => {
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
-    setTocUpdatedAt(Date.now());
-  };
+    // use setTimeout() to process after the headings change is reflected in the DOM
+    setTimeout(() => handleHeadingsUpdate(), 0);
+  }, []);
+
+  // ----------------------------------------
+  // First rendering
+  // ----------------------------------------
 
   usePageChangeEvent(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
@@ -49,7 +54,11 @@ export const useHeadings = ({
     })();
   });
 
-  // watch headings' change
+  // ----------------------------------------
+  // Watch content and re-rendering
+  // ----------------------------------------
+
+  // watch edit of headings and follow the change
   usePageChangeEvent(() => {
     let observer: MutationObserver;
     (async () => {
@@ -78,7 +87,7 @@ export const useHeadings = ({
     (async () => {
       await waitFor('main');
       getMainContainer().addEventListener('scroll', fn);
-      fn();
+      await fn();
     })();
     return () => getMainContainer().removeEventListener('scroll', fn);
   });

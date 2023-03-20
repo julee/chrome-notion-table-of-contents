@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { THEME } from '../../constants';
 import { $, getContainer } from '../../utils';
 import { useTheme } from '../App/hooks';
+import './styles.pcss';
 
 const ANIMATION_DURATION = 1_500;
 
-export default function Heading({ blockId, isFocused, level, text }: Heading) {
+export default memo(function Heading({
+  blockId,
+  isFocused,
+  level,
+  text,
+}: Heading) {
   const theme = useTheme();
 
   const scrollToHeading = () => {
@@ -40,4 +46,4 @@ export default function Heading({ blockId, isFocused, level, text }: Heading) {
       {text}
     </p>
   );
-}
+});
