@@ -13,7 +13,13 @@ export default memo(function Headings({
   return (
     <div
       className="toc-header toc-clickable"
-      onClick={() => dispatch({ type: ACTION.WHOLE_FOLDED_BUTTON_CLICKED })}
+      onClick={() => {
+        dispatch({ type: ACTION.WHOLE_FOLDED_BUTTON_CLICKED });
+        setTimeout(
+          () => dispatch({ type: ACTION.POST_WHOLE_FOLDED_BUTTON_CLICKED }),
+          0,
+        );
+      }}
     >
       <FoldIcon direction={wholeFolded ? 'right' : 'down'} />
       <span className="toc-title">

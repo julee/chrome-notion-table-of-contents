@@ -19,12 +19,12 @@ tailFolded folded   | o   | x
 
 */
 const calcShowsExpandTailButton = (tailFolded: boolean): boolean => {
+  if (!tailFolded) return true;
+
   const headings = document.querySelector('.toc-headings,.toc-no-headings');
   if (!headings)
     throw new Error('".toc-headings,.toc-no-headings" is not found');
-
-  const hasScrollbar = headings.scrollHeight > headings.clientHeight;
-  return !tailFolded || hasScrollbar;
+  return headings.scrollHeight > headings.clientHeight; // has scrollbar
 };
 
 const calcExpandedMaxHeight = () => {
@@ -34,12 +34,13 @@ const calcExpandedMaxHeight = () => {
   return window.innerHeight - container.offsetTop - 69 + 'px';
 };
 
+// FIXME: WholeFolded を storage.local
 export const reducer = (
   prevState: State,
   action: { type: valueOf<typeof ACTION> },
 ): State => {
   const state = { ...prevState };
-  console.log('# action: ' + action.type);
+  console.info('# action: ' + action.type);
 
   switch (action.type) {
     case ACTION.TAIL_FOLDED_BUTTON_CLICKED:
@@ -50,7 +51,11 @@ export const reducer = (
       return state;
     case ACTION.WHOLE_FOLDED_BUTTON_CLICKED:
       state.wholeFolded = !state.wholeFolded;
-      if (state.wholeFolded)
+      return state;
+    // TODO: 実質 ↑ とセットなのに action が分断されるキモさ。
+    // やはり Jotai しか無いのか、、、？
+    case ACTION.POST_WHOLE_FOLDED_BUTTON_CLICKED:
+      if (!state.wholeFolded)
         state.showsExpandTailButton = calcShowsExpandTailButton(
           state.tailFolded,
         );

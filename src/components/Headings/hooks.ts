@@ -33,7 +33,8 @@ export const useHeadings = ({
   const refreshAllHeadings = useCallback(() => {
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
-    dispatch({ type: ACTION.HEADINGS_UPDATED });
+    // use setTimeout() to process after the headings change is reflected in the DOM
+    setTimeout(() => dispatch({ type: ACTION.HEADINGS_UPDATED }));
   }, []);
 
   // ----------------------------------------
