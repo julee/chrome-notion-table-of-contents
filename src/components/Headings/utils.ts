@@ -20,7 +20,7 @@ export const extractHeadings = (): Headings => {
     const text = (elem.textContent || '').trim();
     if (text === '') continue;
 
-    const blockId = elem.getAttribute('data-block-id');
+    const blockId = elem.getAttribute('data-block-id')?.replaceAll('-', '');
     if (!blockId) {
       console.error('data-block-id is not found', elems);
       continue;
