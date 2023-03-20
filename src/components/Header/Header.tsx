@@ -1,25 +1,18 @@
+import { useAtomValue, useSetAtom } from 'jotai';
 import React, { memo } from 'react';
-import { ACTION } from '../../constants';
+import { handleWholeFoldButtonClickAtom, wholeFoldedAtom } from '../../atoms';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
 import './styles.pcss';
 
-export default memo(function Headings({
-  wholeFolded,
-  dispatch,
-}: {
-  wholeFolded: boolean;
-  dispatch: React.Dispatch<{ type: string }>;
-}) {
+export default memo(function Headings() {
+  const wholeFolded = useAtomValue(wholeFoldedAtom);
+
+  const handleWholeFoldButtonClick = useSetAtom(handleWholeFoldButtonClickAtom);
+
   return (
     <div
       className="toc-header toc-clickable"
-      onClick={() => {
-        dispatch({ type: ACTION.WHOLE_FOLDED_BUTTON_CLICKED });
-        setTimeout(
-          () => dispatch({ type: ACTION.POST_WHOLE_FOLDED_BUTTON_CLICKED }),
-          0,
-        );
-      }}
+      onClick={() => handleWholeFoldButtonClick()}
     >
       <FoldIcon direction={wholeFolded ? 'right' : 'down'} />
       <span className="toc-title">
