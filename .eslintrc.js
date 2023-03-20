@@ -5,6 +5,7 @@ module.exports = {
   },
   parserOptions: {
     ecmaVersion: 'latest',
+    project: './tsconfig.json',
   },
   extends: [
     'eslint:recommended',
@@ -23,10 +24,11 @@ module.exports = {
     },
   },
   rules: {
-    "no-trailing-spaces": "error",
-    "@typescript-eslint/no-empty-function": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "jest/valid-title": "off",
-    "jest/no-conditional-expect": "off"
+    'no-trailing-spaces': 'error',
+    '@typescript-eslint/no-empty-function': 'off',
+    '@typescript-eslint/no-floating-promises': ['error', { ignoreIIFE: true }],
+    'react-hooks/exhaustive-deps': 'off',
+    'jest/valid-title': 'off',
+    'jest/no-conditional-expect': 'off',
   },
 };

@@ -1,18 +1,17 @@
+import { useSetAtom } from 'jotai';
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
+import { handleHeadingsUpdateAtom } from '../../atoms';
 import { THROTTLE_TIME } from '../../constants';
 import { usePageChangeEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
 // Very long but can't be splited ...
-export const useHeadings = ({
-  setTocUpdatedAt,
-}: {
-  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
-}): Headings => {
+export const useHeadings = (): Headings => {
   const [headings, _setHeadings] = useState<Headings>([]);
   const headingsRef = useRef<Headings | null>(null);
+  const handleHeadingsUpdate = useSetAtom(handleHeadingsUpdateAtom);
 
   const setHeadings = useCallback(
     (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
@@ -33,7 +32,8 @@ export const useHeadings = ({
   const refreshAllHeadings = useCallback(() => {
     const headings = extractHeadings();
     setHeadings(highlightCurrentFocused(headings));
-    setTocUpdatedAt(Date.now());
+    // use setTimeout() to process after the headings change is reflected in the DOM
+    setTimeout(() => handleHeadingsUpdate(), 0);
   }, []);
 
   // ----------------------------------------
@@ -87,7 +87,7 @@ export const useHeadings = ({
     (async () => {
       await waitFor('main');
       getMainContainer().addEventListener('scroll', fn);
-      fn();
+      await fn();
     })();
     return () => getMainContainer().removeEventListener('scroll', fn);
   });

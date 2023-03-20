@@ -1,5 +1,6 @@
 import type { ManifestV3Export } from '@crxjs/vite-plugin';
 import { crx } from '@crxjs/vite-plugin';
+// import react from '@vitejs/plugin-react';
 import postcssNested from 'postcss-nested';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, PluginOption } from 'vite';
@@ -18,6 +19,7 @@ export default defineConfig(({ mode }) => {
     },
     ...(isDevelopment ? {} : { esbuild: { drop: ['console'] } }),
     plugins: [
+      // react(),
       crx({ manifest: manifest as ManifestV3Export }),
       ...(ENABLES_VISUALIZER ? [visualizer() as PluginOption] : []),
     ],
