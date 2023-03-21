@@ -15,7 +15,7 @@
     "lint": "run-p -c lint:*",
     "lint-fix": "run-p -c lint-fix:*",
     "test": "jest",
-    "release": "pnpm install && pnpm run build && zip -r dist.zip public",
+    "release": "pnpm install && pnpm run build && zip -r dist.zip dist",
     "check:types": "tsc --noEmit",
     "check:ngword": "if grep -rE \"console\\.(log|dir)|FIXME\" ./src; then exit 1; else echo \"All good\"; fi",
     "check": "run-p -c test lint check:*"
