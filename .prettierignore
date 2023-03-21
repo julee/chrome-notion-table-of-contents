@@ -1,2 +1,3 @@
-src/postcss/**/*
-public/js/**/*
+/public/js/**/*
+/dist/
+/pnpm-lock.yaml

@@ -1,0 +1,9 @@
+:root {
+  --border-color: #e3e3e3;
+  --foo: purple;
+}
+
+.toc-theme-dark {
+  --border-color: #3d3d3d;
+  --foo: orange;
+}

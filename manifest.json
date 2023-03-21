@@ -6,11 +6,11 @@
   "content_scripts": [
     {
       "matches": ["*://*.notion.so/*", "*://*.notion.site/*"],
-      "js": ["/src/ts/contentScript.tsx"]
+      "js": ["src/contentScript.tsx"]
     }
   ],
   "background": {
-    "service_worker": "/src/ts/background.ts",
+    "service_worker": "src/background.ts",
     "type": "module"
   },
   "permissions": ["webNavigation", "storage"],
@@ -19,5 +19,6 @@
     "32": "images/icon32.png",
     "48": "images/icon48.png",
     "128": "images/icon128.png"
-  }
+  },
+  "version": ""
 }

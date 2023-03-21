@@ -1,5 +1,5 @@
-import * as utils from '../../../utils';
-import { extractHeadings, highlightCurrentFocused } from '../utils';
+import * as utils from '../../utils';
+import { extractHeadings, highlightCurrentFocused } from './utils';
 
 const wrap = (str: string) => `
 <div class="notion-frame">
@@ -17,7 +17,7 @@ describe('extractHeadings', () => {
     document.body.innerHTML = '';
   });
 
-  it('basic', () => {
+  test('basic', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h1-xxx" class="notion-header-block">
         <div placeholder="Heading 1">
@@ -39,27 +39,27 @@ describe('extractHeadings', () => {
       {
         text: 'This is h1',
         level: 1,
-        blockId: 'h1-xxx',
+        blockId: 'h1xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h2',
         level: 2,
-        blockId: 'h2-xxx',
+        blockId: 'h2xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
         level: 3,
-        blockId: 'h3-xxx',
+        blockId: 'h3xxx',
         offset: 0,
         isFocused: false,
       },
     ]);
   });
-  it('un-indent', () => {
+  test('un-indent', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h2-xxx" class="notion-sub_header-block">
         <div placeholder="Heading 2">
@@ -76,20 +76,20 @@ describe('extractHeadings', () => {
       {
         text: 'This is h2',
         level: 1,
-        blockId: 'h2-xxx',
+        blockId: 'h2xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
         level: 2,
-        blockId: 'h3-xxx',
+        blockId: 'h3xxx',
         offset: 0,
         isFocused: false,
       },
     ]);
   });
-  it('removes empty blocks', () => {
+  test('removes empty blocks', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h1-xxx" class="notion-sub_header-block">
         <div placeholder="Heading 2">
@@ -108,7 +108,7 @@ describe('extractHeadings', () => {
       {
         text: 'This is h1',
         level: 1,
-        blockId: 'h1-xxx',
+        blockId: 'h1xxx',
         offset: 0,
         isFocused: false,
       },
@@ -117,7 +117,7 @@ describe('extractHeadings', () => {
 });
 
 describe('locales', () => {
-  it.each([
+  test.each([
     {
       name: 'en',
       input: { prefix: 'Heading ' },
@@ -156,9 +156,11 @@ describe('locales', () => {
 describe('setHighlight', () => {
   // https://github.com/jsdom/jsdom/issues/3363
   // 2 つ以上になったら setupFilesAfterEnv にまとめる
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   global.structuredClone = (val: unknown) => JSON.parse(JSON.stringify(val));
 
-  it.each([
+  test.each([
     {
       name: 'basic',
       input: {

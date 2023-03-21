@@ -1,17 +1,15 @@
-import React from 'react';
-import Heading from '../Heading';
+import { useAtomValue } from 'jotai';
+import React, { memo } from 'react';
+import { maxHeightAtom } from '../../atoms';
+import Heading from '../Heading/Heading';
 import { useHeadings } from './hooks';
+import './styles.pcss';
 
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが
 //       重い処理は useEffect でしか行われないので問題ない
-export default function Headings({
-  setTocUpdatedAt,
-  maxHeight,
-}: {
-  maxHeight: string;
-  setTocUpdatedAt: React.Dispatch<React.SetStateAction<number>>;
-}) {
-  const headings = useHeadings({ setTocUpdatedAt });
+export default memo(function Headings() {
+  const headings = useHeadings();
+  const maxHeight = useAtomValue(maxHeightAtom);
 
   return headings.length > 0 ? (
     <div className="toc-headings" style={{ maxHeight }}>
@@ -22,4 +20,4 @@ export default function Headings({
   ) : (
     <p className="toc-no-headings">{chrome.i18n.getMessage('NO_HEADINGS')}</p>
   );
-}
+});

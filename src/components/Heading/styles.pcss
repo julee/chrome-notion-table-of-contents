@@ -1,0 +1,33 @@
+.toc-heading {
+  --indent: 16px;
+
+  padding-left: 10px;
+  margin: 4px 0;
+  font-size: 13.5px;
+  border-left: 3px solid transparent;
+
+  &:hover {
+    text-decoration: underline;
+    border-left: 3px solid var(--border-color);
+  }
+}
+
+.toc-focused {
+  --color: rgb(55 53 47);
+
+  .toc-theme-dark & {
+    --color: rgb(255 255 255 / 81%);
+  }
+
+  font-weight: bold;
+  color: var(--color);
+  border-left: 3px solid var(--color);
+}
+
+.toc-h2 {
+  margin-left: var(--indent);
+}
+
+.toc-h3 {
+  margin-left: calc(var(--indent) * 2);
+}

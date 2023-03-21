@@ -3,4 +3,7 @@
 /public/js/
 /out.zip
 /.extension-id
+/.vscode/
 /dist/
+/stats.html
+/.git-pr-release

@@ -9,8 +9,8 @@ Show table of contents (outline) on the sidebar for Notion pages
 ## How to Build
 
 ```sh
-yarn install
-yarn run build
+pnpm install
+pnpm run build
 ```
 
 ## How to Contribute
