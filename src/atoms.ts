@@ -8,9 +8,13 @@ const STORAGE_KEY = 'FOLDED';
 // ========================================
 
 export const showsTailFoldButtonAtom = atom(false);
+
 export const maxHeightAtom = atomWithReset('26vh');
+
 export const tailFoldedAtom = atom(true);
+
 const _wholeFoldedAtom = atom<boolean | undefined>(undefined);
+
 export const wholeFoldedAtom = atom(
   async (get) => {
     const val = get(_wholeFoldedAtom);
@@ -32,43 +36,43 @@ export const wholeFoldedAtom = atom(
 // Selector Atom
 // ========================================
 
-export const handlePageMoveAtom = atom(null, (get, set) => {
+const updateShowsTailFoldButtonAtom = atom(null, (get, set) => {
+  set(showsTailFoldButtonAtom, calcShowsTailFoldButton(get(tailFoldedAtom)));
+});
+
+const updateMaxHeightAtom = atom(null, (get, set) => {
+  set(maxHeightAtom, calcMaxHeight(get(tailFoldedAtom)));
+});
+
+export const handlePageMoveAtom = atom(null, (_get, set) => {
   console.info('# jotai: PageMoveAtom');
   set(tailFoldedAtom, true);
-  set(showsTailFoldButtonAtom, calcShowsTailFoldButton(get(tailFoldedAtom)));
+  set(updateShowsTailFoldButtonAtom);
 });
 
-export const handleHeadingsUpdateAtom = atom(null, (get, set) => {
+export const handleHeadingsUpdateAtom = atom(null, (_get, set) => {
   console.info('# jotai: HeadingsUpdateAtom');
-  set(showsTailFoldButtonAtom, calcShowsTailFoldButton(get(tailFoldedAtom)));
+  set(updateShowsTailFoldButtonAtom);
 });
 
-export const handleResizeAtom = atom(null, (get, set) => {
+export const handleResizeAtom = atom(null, (_get, set) => {
   console.info('# jotai: ResizeAtom');
-  set(maxHeightAtom, calcMaxHeight(get(tailFoldedAtom)));
-  set(showsTailFoldButtonAtom, calcShowsTailFoldButton(get(tailFoldedAtom)));
+  set(updateMaxHeightAtom);
+  set(updateShowsTailFoldButtonAtom);
 });
 
 export const handleTailFoldButtonClickAtom = atom(null, (get, set) => {
   console.info('# jotai: TailFoldButtonClickAtom');
   const folded = !get(tailFoldedAtom);
   set(tailFoldedAtom, folded);
-  set(maxHeightAtom, calcMaxHeight(folded));
+  set(updateMaxHeightAtom);
 });
 
 export const handleWholeFoldButtonClickAtom = atom(null, async (get, set) => {
   console.info('# jotai: WholeFoldButtonClickAtom');
   const folded = !(await get(wholeFoldedAtom));
   await set(wholeFoldedAtom, folded);
-  if (!folded)
-    setTimeout(
-      () =>
-        set(
-          showsTailFoldButtonAtom,
-          calcShowsTailFoldButton(get(tailFoldedAtom)),
-        ),
-      0,
-    );
+  if (!folded) setTimeout(() => set(updateShowsTailFoldButtonAtom), 0);
 });
 
 // ========================================
