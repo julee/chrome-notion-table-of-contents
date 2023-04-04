@@ -156,8 +156,6 @@ describe('locales', () => {
 describe('setHighlight', () => {
   // https://github.com/jsdom/jsdom/issues/3363
   // 2 つ以上になったら setupFilesAfterEnv にまとめる
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   global.structuredClone = (val: unknown) => JSON.parse(JSON.stringify(val));
 
   test.each([

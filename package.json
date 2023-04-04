@@ -1,10 +1,10 @@
 {
-  "version": "2.1.3",
+  "version": "2.2.0",
   "license": "MIT",
   "scripts": {
     "dev": "pnpm run clean && vite",
     "build": "pnpm run clean && vite build",
-    "clean": "rimraf dist out.zip",
+    "clean": "rimraf dist dist.zip",
     "visualize": "pnpm run clean && ENABLES_VISUALIZER=true vite build && open stats.html",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
     "lint-fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'",
@@ -15,7 +15,7 @@
     "lint": "run-p -c lint:*",
     "lint-fix": "run-p -c lint-fix:*",
     "test": "jest",
-    "release": "pnpm install && pnpm run build && zip -r out.zip public",
+    "release": "pnpm install && pnpm run build && zip -r dist.zip dist",
     "check:types": "tsc --noEmit",
     "check:ngword": "if grep -rE \"console\\.(log|dir)|FIXME\" ./src; then exit 1; else echo \"All good\"; fi",
     "check": "run-p -c test lint check:*"
@@ -34,6 +34,7 @@
     "@crxjs/vite-plugin": "^1.0.14",
     "@types/chrome": "0.0.227",
     "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.5",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
