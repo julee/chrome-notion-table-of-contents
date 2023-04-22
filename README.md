@@ -13,7 +13,9 @@ pnpm install
 pnpm run build
 ```
 
-## How to Contribute
+## How to Send Pull Requests
+
+⚠️ If you have a feature request, please discuss it with me on /issues before sending your pull request.
 
 Create a branch from `develop` and make a pull request to `develop` .
 
