@@ -15,7 +15,7 @@ pnpm run build
 
 ## How to Send Pull Requests
 
-⚠️ If you have a feature request, please discuss it with me on `/issues` before sending your pull request.
+⚠️ If you have a feature request, please discuss it with me on `/issues` before writing your code.
 
 Create a branch from `develop` and make a pull request to `develop` .
 
