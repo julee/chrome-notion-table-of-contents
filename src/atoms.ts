@@ -45,31 +45,26 @@ const updateMaxHeightAtom = atom(null, (get, set) => {
 });
 
 export const handlePageMoveAtom = atom(null, (_get, set) => {
-  console.info('# jotai: PageMoveAtom');
   set(tailFoldedAtom, true);
   set(updateShowsTailFoldButtonAtom);
 });
 
 export const handleHeadingsUpdateAtom = atom(null, (_get, set) => {
-  console.info('# jotai: HeadingsUpdateAtom');
   set(updateShowsTailFoldButtonAtom);
 });
 
 export const handleResizeAtom = atom(null, (_get, set) => {
-  console.info('# jotai: ResizeAtom');
   set(updateMaxHeightAtom);
   set(updateShowsTailFoldButtonAtom);
 });
 
 export const handleTailFoldButtonClickAtom = atom(null, (get, set) => {
-  console.info('# jotai: TailFoldButtonClickAtom');
   const folded = !get(tailFoldedAtom);
   set(tailFoldedAtom, folded);
   set(updateMaxHeightAtom);
 });
 
 export const handleWholeFoldButtonClickAtom = atom(null, async (get, set) => {
-  console.info('# jotai: WholeFoldButtonClickAtom');
   const folded = !(await get(wholeFoldedAtom));
   await set(wholeFoldedAtom, folded);
   if (!folded) setTimeout(() => set(updateShowsTailFoldButtonAtom), 0);
