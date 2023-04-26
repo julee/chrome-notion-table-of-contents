@@ -4,7 +4,9 @@
   "scripts": {
     "dev": "pnpm run clean && vite",
     "build": "pnpm run clean && vite build",
-    "clean": "rimraf dist dist.zip",
+    "clean": "rimraf dist dist*.zip",
+    "test": "jest",
+    "release": "pnpm install && pnpm run build && ./scripts/zip.sh",
     "visualize": "pnpm run clean && ENABLES_VISUALIZER=true vite build && open stats.html",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
     "lint-fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'",
@@ -14,10 +16,8 @@
     "lint-fix:stylelint": "stylelint --fix './src/**/*.pcss'",
     "lint": "run-p -c lint:*",
     "lint-fix": "run-p -c lint-fix:*",
-    "test": "jest",
-    "release": "pnpm install && pnpm run build && zip -r dist.zip dist",
     "check:types": "tsc --noEmit",
-    "check:ngword": "if grep -rE \"console\\.(log|dir)|FIXME\" ./src; then exit 1; else echo \"All good\"; fi",
+    "check:ng-word": "./scripts/check-ng-words.sh",
     "check": "run-p -c test lint check:*"
   },
   "repository": {
