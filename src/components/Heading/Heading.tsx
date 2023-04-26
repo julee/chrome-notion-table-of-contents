@@ -8,7 +8,7 @@ export default memo(function Heading({
   text,
 }: Heading) {
   return (
-    <p
+    <div
       className={`toc-h${level} toc-heading toc-clickable ${
         isFocused ? 'toc-focused' : ''
       }`}
@@ -18,6 +18,6 @@ export default memo(function Heading({
       }}
     >
       {text}
-    </p>
+    </div>
   );
 });
