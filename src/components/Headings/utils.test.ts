@@ -1,3 +1,4 @@
+import { SCROLL_OFFSET } from '../../constants';
 import * as utils from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
@@ -162,7 +163,7 @@ describe('setHighlight', () => {
     {
       name: 'basic',
       input: {
-        scrollTop: 100,
+        scrollTop: 100 - SCROLL_OFFSET,
         headings: [{ offset: 10 }, { offset: 90 }, { offset: 110 }],
       },
       expected: [

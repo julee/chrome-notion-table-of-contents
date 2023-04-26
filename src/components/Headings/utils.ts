@@ -1,3 +1,4 @@
+import { SCROLL_OFFSET } from '../../constants';
 import { getContainer } from '../../utils';
 
 const HEADING_CLASS = {
@@ -71,7 +72,7 @@ export const highlightCurrentFocused = (headings: Headings): Headings => {
   let current: Heading | null = null;
   for (const heading of newHeadings) {
     heading.isFocused = false;
-    if (currentOffset < heading.offset) continue;
+    if (currentOffset < heading.offset - SCROLL_OFFSET) continue;
     current = heading;
   }
   (current ??= newHeadings[0]).isFocused = true;

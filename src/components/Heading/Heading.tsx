@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { SCROLL_OFFSET } from '../../constants';
 import { $, getContainer } from '../../utils';
 import './styles.pcss';
 
@@ -11,7 +12,7 @@ export default memo(function Heading({
   const scrollToHeading = (blockId: string) => {
     const heading = $(`[data-block-id="${blockId}"]`);
     getContainer().scroll({
-      top: heading.offsetTop,
+      top: heading.offsetTop - SCROLL_OFFSET,
     });
   };
 
