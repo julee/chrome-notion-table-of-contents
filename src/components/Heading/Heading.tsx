@@ -24,9 +24,7 @@ export default memo(function Heading({
       key={blockId}
       onClick={() => {
         location.hash = '#' + blockId.replaceAll('-', '');
-        setTimeout(() => {
-          scrollToHeading(blockId);
-        }, 0);
+        scrollToHeading(blockId);
       }}
     >
       {text}
