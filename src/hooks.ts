@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const usePageChangeEvent = (handler: () => void | (() => void)) => {
+export const usePageMoveEvent = (handler: () => void | (() => void)) => {
   useEffect(() => {
     const cleanup = handler();
     const fn = ({ type }: { type: string }) => {

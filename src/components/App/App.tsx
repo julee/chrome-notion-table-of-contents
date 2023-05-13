@@ -7,7 +7,7 @@ import {
   wholeFoldedAtom,
 } from '../../atoms';
 import { THEME, THROTTLE_TIME } from '../../constants';
-import { usePageChangeEvent as usePageMoveEvent } from '../../hooks';
+import { usePageMoveEvent } from '../../hooks';
 import { waitFor } from '../../utils';
 import Header from '../Header/Header';
 import Headings from '../Headings/Headings';
