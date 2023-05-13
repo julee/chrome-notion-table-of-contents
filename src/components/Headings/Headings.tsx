@@ -18,6 +18,8 @@ export default memo(function Headings() {
       ))}
     </div>
   ) : (
-    <p className="toc-no-headings">{chrome.i18n.getMessage('NO_HEADINGS')}</p>
+    <div className="toc-no-headings">
+      {chrome.i18n.getMessage('NO_HEADINGS')}
+    </div>
   );
 });

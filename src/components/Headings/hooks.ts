@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { handleHeadingsUpdateAtom } from '../../atoms';
 import { THROTTLE_TIME } from '../../constants';
-import { usePageChangeEvent } from '../../hooks';
+import { usePageMoveEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
@@ -40,7 +40,7 @@ export const useHeadings = (): Headings => {
   // First rendering
   // ----------------------------------------
 
-  usePageChangeEvent(() => {
+  usePageMoveEvent(() => {
     // カクつき防止に、前回描画した内容を暫定的に出しておく
     if (headingsRef.current) setHeadings(headingsRef.current);
 
@@ -59,7 +59,7 @@ export const useHeadings = (): Headings => {
   // ----------------------------------------
 
   // watch edit of headings and follow the change
-  usePageChangeEvent(() => {
+  usePageMoveEvent(() => {
     let observer: MutationObserver;
     (async () => {
       await waitFor('main');
@@ -79,7 +79,7 @@ export const useHeadings = (): Headings => {
   });
 
   // highlight current focused
-  usePageChangeEvent(() => {
+  usePageMoveEvent(() => {
     const fn = throttle(
       () => setHeadings((headings) => highlightCurrentFocused(headings)),
       THROTTLE_TIME,

@@ -3,6 +3,11 @@
   "name": "Notion Table of Contents (Outline)",
   "description": "__MSG_EXTENSION_DESCRIPTION__",
   "default_locale": "en",
+  "action": {
+    "default_icon": "images/icon38.png",
+    "default_popup": "popup.html"
+  },
+  "options_page": "popup.html",
   "content_scripts": [
     {
       "matches": ["*://*.notion.so/*", "*://*.notion.site/*"],

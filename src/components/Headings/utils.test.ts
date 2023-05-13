@@ -1,3 +1,4 @@
+import { SCROLL_OFFSET } from '../../constants';
 import * as utils from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
@@ -39,21 +40,21 @@ describe('extractHeadings', () => {
       {
         text: 'This is h1',
         level: 1,
-        blockId: 'h1xxx',
+        blockId: 'h1-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h2',
         level: 2,
-        blockId: 'h2xxx',
+        blockId: 'h2-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
         level: 3,
-        blockId: 'h3xxx',
+        blockId: 'h3-xxx',
         offset: 0,
         isFocused: false,
       },
@@ -76,14 +77,14 @@ describe('extractHeadings', () => {
       {
         text: 'This is h2',
         level: 1,
-        blockId: 'h2xxx',
+        blockId: 'h2-xxx',
         offset: 0,
         isFocused: false,
       },
       {
         text: 'This is h3',
         level: 2,
-        blockId: 'h3xxx',
+        blockId: 'h3-xxx',
         offset: 0,
         isFocused: false,
       },
@@ -108,7 +109,7 @@ describe('extractHeadings', () => {
       {
         text: 'This is h1',
         level: 1,
-        blockId: 'h1xxx',
+        blockId: 'h1-xxx',
         offset: 0,
         isFocused: false,
       },
@@ -162,7 +163,7 @@ describe('setHighlight', () => {
     {
       name: 'basic',
       input: {
-        scrollTop: 100,
+        scrollTop: 100 - SCROLL_OFFSET,
         headings: [{ offset: 10 }, { offset: 90 }, { offset: 110 }],
       },
       expected: [

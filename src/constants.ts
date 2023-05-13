@@ -5,3 +5,5 @@ export const THEME = {
 } as const;
 
 export const THROTTLE_TIME = 150;
+
+export const SCROLL_OFFSET = 65;
