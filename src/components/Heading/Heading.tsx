@@ -1,4 +1,6 @@
 import React, { memo } from 'react';
+import { SCROLL_OFFSET } from '../../constants';
+import { $, getContainer } from '../../utils';
 import './styles.pcss';
 
 export default memo(function Heading({
@@ -7,17 +9,25 @@ export default memo(function Heading({
   level,
   text,
 }: Heading) {
+  const scrollToHeading = (blockId: string) => {
+    const heading = $(`[data-block-id="${blockId}"]`);
+    getContainer().scroll({
+      top: heading.offsetTop - SCROLL_OFFSET,
+    });
+  };
+
   return (
-    <p
+    <div
       className={`toc-h${level} toc-heading toc-clickable ${
         isFocused ? 'toc-focused' : ''
       }`}
       key={blockId}
       onClick={() => {
-        location.hash = '#' + blockId;
+        location.hash = '#' + blockId.replaceAll('-', '');
+        scrollToHeading(blockId);
       }}
     >
       {text}
-    </p>
+    </div>
   );
 });

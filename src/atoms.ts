@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 import { atomWithReset, RESET } from 'jotai/utils';
+import { $ } from './utils';
 
 const STORAGE_KEY = 'FOLDED';
 
@@ -77,16 +78,13 @@ export const handleWholeFoldButtonClickAtom = atom(null, async (get, set) => {
 function calcShowsTailFoldButton(tailFolded: boolean): boolean {
   if (!tailFolded) return true;
 
-  const headings = document.querySelector('.toc-headings,.toc-no-headings');
-  if (!headings)
-    throw new Error('".toc-headings,.toc-no-headings" is not found');
+  const headings = $('.toc-headings,.toc-no-headings');
   return headings.scrollHeight > headings.clientHeight; // has scrollbar
 }
 
 function calcMaxHeight(tailFolded: boolean) {
   if (tailFolded) return RESET;
 
-  const container = document.querySelector<HTMLElement>('.toc-container');
-  if (!container) throw new Error('.toc-container is not found');
+  const container = $('.toc-container');
   return window.innerHeight - container.offsetTop - 69 + 'px';
 }
