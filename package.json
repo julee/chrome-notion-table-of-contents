@@ -7,8 +7,6 @@
     "clean": "rimraf dist dist*.zip",
     "test": "jest",
     "release": "pnpm install && pnpm run build && ./scripts/zip.sh",
-    "test": "jest",
-    "release": "pnpm install && pnpm run build && ./scripts/zip.sh",
     "visualize": "pnpm run clean && ENABLES_VISUALIZER=true vite build && open stats.html",
     "lint:eslint": "eslint 'src/**/*.{ts,tsx}'",
     "lint-fix:eslint": "eslint --fix 'src/**/*.{ts,tsx}'",
