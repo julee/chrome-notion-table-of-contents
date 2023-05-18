@@ -1,3 +1,5 @@
+import { THEME } from './constants';
+
 type valueOf<T> = T[keyof T]; // util
 
 export type Heading = {
@@ -8,4 +10,4 @@ export type Heading = {
   isFocused: boolean;
 };
 
-export type Theme = valueOf<typeof import('./constants').THEME>;
+export type Theme = valueOf<typeof THEME>;
