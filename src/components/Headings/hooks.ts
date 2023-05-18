@@ -4,17 +4,18 @@ import { throttle } from 'throttle-debounce';
 import { handleHeadingsUpdateAtom } from '../../atoms';
 import { THROTTLE_TIME } from '../../constants';
 import { usePageMoveEvent } from '../../hooks';
+import type { Heading } from '../../types';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
 // Very long but can't be splited ...
-export const useHeadings = (): Headings => {
-  const [headings, _setHeadings] = useState<Headings>([]);
-  const headingsRef = useRef<Headings | null>(null);
+export const useHeadings = (): Heading[] => {
+  const [headings, _setHeadings] = useState<Heading[]>([]);
+  const headingsRef = useRef<Heading[] | null>(null);
   const handleHeadingsUpdate = useSetAtom(handleHeadingsUpdateAtom);
 
   const setHeadings = useCallback(
-    (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
+    (valOrFunction: Heading[] | ((headings: Heading[]) => Heading[])) => {
       if (typeof valOrFunction === 'function') {
         _setHeadings((prevHeadings) => {
           const newHeadings = valOrFunction(prevHeadings);

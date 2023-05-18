@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { maxHeightAtom } from '../../atoms';
 import Heading from '../Heading/Heading';
 import { useHeadings } from './hooks';
+
 import './styles.pcss';
 
 // MEMO: 描画コストが高いので、useMemo したほうが良さそう ... に一見思われるが

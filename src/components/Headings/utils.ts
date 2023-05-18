@@ -1,4 +1,5 @@
 import { SCROLL_OFFSET } from '../../constants';
+import type { Heading } from '../../types';
 import { getContainer } from '../../utils';
 
 const HEADING_CLASS = {
@@ -7,10 +8,10 @@ const HEADING_CLASS = {
   H3: 'notion-sub_sub_header-block',
 } as const;
 
-export const extractHeadings = (): Headings => {
+export const extractHeadings = (): Heading[] => {
   console.info('# extract headings');
 
-  let headings: Headings = [];
+  let headings: Heading[] = [];
 
   const elems = getContainer().querySelectorAll<HTMLElement>(
     Object.values(HEADING_CLASS)
@@ -61,7 +62,7 @@ export const extractHeadings = (): Headings => {
   return headings;
 };
 
-export const highlightCurrentFocused = (headings: Headings): Headings => {
+export const highlightCurrentFocused = (headings: Heading[]): Heading[] => {
   if (headings.length === 0) {
     return headings;
   }
