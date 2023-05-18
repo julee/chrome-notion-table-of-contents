@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { SCROLL_OFFSET } from '../../constants';
 import type { Heading } from '../../types';
 import { $, getContainer } from '../../utils';

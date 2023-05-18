@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import {
   handleTailFoldButtonClickAtom,
   showsTailFoldButtonAtom,
