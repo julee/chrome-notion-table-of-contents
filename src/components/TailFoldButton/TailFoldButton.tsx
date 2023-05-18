@@ -6,6 +6,7 @@ import {
   tailFoldedAtom,
 } from '../../atoms';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
+
 import './styles.pcss';
 
 export default memo(function TailFoldButton() {
