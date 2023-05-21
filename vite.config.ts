@@ -1,6 +1,7 @@
 import type { ManifestV3Export } from '@crxjs/vite-plugin';
 import { crx } from '@crxjs/vite-plugin';
 // import react from '@vitejs/plugin-react';
+import autoprefixer from 'autoprefixer';
 import postcssNested from 'postcss-nested';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig, PluginOption } from 'vite';
@@ -25,7 +26,7 @@ export default defineConfig(({ mode }) => {
     ],
     css: {
       postcss: {
-        plugins: [postcssNested],
+        plugins: [autoprefixer, postcssNested],
       },
     },
   };
