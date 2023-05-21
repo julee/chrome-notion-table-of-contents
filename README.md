@@ -1,6 +1,6 @@
 # Notion Table of Contents (Chrome Extension)
 
-Show table of contents (outline) in the sidebar for Notion pages
+Show a table of contents (outline) in the sidebar for Notion pages
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/ifghafniffhbggdjmcmhnpcdcnlpjflh)
 
