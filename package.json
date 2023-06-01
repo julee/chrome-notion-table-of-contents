@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^1.0.14",
-    "@types/chrome": "0.0.234",
+    "@types/chrome": "0.0.237",
     "@types/jest": "^29.5.0",
     "@types/node": "^18.15.5",
     "@types/react": "^18.0.28",
