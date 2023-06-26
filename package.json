@@ -1,5 +1,5 @@
 {
-  "version": "2.2.2",
+  "version": "2.2.4",
   "license": "MIT",
   "scripts": {
     "dev": "pnpm run clean && vite",

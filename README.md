@@ -1,6 +1,6 @@
 # Notion Table of Contents (Chrome Extension)
 
-Show table of contents (outline) on the sidebar for Notion pages
+Show a table of contents (outline) in the sidebar for Notion pages
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/ifghafniffhbggdjmcmhnpcdcnlpjflh)
 
@@ -15,9 +15,13 @@ pnpm run build
 
 ## How to Send Pull Requests
 
-⚠️ If you have a feature request, please discuss it with me on `/issues` before writing your code.
+⚠️ If you have a feature request, please discuss it with me on [/issues](https://github.com/Cside/chrome-notion-table-of-contents/issues) before writing your code.
 
 Create a branch from `develop` and make a pull request to `develop` .
+
+## Release Notes
+
+[/releases](https://github.com/Cside/chrome-notion-table-of-contents/releases)
 
 ## License
 
