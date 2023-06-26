@@ -1,14 +1,15 @@
+import type { Heading } from '../../types';
+
 import { useSetAtom } from 'jotai';
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import { handleHeadingsUpdateAtom } from '../../atoms';
 import { THROTTLE_TIME } from '../../constants';
 import { usePageMoveEvent } from '../../hooks';
-import type { Heading } from '../../types';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
-// Very long but can't be splited ...
+// Very long but can't be split ...
 export const useHeadings = (): Heading[] => {
   const [headings, _setHeadings] = useState<Heading[]>([]);
   const headingsRef = useRef<Heading[] | null>(null);
