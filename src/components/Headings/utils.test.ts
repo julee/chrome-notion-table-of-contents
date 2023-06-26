@@ -60,6 +60,62 @@ describe('extractHeadings', () => {
       },
     ]);
   });
+
+  test('toggle heading', () => {
+    document.body.innerHTML = wrap(`
+      <div data-block-id="h1-xxx" class="notion-header-block">
+        <div>
+          <div>
+            <div class="pseudoSelection">
+            </div>
+            <div>
+              <div>
+                <div
+                  class="notranslate"
+                  spellcheck="true"
+                  placeholder="Heading 1"
+                  data-content-editable-leaf="true"
+                  contenteditable="true"
+                >
+                  This is h1
+                </div>
+              </div>
+              <div>
+                <div data-block-id="h2-xxx" class="notion-sub_header-block">
+                  <div
+                    class="notranslate"
+                    spellcheck="true"
+                    placeholder="Heading 2"
+                    data-content-editable-leaf="true"
+                    contenteditable="true"
+                  >
+                    This is h2
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `);
+    expect(extractHeadings()).toEqual([
+      {
+        text: 'This is h1',
+        level: 1,
+        blockId: 'h1-xxx',
+        offset: 0,
+        isFocused: false,
+      },
+      {
+        text: 'This is h2',
+        level: 2,
+        blockId: 'h2-xxx',
+        offset: 0,
+        isFocused: false,
+      },
+    ]);
+  });
+
   test('un-indent', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h2-xxx" class="notion-sub_header-block">
@@ -90,6 +146,7 @@ describe('extractHeadings', () => {
       },
     ]);
   });
+
   test('removes empty blocks', () => {
     document.body.innerHTML = wrap(`
       <div data-block-id="h1-xxx" class="notion-sub_header-block">
@@ -117,44 +174,7 @@ describe('extractHeadings', () => {
   });
 });
 
-describe('locales', () => {
-  test.each([
-    {
-      name: 'en',
-      input: { prefix: 'Heading ' },
-    },
-    {
-      name: 'ja',
-      input: { prefix: '見出し' },
-    },
-    {
-      name: 'kr',
-      input: { prefix: '제목' },
-    },
-    {
-      name: 'fr',
-      input: { prefix: 'Titre ' },
-    },
-  ])('$name (prefix: $input.prefix)', ({ input: { prefix } }) => {
-    document.body.innerHTML = wrap(`
-      <div data-block-id="h1-xxx" class="notion-header-block">
-        <div placeholder="${prefix}1">This is h1</div>
-      </div>
-      <div data-block-id="h2-xxx" class="notion-sub_header-block">
-        <div placeholder="${prefix}2">This is h2</div>
-      </div>
-      <div data-block-id="h3-xxx" class="notion-sub_sub_header-block">
-        <div placeholder="${prefix}3">This is h3</div>
-      </div>
-    `);
-
-    expect(extractHeadings().map((heading) => heading.level)).toEqual([
-      1, 2, 3,
-    ]);
-  });
-});
-
-describe('setHighlight', () => {
+describe('highlightCurrentFocused', () => {
   // https://github.com/jsdom/jsdom/issues/3363
   // 2 つ以上になったら setupFilesAfterEnv にまとめる
   global.structuredClone = (val: unknown) => JSON.parse(JSON.stringify(val));

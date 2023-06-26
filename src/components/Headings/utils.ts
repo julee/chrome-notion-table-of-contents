@@ -19,7 +19,9 @@ export const extractHeadings = (): Heading[] => {
       .join(','),
   );
   for (const elem of elems) {
-    const text = (elem.textContent || '').trim();
+    const text = (
+      elem.querySelector('[placeholder]')?.textContent || ''
+    ).trim();
     if (text === '') continue;
 
     const blockId = elem.getAttribute('data-block-id');
