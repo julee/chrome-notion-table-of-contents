@@ -1,7 +1,8 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import { handleWholeFoldButtonClickAtom, wholeFoldedAtom } from '../../atoms';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
+
 import './styles.pcss';
 
 export default memo(function Headings() {

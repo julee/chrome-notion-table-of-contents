@@ -1,3 +1,5 @@
+import type { Heading } from '../../types';
+
 import { useSetAtom } from 'jotai';
 import { useCallback, useRef, useState } from 'react';
 import { throttle } from 'throttle-debounce';
@@ -7,14 +9,14 @@ import { usePageMoveEvent } from '../../hooks';
 import { getContainer as getMainContainer, waitFor } from '../../utils';
 import { extractHeadings, highlightCurrentFocused } from './utils';
 
-// Very long but can't be splited ...
-export const useHeadings = (): Headings => {
-  const [headings, _setHeadings] = useState<Headings>([]);
-  const headingsRef = useRef<Headings | null>(null);
+// Very long but can't be split ...
+export const useHeadings = (): Heading[] => {
+  const [headings, _setHeadings] = useState<Heading[]>([]);
+  const headingsRef = useRef<Heading[] | null>(null);
   const handleHeadingsUpdate = useSetAtom(handleHeadingsUpdateAtom);
 
   const setHeadings = useCallback(
-    (valOrFunction: Headings | ((headings: Headings) => Headings)) => {
+    (valOrFunction: Heading[] | ((headings: Heading[]) => Heading[])) => {
       if (typeof valOrFunction === 'function') {
         _setHeadings((prevHeadings) => {
           const newHeadings = valOrFunction(prevHeadings);

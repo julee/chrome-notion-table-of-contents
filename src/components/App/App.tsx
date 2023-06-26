@@ -1,5 +1,5 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { Suspense, useEffect, useLayoutEffect, useState } from 'react';
+import { Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { throttle } from 'throttle-debounce';
 import {
   handlePageMoveAtom,
@@ -8,10 +8,12 @@ import {
 } from '../../atoms';
 import { THEME, THROTTLE_TIME } from '../../constants';
 import { usePageMoveEvent } from '../../hooks';
+import type { Theme } from '../../types';
 import { waitFor } from '../../utils';
 import Header from '../Header/Header';
 import Headings from '../Headings/Headings';
 import TailFoldButton from '../TailFoldButton/TailFoldButton';
+
 import './common.pcss';
 import './customProperties.css';
 import './styles.pcss';

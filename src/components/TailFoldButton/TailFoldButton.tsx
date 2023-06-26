@@ -1,11 +1,12 @@
 import { useAtomValue, useSetAtom } from 'jotai';
-import React, { memo } from 'react';
+import { memo } from 'react';
 import {
   handleTailFoldButtonClickAtom,
   showsTailFoldButtonAtom,
   tailFoldedAtom,
 } from '../../atoms';
 import { FoldIcon } from '../FoldIcon/FoldIcon';
+
 import './styles.pcss';
 
 export default memo(function TailFoldButton() {
