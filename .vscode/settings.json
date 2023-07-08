@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["elem", "elems"]
+  "cSpell.words": ["elem", "elems"],
+  "runCurrentTest.run": "npm run test -- ${relativeTestPath} --testNamePattern \"${fullTestName}\""
 }
